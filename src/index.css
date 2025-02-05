@@ -1,0 +1,70 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap'); */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+    font-family: 'Lora', serif; 
+  } */
+/* Custom Tailwind utility for hiding scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+:root {
+  --gradient-light: radial-gradient(
+    circle,
+    rgb(143, 60, 60) 0%,
+    rgb(50, 50, 99) 100%
+  );
+  --gradient-dark: radial-gradient(
+    circle,
+    rgba(40, 40, 40, 1) 0%,
+    rgba(10, 10, 10, 1) 100%
+  );
+  --gradient-blue: radial-gradient(
+    circle,
+    rgba(0, 128, 255, 1) 0%,
+    rgba(0, 64, 128, 1) 100%
+  );
+  --gradient-green: radial-gradient(
+    circle,
+    rgba(34, 193, 195, 1) 0%,
+    rgba(253, 187, 45, 1) 100%
+  );
+  --gradient-purple: radial-gradient(
+    circle,
+    rgba(148, 0, 211, 1) 0%,
+    rgba(75, 0, 130, 1) 100%
+  );
+}
+
+html.theme-light {
+  background: var(--gradient-light);
+}
+
+html.theme-dark {
+  background: var(--gradient-dark);
+}
+
+html.theme-blue {
+  background: var(--gradient-blue);
+}
+
+html.theme-green {
+  background: var(--gradient-green);
+}
+
+html.theme-purple {
+  background: var(--gradient-purple);
+}
+html {
+  @apply text-black dark:text-white;
+}
