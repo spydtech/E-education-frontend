@@ -36,7 +36,7 @@ const BasicCourseArray = () => {
           </div>
           <div className="flex justify-center items-center rounded-lg top-16 relative">
             <motion.button className="rounded-lg w-[200px] md:w-[265px] h-[50px] md:h-[70px] px-4 text-lg md:text-2xl group flex justify-center items-center gap-1.5 bg-[#0098f1] py-2 text-white transition-colors">
-              <Link to="/" className="flex items-center gap-1.5">
+              <Link to="#" className="flex items-center gap-1.5">
                 Find the Courses
                 <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
               </Link>

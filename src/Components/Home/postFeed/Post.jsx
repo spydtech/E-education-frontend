@@ -431,32 +431,32 @@
 //     }
 //   };
 
-//   // const handlePost = () => {
-//   //   if (editTweetId) {
-//   //     setTweets(
-//   //       tweets.map((tweet) =>
-//   //         tweet.id === editTweetId ? { ...tweetData, id: editTweetId } : tweet
-//   //       )
-//   //     );
-//   //     setEditTweetId(null);
-//   //   } else {
-//   //     setTweets([tweetData, ...tweets]);
-//   //   }
-//   //   setTweetData({
-//   //     id: Math.floor(Math.random() * 100000 + 1),
-//   //     content: "",
-//   //     createdAt: Date.now(),
-//   //     image: "",
-//   //     tweetedBy: {
-//   //       id: Math.floor(Math.random() * 100000 + 1),
-//   //       name: "Avatar",
-//   //     },
-//   //     isLiked: false,
-//   //     comments: [],
-//   //   });
-//   //   setOpen(false);
-//   //   setShowEmojiPicker(false);
-//   // };
+  // const handlePost = () => {
+  //   if (editTweetId) {
+  //     setTweets(
+  //       tweets.map((tweet) =>
+  //         tweet.id === editTweetId ? { ...tweetData, id: editTweetId } : tweet
+  //       )
+  //     );
+  //     setEditTweetId(null);
+  //   } else {
+  //     setTweets([tweetData, ...tweets]);
+  //   }
+  //   setTweetData({
+  //     id: Math.floor(Math.random() * 100000 + 1),
+  //     content: "",
+  //     createdAt: Date.now(),
+  //     image: "",
+  //     tweetedBy: {
+  //       id: Math.floor(Math.random() * 100000 + 1),
+  //       name: "Avatar",
+  //     },
+  //     isLiked: false,
+  //     comments: [],
+  //   });
+  //   setOpen(false);
+  //   setShowEmojiPicker(false);
+  // };
 //   const handlePost = async (e) => {
 //     e.preventDefault();
   
@@ -1192,21 +1192,21 @@ export default function Post() {
     }));
   };
 
-  const deleteTweet = async (id) => {
-    try {
-      const response = await axios.delete(`http://localhost:8080/api/posts/deletePost/${id}`, {
-        headers: { Authorization: `Bearer ${jwt}` },
-      });
+  // const deleteTweet = async (id) => {
+  //   try {
+  //     const response = await axios.delete(`http://localhost:8080/api/posts/deletePost/${id}`, {
+  //       headers: { Authorization: `Bearer ${jwt}` },
+  //     });
 
-      if (response.status === 200) {
-        setTweets(tweets.filter((tweet) => tweet.id !== id));
-        alert("Post deleted successfully");
-      }
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      alert("Failed to delete post");
-    }
-  };
+  //     if (response.status === 200) {
+  //       setTweets(tweets.filter((tweet) => tweet.id !== id));
+  //       alert("Post deleted successfully");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting post:", error);
+  //     alert("Failed to delete post");
+  //   }
+  // };
 
   const onEmojiClick = (emojiData) => {
     if (emojiData && emojiData.emoji) {
@@ -1311,18 +1311,18 @@ export default function Post() {
   {error && <p className="text-red-500">{error}</p>}
   {tweets.map((tweet) => (
     <div className="p-4 border border-gray-300 rounded-lg mt-4" key={tweet.id}>
-      <div className="flex justify-between">
+      <div className="flex text-start space-x-5">
         <Avatar
           alt={tweet.postedBY || "Unknown User"}
           src={tweet.profilePicture || "/default-profile.png"}
         />
-        <div className="ml-2">
+        <div className="text-start">
           <div className="font-semibold">{tweet.postedBY || "Unknown User"}</div>
           <div className="text-sm text-gray-500">
             {new Date(tweet.dateTime).toLocaleString()}
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-2">
+        {/* <div className="ml-auto flex items-center gap-2">
           <FaEdit
             className="text-[#0098f1] cursor-pointer"
             onClick={() => editTweet(tweet)}
@@ -1331,7 +1331,7 @@ export default function Post() {
             className="text-red-600 cursor-pointer"
             onClick={() => deleteTweet(tweet.id)}
           />
-        </div>
+        </div> */}
       </div>
       <div className="mt-2">{tweet.content}</div>
 

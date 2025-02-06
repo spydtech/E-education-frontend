@@ -11,12 +11,13 @@ import Footer from "../../../../footer/Footer";
 
 const FullStackJavaDevelopment = () => {
   const [courseName] = useState("Master Full Stack Java Development");
-  const [coursePrice] = useState(199);
+  const [coursePrice] = useState(14999);
+  const [courseDuration] = useState("6 months");
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   useEffect(() => {

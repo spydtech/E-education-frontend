@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 function MobileappFoot() {
   const [courseName] = useState("Full stack Mobile App");
-  const [coursePrice] = useState(14999);
+  const [coursePrice] = useState(34999);
+  const [courseDuration] = useState("6 months");
 
   const navigate = useNavigate();
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

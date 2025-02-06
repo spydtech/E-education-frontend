@@ -12,7 +12,8 @@ import JavascriptDeveloperSkills from "../Developer/JavascriptDeveloperSkills";
 const JavascriptDevelopment = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [courseName] = useState("Master Full Stack Java Development"); // Moved inside component
-  const [coursePrice] = useState(199); // Moved inside component
+  const [coursePrice] = useState(14999); // Moved inside component
+  const [courseDuration] = useState("4 months"); // Moved inside component
   const navigate = useNavigate(); // useNavigate hook for navigation
 
   const handleEnroll = () => {

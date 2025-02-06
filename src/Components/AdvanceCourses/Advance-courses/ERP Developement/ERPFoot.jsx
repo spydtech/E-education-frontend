@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 function ERPfoot() {
   const [courseName] = useState("Enterprise Resource Planning");
   const [coursePrice] = useState(14999);
+  const [courseDuration] = useState("4 months");
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

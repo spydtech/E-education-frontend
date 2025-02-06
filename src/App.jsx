@@ -130,6 +130,7 @@ import Todo from "./Components/trainee/SheduledReports/Todo";
 import Dashboard from "./Admin/Components/pymentData/MainDashBoard";
 import TraineeDashboard from "./Components/trainee/TraineeDashboard/TraineeDashboard";
 import ThemeToggle from "./Components/trainee/TraineeDashboard/Theamtoggle";
+import ScrollToTop from "./ScrollToTop ";
 // import ReportsAndMasters from "./Components/Meeting/hospita/reports";
 // import Sarvices from "./Components/Meeting/hospita/sarvices";
 function App() {
@@ -143,6 +144,7 @@ function App() {
     <>
       <div>
         <BrowserRouter>
+        <ScrollToTop />
           <Routes>
             {/* <Route path="" element={<SidebarMain/>} /> */}
             <Route path="/" element={<Home />} />

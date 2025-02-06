@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import Navbar from "../../../Navbar";
 import Footer from "../../../Home/footer/Footer";
 import BasicC_CplusHero from "./BasicC_CplusHero";
@@ -7,6 +7,11 @@ import BasicC_CplusNavigation from "./BasicC&C++About/BasicC_CplusNavigation";
 import BasicC_CplusFoot from "./BasicC_CplusFoot";
 
 const BasicC_Cplus = () => {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <>
       <Navbar />

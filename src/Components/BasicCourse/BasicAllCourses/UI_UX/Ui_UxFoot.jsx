@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 const Ui_UxFoot = () => {
   const [courseName] = useState("Basics UI/UX"); // Placeholder for course name
-  const [coursePrice] = useState(34999);
+  const [coursePrice] = useState(4999);
+  const [courseDuration] = useState("2 months");
   const navigate = useNavigate();
 
   const handleEnroll = () => {
     // Navigate to the card details page with course details as parameters
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

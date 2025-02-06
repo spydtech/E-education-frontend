@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AdvancephpHero = () => {
   const [courseName] = useState("Advance PHP");
   const [coursePrice] = useState(14999);
   const navigate = useNavigate();
+
+   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   const handleEnroll = () => {
     navigate("/course-details", { state: { courseName, coursePrice } });
