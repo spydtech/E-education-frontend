@@ -1,6 +1,6 @@
 # Step 1: Build Stage
 FROM node:latest AS builder
-WORKDIR /E-education_WebSite
+WORKDIR /E-education-frontend
 
 # Ensure package.json and package-lock.json are copied from the build context (current directory)
 COPY package*.json ./
@@ -13,6 +13,6 @@ RUN npm run build
  
 # Step 2: NGINX Stage
 FROM nginx:latest
-COPY --from=builder /E-education_WebSite/build /usr/share/nginx/html
+COPY --from=builder /E-education-frontend/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
