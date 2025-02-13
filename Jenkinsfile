@@ -136,7 +136,7 @@ pipeline {
 
                 sh 'docker rmi $DOCKER_REPO:$TAG || true' 
 
-                sh 'docker system prune -af || true' 
+               // sh 'docker system prune -af || true' 
 
             } 
 
