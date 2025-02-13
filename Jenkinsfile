@@ -74,21 +74,21 @@ pipeline {
 
  
 
-        stage('Build a Docker Container') { 
+        //stage('Build a Docker Container') { 
 
-            steps { 
+      // steps { 
 
-                echo 'Running Docker container' 
+               // echo 'Running Docker container' 
 
                 //sh 'docker stop $CONTAINER_NAME ' 
 
                 //sh 'docker rm $CONTAINER_NAME' 
 
-                sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG' 
+                //sh 'docker run -d --name $CONTAINER_NAME -p 80:80 $DOCKER_REPO:$TAG' 
 
-            } 
+          //  } 
 
-        } 
+       // } 
 
  
 
@@ -164,7 +164,7 @@ pipeline {
 
                 echo 'Creating a new Docker container' 
 
-                sh 'docker run -d --name $CONTAINER_NAME_N -p 5173:80 $DOCKER_REPO:$TAG' 
+                sh 'docker run -d --name $CONTAINER_NAME_N -p 80:80 $DOCKER_REPO:$TAG' 
 
             } 
 
