@@ -57,6 +57,7 @@ const Cart = ({ history }) => {
         try {
           const courseNames = cartItems.map((item) => item.courseName);
           const coursePrices = cartItems.map((item) => item.coursePrice);
+          const courseDuration = cartItems.map((item) => item.courseDuration);
           const paymentResponse = {
             userId: auth.user.id, // Implement a function to extract user ID from JWT
             firstName: auth.user.firstName,
@@ -103,6 +104,7 @@ const Cart = ({ history }) => {
           currency: "INR",
           receipt: "receipt_order_12345",
           paymentMethod: "Razorpay",
+          paymentStatus: "success",
         },
         {
           headers: {

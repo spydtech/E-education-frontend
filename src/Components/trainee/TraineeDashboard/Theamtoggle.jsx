@@ -6,7 +6,7 @@ function Themetoggle() {
     {
       name: "grey-light",
       value: "grey-light",
-      colorClass: "bg-gradient-to-b from-[#FFFFFF] to-[#FFFFFF] text-[#000000]",
+      colorClass: "bg-[#006666] text-white",
     },
     {
       name: "Light",

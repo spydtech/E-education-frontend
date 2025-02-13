@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 function SystemTestingFoot() {
   const [courseName] = useState("System Testing"); // Placeholder for course name
-  const [coursePrice] = useState(14999);
-  const [courseDuration] = useState("4 months");
+  const [coursePrice] = useState(34999);
+  const [courseDuration] = useState("6 months");
 
   const navigate = useNavigate();
   const handleEnroll = () => {

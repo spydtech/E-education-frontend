@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import GroupTable from "./GroupTable";
-import { FaTrashAlt, FaPencilAlt } from "react-icons/fa";
+import { FaTrashAlt, FaPencilAlt, FaPlus  } from "react-icons/fa";
 
-function Tabs() {
+function Tab() {
   const [openTab, setOpenTab] = useState(1);
   const location = useLocation();
   const { groupName: locationGroupName, users: locationUsers } = location.state || {};
   const [groups, setGroups] = useState([]);
   const [editedGroupName, setEditedGroupName] = useState("");
   const [currentEditedGroupId, setCurrentEditedGroupId] = useState(null);
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [error, setError] = useState(""); // Track errors
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const jwt = localStorage.getItem("jwt");
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [trainerName, setTrainerName] = useState([]);
+  const users = useSelector(state => state.users);
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
-  // Fetch groups from the backend
-  
   useEffect(() => {
     const fetchGroups = async () => {
       try {
@@ -25,27 +27,30 @@ function Tabs() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`, // Include the JWT token
+            Authorization: `Bearer ${jwt}`,
           },
         });
-      
+
         if (!response.ok) {
           throw new Error(`Failed to fetch groups: ${response.statusText}`);
         }
         const data = await response.json();
 
-        // Ensure the response matches expected data structure
-        const formattedGroups = data.map((group) => ({
+        const formattedGroups = (data || []).map((group) => ({
           id: group.id,
-          groupName: group.groupName, // Ensure you're accessing the correct field
-          users: group.users || [],
-          trainees: group.trainees || [],
+          color: getRandomColor(),
+          groupName: group.groupName || "Unnamed Group",
+          users: Array.isArray(group.users) ? group.users : [],
+          trainees: Array.isArray(group.trainees) ? group.trainees : [],
+          createdAt: group.createdAt || "Unknown Date",
           editMode: false,
         }));
+        
         setGroups(formattedGroups);
         setError("");
       } catch (err) {
         setError(err.message);
+        setGroups([]);
       } finally {
         setLoading(false);
       }
@@ -54,25 +59,21 @@ function Tabs() {
     fetchGroups();
   }, []);
 
-  const handleTabClick = (tabNumber) => {
-    setOpenTab(tabNumber);
-  };
+  // const handleTabClick = (tabNumber) => setOpenTab(tabNumber);
 
   const handleRemoveUser = async (id, userId) => {
     try {
       const response = await fetch(`http://localhost:8080/api/chat-groups/${id}/remove-user`, {
-        method: "PUT", // Use PUT or DELETE based on your backend implementation
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
         },
-        body: JSON.stringify({ userId }), // Send userId in the request body
+        body: JSON.stringify({ userId }),
       });
-  
+
       if (response.ok) {
-        const updatedGroup = await response.json(); // Get updated group after removal
-  
-        // Update the state with the new list of users
+        const updatedGroup = await response.json();
         setGroups((prevGroups) =>
           prevGroups.map((group) =>
             group.id === id ? { ...group, users: updatedGroup.users } : group
@@ -85,128 +86,52 @@ function Tabs() {
       console.error("Error removing user:", error);
     }
   };
-  
+
+  // const handleSave = () => {
+  //   setTrainerName(editedName);
+  //   setIsModalOpen(false);
+  // };
 
   const handleDeleteGroup = async (id) => {
     try {
-      const jwt = localStorage.getItem("jwt");
-
-      // Send DELETE request to the backend to delete the chat group
       const response = await fetch(`http://localhost:8080/api/chat-groups/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Authorization': `Bearer ${jwt}`, // Add token in Authorization header
-          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${jwt}`,
+          "Content-Type": "application/json",
         },
       });
-  
+
       if (response.ok) {
-        // If deletion is successful, update local state
-        const updatedGroups = groups.filter((group) => group.id !== id);
-        setGroups(updatedGroups);
-  
-        // Reset open tab if it was the one being deleted
-        if (openTab === id) {
-          setOpenTab(1); // Assuming you set 1 as the default tab
-        }
+        setGroups(groups.filter((group) => group.id !== id));
+        if (openTab === id) setOpenTab(1);
       } else {
-        console.error('Error deleting chat group');
+        console.error("Error deleting chat group");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
-  
 
-
-  const handleEditGroup = (id, groupName) => {
-    setEditedGroupName(groupName);
-    setCurrentEditedGroupId(id);
-
-    const updatedGroups = groups.map((group) =>
-      group.id === id ? { ...group, editMode: true } : group
-    );
-
-    setGroups(updatedGroups);
+  const handleOpenModel = (group) => {
+    setSelectedGroup(group);
+    setIsModalOpen(true);
   };
+  
 
-
-  // const handleSaveEdit = async (id) => {
-  //   try {
-  //     if (!editedGroupName.trim()) {
-  //       console.error("Group name cannot be empty.");
-  //       return;
-  //     }
-  
-  //     // Find the group by ID
-  //     const groupToUpdate = groups.find((g) => g.id === id);
-  //     if (!groupToUpdate) {
-  //       console.error("Group not found.");
-  //       return;
-  //     }
-  
-  //     const response = await fetch(`http://localhost:8080/api/chat-groups/${id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${jwt}`,
-  //       },
-  //       body: JSON.stringify({
-  //         groupName: editedGroupName, // Update only the name
-  //         users: groupToUpdate.users || [], // Ensure correct users list if needed
-  //         trainees: groupToUpdate.trainees || [], // Ensure correct trainees list
-  //       }),
-  //     });
-  
-  //     if (response.ok) {
-  //       const updatedGroup = await response.json();
-  
-  //       // Update the state with the new group name
-  //       setGroups((prevGroups) =>
-  //         prevGroups.map((group) =>
-  //           group.id === id
-  //             ? { ...group, groupName: updatedGroup.groupName, editMode: false }
-  //             : group
-  //         )
-  //       );
-  
-  //       // Clear the edit state
-  //       setEditedGroupName("");
-  //       setCurrentEditedGroupId(null);
-  //     } else {
-  //       console.error("Failed to update group name:", await response.text());
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating group:", error);
-  //   }
-  // };
-  
-  
-  
-  
-  
   const handleSaveEdit = async (id) => {
     try {
       if (!editedGroupName.trim()) {
         console.error("Group name cannot be empty.");
         return;
       }
-  
-      // Find the group BEFORE updating state
+
       const groupToUpdate = groups.find((g) => g.id === id);
       if (!groupToUpdate) {
         console.error("Group not found.");
         return;
       }
-  
-      // Optimistic UI update
-      setGroups((prevGroups) =>
-        prevGroups.map((group) =>
-          group.id === id ? { ...group, name: editedGroupName, editMode: false } : group
-        )
-      );
-  
-      // Send update request to backend
+
       const response = await fetch(`http://localhost:8080/api/chat-groups/${id}`, {
         method: "PUT",
         headers: {
@@ -214,127 +139,136 @@ function Tabs() {
           Authorization: `Bearer ${jwt}`,
         },
         body: JSON.stringify({
-          name: editedGroupName, // Use "name" as per backend entity
-          members: groupToUpdate.members || [],
+          groupName: editedGroupName,
+          users: groupToUpdate.users || [],
           trainees: groupToUpdate.trainees || [],
         }),
       });
-  
-      if (response.ok) {
-        const updatedGroup = await response.json();
-        console.log("Updated Group from API:", updatedGroup);
-  
-        // Ensure React updates the state with the latest backend data
-        setGroups((prevGroups) =>
-          prevGroups.map((group) =>
-            group.id === id ? { ...group, name: updatedGroup.name, editMode: false } : group
-          )
-        );
-  
-        // Clear edit state
-        setEditedGroupName("");
-        setCurrentEditedGroupId(null);
-      } else {
+
+      if (!response.ok) {
         console.error("Failed to update group name:", await response.text());
+        return;
       }
+
+      setGroups(groups.map((group) =>
+        group.id === id ? { ...group, groupName: editedGroupName, editMode: false } : group
+      ));
     } catch (error) {
       console.error("Error updating group:", error);
     }
   };
-  
-  
-  
-  
 
+  const handleColorChange = (color) => {
+    setGroups((prevGroups) =>
+      prevGroups.map((g) =>
+        g.id === selectedGroup.id ? { ...g, color } : g
+      )
+    );
+    setIsColorModalOpen(false);
+  };
+
+  const [bgColor, setBgColor] = useState("#F87171");
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+  const colors = ["#F87171", "#60A5FA", "#34D399", "#FBBF24", "#A78BFA"];
+  const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
   return (
-    <div className="p-6">
+    <div className="p-6 font-poppins relative">
       {loading ? (
         <p className="text-center text-[#001510]">Loading groups...</p>
       ) : error ? (
         <p className="text-center text-red-500">Error: {error}</p>
       ) : groups.length > 0 ? (
         <>
-          <div className="overflow-x-auto">
-            <ul className="flex border-b">
-              {groups.map((group) => (
-                <li
-                  key={group.id}
-                  onClick={() => handleTabClick(group.id)}
-                  className={`mr-1 ${openTab === group.id ? "-mb-px" : ""}`}
-                >
-                  <a
-                    href="#"
-                    className={`bg-white inline-block py-2 px-4 font-semibold ${
-                      openTab === group.id
-                        ? "border-l border-t border-r rounded-t text-[#001510]"
-                        : "text-black hover:text-[#001510]"
-                    }`}
-                  >
-                    {!group.editMode ? (
-                      <>
-                        {group.groupName}
-                        <span
-                          className="ml-2 text-[#001510] hover:text-[#001510] cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleEditGroup(group.id, group.groupName);
-                          }}
-                        >
-                          <FaPencilAlt />
-                        </span>
-                      </>
-                    ) : (
-                      <div className="flex items-center">
-                        <input
-                          type="text"
-                          className="border border-gray-300 text-[#001510] rounded px-2 py-1"
-                          value={editedGroupName || ""}  // Fallback to empty string if undefined
-                          onChange={(e) => setEditedGroupName(e.target.value)}
-                        />
-                        <button
-                          className="ml-2 bg-gradient-to-r from-[#00BF8F] to-[#001510] hover:bg-green-500 text-white px-2 py-1 rounded"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSaveEdit(group.id);
-                          }}
-                        >
-                          Save
-                        </button>
-                        <span
-                          className="ml-2 mt-1 text-[#001510] hover:text-red-700 cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteGroup(group.id);
-                          }}
-                        >
-                          <FaTrashAlt />
-                        </span>
-                      </div>
-                    )}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {groups.map((group) => (
-              <div
-                key={group.id}
-                style={{ display: openTab === group.id ? "block" : "none" }}
+              <div key={group.id}
+                // onClick={() => handleTabClick(group.id)}
+                className=" bg-white p-4 shadow-lg rounded-xl border-2  relative w-full" 
               >
-                <GroupTable
-                  key={group.id}
-                  groupName={group.groupName}
-                  users={group.users}
-                  trainees={group.trainees}
-                  onRemoveUser={(users) => handleRemoveUser(group.id, users)}
-                  onAddUser={(newUser) => handleAddUser(group.id, newUser)}
-                />
+               <FaPencilAlt
+  className="absolute top-4 right-4 text-gray-500 cursor-pointer"
+  onClick={() => handleOpenModel(group)}
+/>
+
+                <div className="flex items-center space-x-4">
+                  <div
+                    className="w-12 h-12 rounded-full cursor-pointer border-2 border-gray-300"
+                    style={{ backgroundColor: bgColor }}
+                    onClick={() => setIsColorModalOpen(true)}
+                  ></div>
+
+                  {isColorModalOpen && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                      <div className="bg-white p-6 rounded-lg shadow-lg w-72">
+                        <h2 className="text-lg font-bold mb-4">Select a Color</h2>
+                        <div className="flex space-x-2">
+                          {colors.map((color, index) => (
+                            <div
+                              key={index}
+                              className="w-10 h-10 rounded-full cursor-pointer border-2 border-gray-300"
+                              style={{ backgroundColor: color }}
+                              onClick={() => {
+                                setBgColor(color);
+                                setIsColorModalOpen(false);
+                              }}
+                            ></div>
+                          ))}
+                        </div>
+                        <button
+                          className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg"
+                          onClick={() => setIsColorModalOpen(false)}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  <h3 className="text-lg font-bold">{group.groupName}</h3>
+                </div>
+                <div className="flex items-center mt-3">
+                  {(group.users || []).slice(0, 3).map((user, index) => (
+                    <div
+                      key={index}
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-xs border-2 border-white"
+                      style={{ backgroundColor: "#60A5FA" }}
+                    >
+                      {user.fullName.charAt(0)}
+                    </div>
+                  ))}
+                  {group.users.length > 3 && <span className="ml-2 text-gray-500">+ {group.users.length - 3}</span>}
+                </div>
+                <p className="text-sm mt-2">
+                  <span className="font-semibold">Trainer:</span>{" "}
+                  {group.trainees.length > 0 ? group.trainees.map(t => t.fullName).join(", ") : "No Trainer"}
+                </p>
+
+                <p className="text-sm"><span className="font-semibold">Created On:</span> {group.createdAt}</p>
               </div>
-              
             ))}
           </div>
+          {isModalOpen && selectedGroup && (
+            <div className="fixed top-20 items-center rounded-lg shadow-lg justify-center bg-white bg-opacity-100 w-[800px]">
+              <div className=" items-center justify-center  bg-white">
+                <button
+                  className="top-0 right-4 text-gray-500 hover:text-gray-800 text-xl p-4  rounded-full "
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  ✖
+                </button>
+                <GroupTable
+                  key={selectedGroup.id}
+                  groupId={selectedGroup.id}
+                  groupName={selectedGroup.groupName}
+                  users={selectedGroup.users}
+                  trainees={selectedGroup.trainees}
+                  onRemoveUser={(userId) => handleRemoveUser(selectedGroup.id, userId)}
+                  onAddUser={(newUser) => handleAddUser(selectedGroup.id, newUser)}
+                  // handleTraineeSearchChange={handleTraineeSearchChange}
+                />
+              </div>
+            </div>
+          )}
         </>
       ) : (
         <p className="text-center text-[#001510]">No existing groups</p>
@@ -343,4 +277,4 @@ function Tabs() {
   );
 }
 
-export default Tabs;
+export default Tab;

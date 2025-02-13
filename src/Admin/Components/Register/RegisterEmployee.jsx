@@ -137,67 +137,69 @@ const RegisterEmployee = () => {
   };
 
   return (
-    <div className="flex  justify-center min-h-screen mx-auto p-8">
-      <div
-        id="main"
-        className="bg-white rounded-lg shadow-lg w-68  md:w-[700px]  h-[480px] lg:h-[420px] relative"
+    <div className=" justify-center  items-center min-h-screen mx-auto p-5 font-poppins">
+      <div className="    w-[350px]    "
       >
-        <div className="w-full h-24 bg-[#153243] rounded-t-lg flex justify-center items-center">
-          <h2 className="text-2xl font-bold text-white">Register Employee</h2>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:space-x-4 space-x-0 p-8">
-          <div className="flex flex-col items-center lg:items-start">
+       
+
+        {/* Form Inputs */}
+        <div className="  ">
+          <div className=" flex flex-col  text-sm">
+            <label className="text-[#989898] text-sm">First Name</label>
             <input
               type="text"
               placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="shadow appearance-none border rounded w-full max-w-xs lg:max-w-md h-12 lg:h-16 px-4 text-[#001510] focus:outline-none focus:shadow-outline mb-3"
+              className="shadow  border rounded w-auto placeholder border-[#989898]  text-[#989898] focus:inline-none focus:shadow-inline "
             />
             {firstNameError && (
-              <p className="text-red-500 text-sm ">{firstNameError}</p>
+              <p className="text-red-500 text-sm">{firstNameError}</p>
             )}
-            <input
-              type="number"
-              placeholder="Mobile Number"
-              value={phoneNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
-              className="shadow appearance-none border rounded w-full max-w-xs lg:max-w-md h-12 lg:h-16 px-4 text-[#001510] focus:outline-none focus:shadow-outline mb-3"
-            />
-            {phoneNumberError && (
-              <p className="text-red-500 text-sm ">{phoneNumberError}</p>
-            )}
-          </div>
-          <div className="flex flex-col items-center lg:items-start">
+           
+         
+
+         <label className="text-[#989898] text-sm">Last Name</label>
             <input
               type="text"
               placeholder="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="shadow appearance-none border rounded w-full max-w-xs lg:max-w-md h-12 lg:h-16 px-4 text-[#001510] focus:outline-none focus:shadow-outline mb-3"
+              className="shadow appearance-none border rounded w-auto text-[#989898] focus:outline-none focus:shadow-outline "
             />
             {lastNameError && (
-              <p className="text-red-500 text-sm ">{lastNameError}</p>
+              <p className="text-red-500 text-sm">{lastNameError}</p>
             )}
+        <label className="text-[#989898] text-sm">Email</label>
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full max-w-xs lg:max-w-md h-12 lg:h-16 px-4 text-[#001510] focus:outline-none focus:shadow-outline mb-3"
+              className="shadow appearance-none border rounded w-auto  text-[#989898] focus:outline-none focus:shadow-outline"
             />
-            {emailError && (
-              <p className="text-red-500 text-sm ">{emailError}</p>
+            {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+
+            <label className="text-[#989898] text-sm">phone Number</label>
+            <input
+              type="number"
+              placeholder="phone Number "
+              value={phoneNumber}
+              onChange={(e) => setMobileNumber(e.target.value)}
+              className="shadow appearance-none border rounded w-auto text-[#989898] focus:outline-none focus:shadow-outline "
+            />
+            {phoneNumberError && (
+              <p className="text-red-500 text-sm">{phoneNumberError}</p>
             )}
-          </div>
-        </div>
-        <div className="flex items-center justify-center mb-8">
+            <div className="flex  w-full pt-2">
           <button
             onClick={handleAddEmployee}
-            className="bg-[#153243] w-auto max-w-xs lg:max-w-md h-12 lg:h-16 px-8 text-white font-bold rounded focus:outline-none focus:shadow-outline"
+            className="bg-[#FF9B26]  text-white font-bold py-2 w-full  rounded focus:outline-none"
           >
             Generate Credentials
           </button>
+        </div>
+            </div>
         </div>
 
         {employeeId && showSuccess && (

@@ -4,13 +4,15 @@ import backgroundImage from "../../../../assetss/Basic_Courses/BasicJava/bgimage
 
 
 const BasicJavaHero = () => {
-  const [courseName] = useState("Basic Java");
-  const [coursePrice] = useState(14999);
-  const navigate = useNavigate();
-
-  const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
-  };
+  const [courseName] = useState("Basics Java"); // Placeholder for course name
+    const [coursePrice] = useState(4999);
+    const [courseDuration] = useState("2 months");
+    const navigate = useNavigate();
+  
+    const handleEnroll = () => {
+      // Navigate to the card details page with course details as parameters
+      navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
+    };
 
   return (
     <>

@@ -1142,7 +1142,7 @@ export default function Post() {
 
         setTweets([response.data, ...tweets]);
         //notifcation msg
-        toast.success("Post created successfully!");
+        // toast.success("Post created successfully!");
         setMessage("Post created successfully!");
         setTweetData({ ...tweetData, content: "", image: "", video: "" });
         setFile(null);

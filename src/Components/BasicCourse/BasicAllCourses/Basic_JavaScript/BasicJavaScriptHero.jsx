@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../../../assetss/Basic_Courses/BasicJavaScript/bgimagejs.jpg";
 
 const BasicJavaScriptHero = () => {
-  const [courseName] = useState("Basic JavaScript");
-  const [coursePrice] = useState(14999);
-  const navigate = useNavigate();
-
-  const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
-  };
+ const [courseName] = useState("Basic JavaScript"); // Placeholder for course name
+   const [coursePrice] = useState(34999);
+   const [courseDuration] = useState("2 months");
+   const navigate = useNavigate();
+ 
+   const handleEnroll = () => {
+     // Navigate to the card details page with course details as parameters
+     navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
+   };
 
   return (
     <>

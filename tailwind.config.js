@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         anton: ["Anton", "sans-serif"], // Example font family
         lora: ["Lora", "serif"], // Example font family
+        'poppins': ['Poppins']
       },
       animation: {
         "spin-slow": "spin 5s linear infinite", // Adjust the duration (5s) to control the speed

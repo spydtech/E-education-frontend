@@ -11,11 +11,12 @@ import DotnetDeveloperSkills from "./DotnetDeveloperSkills";
 
 const DotNetDevelopment = () => {
   const [courseName] = useState("Master Full Stack .Net Development");
-  const [coursePrice] = useState(14999);
+  const [coursePrice] = useState(34999);
+  const [courseDuration] = useState("6 Months");
 
   const navigate = useNavigate();
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   useEffect(() => {

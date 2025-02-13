@@ -33,8 +33,8 @@ const Dashboard = () => {
     {
       title: "Total Earnings",
       amount: "₹4,50,000",
-      textColor: "text-green-600",
-      Date: "02/July/2024",
+      textColor: "text-black",
+    
     },
   ];
 
@@ -42,8 +42,8 @@ const Dashboard = () => {
     {
       title: "Pending Payments",
       amount: "₹10,000",
-      textColor: "text-red-700",
-      Date: "02/July/2024",
+      textColor: "text-black",
+     
     },
   ];
 
@@ -56,85 +56,16 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="p-4 max-w-full ">
+    <div className="p-10 max-w-full  font-poppins">
       {" "}
       {/* Prevent horizontal overflow */}
       {/* Cards Grid */}
-      <div
-        className={`  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6`}
-      >
-        {/* Total Earnings Card */}
-        {totalEarningsCard.map((card, index) => (
-          <div
-            key={index}
-            className={`
-
-                ${themes === "dark" ? "bg-black text-white" : "text-white   "} 
-            
-            w-full  text-white bg-[#ff259d] h-[160px] rounded-lg grid grid-cols-[1fr_auto] relative`}
-          >
-            <div className="flex flex-col justify-center p-4 pl-6">
-              <h2 className="text-xs md:text-xl font-semibold">{card.title}</h2>
-              <p className="text-sm mt-2">{card.Date}</p>
-              <p className="text-2xl font-bold mt-2">{card.amount}</p>
-            </div>
-            <div
-              style={{
-                clipPath: "ellipse(60% 60% at 70% 50%)",
-              }}
-              className="rounded-r-lg bg-white bg-opacity-60 w-[80px] h-full flex items-center justify-center"
-            ></div>
-          </div>
-        ))}
-
-        {/* Pending Payments Card */}
-        {pendingPaymentsCard.map((card, index) => (
-          <div
-            key={index}
-            className={` w-full bg-[#0098f1]  text-white  h-[160px] rounded-lg grid grid-cols-[1fr_auto] relative`}
-          >
-            <div className="flex flex-col justify-center p-4 pl-6">
-              <h2 className="text-xs md:text-xl font-semibold">{card.title}</h2>
-              <p className="text-sm mt-2">{card.Date}</p>
-              <p className="text-2xl font-bold mt-2">{card.amount}</p>
-            </div>
-            <div
-              style={{
-                clipPath: "ellipse(60% 60% at 70% 50%)",
-              }}
-              className="rounded-r-lg bg-white bg-opacity-60 w-[80px] h-full flex items-center justify-center"
-            ></div>
-          </div>
-        ))}
-
-        {/* Withdrawal Method Card */}
-        {withdrawalMethodCard.map((card, index) => (
-          <div
-            key={index}
-            className={`   bg-[#ff2f6a] w-full text-white  h-[160px] rounded-lg grid grid-cols-[1fr_auto] relative`}
-          >
-            <div className="flex flex-col justify-center p-4 pl-6">
-              <h2 className="text-xs md:text-xl font-semibold">{card.title}</h2>
-              <p className="text-xl font-bold mt-2">{card.amount}</p>
-            </div>
-            <div
-              style={{
-                clipPath: "ellipse(60% 60% at 70% 50%)",
-              }}
-              className="rounded-r-lg bg-white bg-opacity-60 w-[80px] h-full flex items-center justify-center"
-            ></div>
-          </div>
-        ))}
-      </div>
-      {/* Payment History Section */}
-      <div className="flex flex-col sm:flex-row items-center justify-between px-2 py-4 mb-4">
-        <h2 className="text-lg sm:text-xl md:text-2xl text-[#153243] font-semibold">
-          Payment History
-        </h2>
-        <select
+      <div className=" md:space-x-[775px] lg:space-x-[770px]">
+        
+      <select
           value={activeTab}
           onChange={handleTabChange}
-          className="w-full sm:w-[190px] mt-2 sm:mt-0 p-3 bg-[#153243] text-white rounded-lg"
+          className="w-full sm:w-[190px]  sm:mt-0 p-3  text-[#989898] rounded-lg"
         >
           <option value="All">Status</option>
           <option value="Completed">Completed</option>
@@ -142,6 +73,67 @@ const Dashboard = () => {
           <option value="Processing">Processing</option>
           <option value="Rejected">Rejected</option>
         </select>
+
+        <button className="p-3 rounded-xl bg-[#494949] text-white ">Download Report</button>
+         </div>
+     
+      <div
+        className={`  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-28 mb-6 pt-10`}
+      >
+        {/* Total Earnings Card */}
+        {totalEarningsCard.map((card, index) => (
+          <div
+            key={index}
+            className={`
+
+               
+            
+            w-[300px]   bg-[#FFE2E5] text-center  text-black  h-[160px] rounded-lg grid grid-cols-[1fr_auto] relative`}
+          >
+            <div className="flex flex-col justify-center p-4 pl-6">
+              <h2 className=" ">{card.title}</h2>
+              <p className="text-sm mt-2">{card.Date}</p>
+              <p className="text-2xl  mt-2">{card.amount}</p>
+            </div>
+            
+          </div>
+        ))}
+
+        {/* Pending Payments Card */}
+        {pendingPaymentsCard.map((card, index) => (
+          <div
+            key={index}
+            className={` w-[300px] bg-[#FFF4DE]  text-center text-black  h-[160px] rounded-lg grid grid-cols-[1fr_auto] relative`}
+          >
+            <div className="flex flex-col justify-center p-4 pl-6">
+              <h2 className="text-xs md:text-xl ">{card.title}</h2>
+              <p className="text-sm mt-2">{card.Date}</p>
+              <p className="text-2xl  mt-2">{card.amount}</p>
+            </div>
+           
+          </div>
+        ))}
+
+        {/* Withdrawal Method Card */}
+        {withdrawalMethodCard.map((card, index) => (
+          <div
+            key={index}
+            className={`   bg-[#DCFCE7] w-[300px] text-center text-black  h-[160px] rounded-lg grid grid-cols-[1fr_auto] relative`}
+          >
+            <div className="flex flex-col justify-center p-4 pl-6">
+              <h2 className="text-xs md:text-xl ">{card.title}</h2>
+              <p className="text-xl  mt-2">{card.amount}</p>
+            </div>
+           
+          </div>
+        ))}
+      </div>
+      {/* Payment History Section */}
+      <div className="flex flex-col sm:flex-row items-center justify-between px-2 py-4 mb-4">
+        {/* <h2 className="text-lg sm:text-xl md:text-2xl text-[#153243] ">
+          Payment History
+        </h2> */}
+       
       </div>
       {/* Table Section */}
       <div className="p-4 overflow-x-auto max-w-full">{renderTable()}</div>{" "}

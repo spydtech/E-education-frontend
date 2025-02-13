@@ -11,7 +11,7 @@ import Footer from "../../../../footer/Footer";
 
 const FullStackJavaDevelopment = () => {
   const [courseName] = useState("Master Full Stack Java Development");
-  const [coursePrice] = useState(14999);
+  const [coursePrice] = useState(34999);
   const [courseDuration] = useState("6 months");
   const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);

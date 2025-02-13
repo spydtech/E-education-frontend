@@ -111,7 +111,7 @@ import AdminLogin from "./Admin/Components/AdminLogin";
 // import Meeting from "./Components/Meeting/Meeting";
 import Tabs from "./Components/trainee/TraineAdmin/TraineComplateCourses/Tabs";
 import UserAccounts from "./Components/trainee/UsersSection/usernavigation/navigation";
-import TraineUpload from "./Components/trainee/UserTask/traineuploads";
+import TraineUpload from "./Components/trainee/UserTask/NewTaskForm";
 import TraineeCourses from "./Admin/Views/TraineeCourses";
 import Traine_Login from "./Components/trainee/TraineLogin/Traine_Login";
 import Traine_Home from "./Components/trainee/home/Home";
@@ -131,6 +131,8 @@ import Dashboard from "./Admin/Components/pymentData/MainDashBoard";
 import TraineeDashboard from "./Components/trainee/TraineeDashboard/TraineeDashboard";
 import ThemeToggle from "./Components/trainee/TraineeDashboard/Theamtoggle";
 import ScrollToTop from "./ScrollToTop ";
+
+
 // import ReportsAndMasters from "./Components/Meeting/hospita/reports";
 // import Sarvices from "./Components/Meeting/hospita/sarvices";
 function App() {
@@ -143,13 +145,18 @@ function App() {
   return (
     <>
       <div>
-        <BrowserRouter>
+        <BrowserRouter
+        future={{
+          v7_startTransition: true, // Opt into React.startTransition behavior
+          v7_relativeSplatPath: true, // Opt into new relative path resolution
+        }}
+        >
         <ScrollToTop />
           <Routes>
             {/* <Route path="" element={<SidebarMain/>} /> */}
             <Route path="/" element={<Home />} />
             <Route path="/theme" element={<ThemeToggle />} />
-            <Route path="/traineedashbord" element={<TraineeDashboard />} />
+            
             <Route path="/admin_login" element={<AdminLogin />} />
             <Route path="/about_us" element={<AboutUs />} />
             <Route path="/options" element={<Options />} />
@@ -167,9 +174,18 @@ function App() {
             <Route path="/customercount" element={<CustomerCount />} />
             <Route path="/productscount" element={<ProductsCount />} />
             <Route path="/tableforadmin" element={<TableforAdmin />} />
-            {/* traine Login */}
 
+
+
+            {/* traine Login */}
             <Route path="/trainelogin" element={<Traine_Login />} />
+
+            
+            <Route path="/traineedashbord/*" element={<TraineeDashboard />}>
+  
+</Route>
+            {/* <Route path="/traineedashbord#/report" element={<StatusPage />} /> */}
+            {/* <Route path="/traineedashbord/assignmentoverview" element={<AssignmentOverview />} /> */}
             {/* <Route path="/trainee" element={<Trainee />} /> */}
             {/* <Route path="/traineedashboard" element={<TraineeSidebar />} /> */}
             {/* <Route path="/meeting" element={<Meeting />} /> */}
@@ -180,6 +196,10 @@ function App() {
             <Route path="/status-page" element={<StatusPage />} />
 
             <Route path="/todo" element={<Todo />} />
+
+
+
+
 
             {/* admin */}
             <Route path="/admin/*" element={<AdminRouter />} />
