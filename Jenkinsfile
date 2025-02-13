@@ -170,6 +170,18 @@ pipeline {
 
         } 
         
+        stage('Cleanup Dependencies') { 
+            steps { 
+                echo 'Cleaning up all dependencies except Docker images and containers...'
+                sh '''
+                sudo yum remove -y git
+                sudo yum clean all
+                sudo rm -rf /var/cache/yum
+                sudo rm -rf /tmp/*
+                '''
+            } 
+        }
+        
         stage('Creating Artifacts') { 
 
             steps { 
