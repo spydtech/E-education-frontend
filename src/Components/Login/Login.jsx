@@ -358,7 +358,7 @@ function Login() {
       if (response.data.status) {
         localStorage.setItem('jwt', response.data.jwt);
         dispatch(login(userData));
-        navigate('/mylearning');
+        navigate('/user/*');
       } else {
         setError(response.data.message || 'Invalid credentials.');
       }

@@ -6,7 +6,7 @@ const AddTask = () => {
     assignmentDescription: "",
     assignmentDate: "",
     dueDate: "",
-    selectedGroup: "",
+    chatGroup: "",
     users: [],
     file: null,
   });
@@ -49,10 +49,10 @@ const AddTask = () => {
     const { name, value } = e.target;
     setTask({ ...task, [name]: value });
 
-    if (name === "selectedGroup") {
+    if (name === "chatGroup") {
       const selectedGroupUsers = groupUsers.filter(user => user.chatGroupName === value);
       setFilteredUsers(selectedGroupUsers);
-      setTask(prev => ({ ...prev, users: [] })); // Reset selected users
+      setTask(prev => ({ ...prev, users: [] }));
     }
   };
 
@@ -79,45 +79,53 @@ const AddTask = () => {
 
   // Handle Submit
   // Handle Submit
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!task.assignmentDescription || !task.assignmentDate || !task.dueDate || !task.selectedGroup || task.users.length === 0) {
+
+    if (!task.assignmentDescription || !task.assignmentDate || !task.dueDate || !task.chatGroup || task.users.length === 0) {
       alert("Please fill in all required fields and select at least one user.");
       return;
     }
-  
+
     try {
       const formData = new FormData();
       formData.append("assignmentDescription", task.assignmentDescription);
       formData.append("assignmentDate", task.assignmentDate);
       formData.append("dueDate", task.dueDate);
-      formData.append("selectedGroup", task.selectedGroup);
-      formData.append("users", JSON.stringify(task.users)); // Send users as JSON string
-      formData.append("postedBy", localStorage.getItem("userEmail") || "Trainer"); // Fetch user email from localStorage
-  
+      formData.append("chatGroup", task.chatGroup);
+      formData.append("postedBy", localStorage.getItem("userEmail") || "Trainer");
+
+      task.users.forEach((user) => formData.append("users", user));
+
       if (task.file) {
         formData.append("file", task.file);
+      } else {
+        alert("Please attach a file before submitting.");
+        return;
       }
-  
+
+      // ✅ Debugging: Log FormData before sending
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
       const response = await axios.post(
-        "http://localhost:8080/api/assignments/upload", // Replace with your API endpoint
+        "http://localhost:8080/api/task/tasks/upload/by-trainee",
         formData,
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
-            "Content-Type": "multipart/form-data",
           },
         }
       );
-  
+
       if (response.status === 200) {
         alert("Assignment uploaded successfully!");
         setTask({
           assignmentDescription: "",
           assignmentDate: "",
           dueDate: "",
-          selectedGroup: "",
+          chatGroup: "",
           users: [],
           file: null,
         });
@@ -172,29 +180,17 @@ const handleSubmit = async (e) => {
         {/* Select Group */}
         <div>
           <label className="block text-sm font-medium">Select Group</label>
-          <div className="mt-2 flex flex-wrap gap-4">
-            {loading ? (
-              <p>Loading groups...</p>
-            ) : (
-              groups.map((group) => (
-                <label key={group.chatGroupName} className="flex items-center space-x-2">
-                  <input
-                    type="radio"
-                    name="selectedGroup"
-                    value={group.chatGroupName}
-                    checked={task.selectedGroup === group.chatGroupName}
-                    onChange={handleChange}
-                    className="h-4 w-4"
-                  />
-                  <span>{group.chatGroupName}</span>
-                </label>
-              ))
-            )}
-          </div>
+          {loading ? <p>Loading groups...</p> : groups.map((group) => (
+            <label key={group.chatGroupName}>
+              <input type="radio" name="chatGroup" value={group.chatGroupName}
+               checked={task.chatGroup === group.chatGroupName} onChange={handleChange} />
+              {group.chatGroupName}
+            </label>
+          ))}
         </div>
 
         {/* User Selection Table */}
-        {task.selectedGroup && (
+        {task.chatGroup  && (
           <div className="mt-4 p-4 font-poppins">
             <div className="grid grid-cols-6 font-medium text-gray-700 border-b pb-2 text-center border-2 border-gray-400 rounded-md">
               <span className="space-x-2">
@@ -205,6 +201,7 @@ const handleSubmit = async (e) => {
               <span>Email</span>
               <span>Status</span>
               <span>Joining Date</span>
+
               <span>Expiry Date</span>
             </div>
             {filteredUsers.map((user) => (

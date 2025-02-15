@@ -6,7 +6,7 @@ import { CgNotes } from "react-icons/cg";
 import { FaCalendarCheck } from "react-icons/fa";
 import { TbPasswordUser } from "react-icons/tb";
 import Account from "./Account/Account";
-import Payment from "./Payment/Payment";
+import Payment from "./Payment/PaymentHistory";
 import UpdatePassword from "./updatepassword/Update_Password";
 import Navbar from "../Navbar";
 import Footer from "../Home/footer/Footer";

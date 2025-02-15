@@ -178,13 +178,7 @@ const UpdatePassword = () => {
 
   return (
     <div className="">
-      <div className=" relative ">
-        <img
-          src="https://img.freepik.com/free-photo/member-log-membership-username-password-concept_53876-120613.jpg?t=st=1735891140~exp=1735894740~hmac=b71ee8b1778cc1507a110b4dc633fc6b8f1224f1bdff6ffba3f2ac9f59905539&w=826"
-          className="w-full h-80 object-cover "
-        />
-        <div className="absolute inset-0 bg-[#FF9B2659] opacity-35"></div>
-      </div>
+    
 
       <div className="w-full justify-center flex max-w-5xl    ">
         <div className="w-full ">

@@ -1307,7 +1307,7 @@ const Navbar = () => {
   const navigation = [{ name: "Explore", current: false }];
   if (auth.user) {
     navigation.push(
-      { name: "My Learning", href: "/mylearning", current: false },
+      { name: "Dashboard", href: "/user/*", current: false },
       { name: "Course", href: "/Mycourse", current: false },
       { name: "About US", href: "/about_us", current: false }
     );

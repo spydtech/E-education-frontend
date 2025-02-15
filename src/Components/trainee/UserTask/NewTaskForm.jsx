@@ -1,38 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AddTask from "./AddTask";
 import TaskModal from "./TaskModal";
+import axios from "axios";
 
 
 
 function NewTaskForm() {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const jwt = localStorage.getItem("jwt");
 
   // Ensure participants is an array
-  const [tasks, setTasks] = useState([
-    {
-      description: "Task 1",
-      group: "Group 1",
-      participants: ["User 1", "User 2"], // Changed from string to array
-      assignedDate: "10/02/2025",
-      dueDate: "20/02/2025",
-    },
-    {
-      description: "Task 2",
-      group: "Group 2",
-      participants: ["User 3", "User 4", "User 5"],
-      assignedDate: "12/02/2025",
-      dueDate: "22/02/2025",
-    },
-    {
-      description: "Task 3",
-      group: "Group 3",
-      participants: ["User 6", "User 7", "User 8", "User 9"],
-      assignedDate: "14/02/2025",
-      dueDate: "24/02/2025",
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  // Fetch tasks from API
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/task/getAll/by-trainee",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${jwt}`, // Attach token in headers
+            },
+          });
+          setTasks(response.data); // Assuming API returns an array of tasks
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      };
+    
+      fetchTasks();
+    }, []); // Runs on
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);
@@ -78,10 +78,10 @@ function NewTaskForm() {
           <tbody>
             {tasks.map((task, index) => (
               <tr key={index} className={`border-b ${index % 2 === 1 ? "bg-gray-100" : ""}`}>
-                <td className="p-4">{task.description}</td>
-                <td className="p-4">{task.group}</td>
+                <td className="p-4">{task.assignmentDescription}</td>
+                <td className="p-4">{task.chatGroup}</td>
                 <td className="p-4">{task.participants}</td>
-                <td className="p-4">{task.assignedDate}</td>
+                <td className="p-4">{task.assignmentDate}</td>
                 <td className="p-4">{task.dueDate}</td>
                 <td className="p-4">
                   <svg 

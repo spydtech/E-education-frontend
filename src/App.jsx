@@ -18,7 +18,7 @@ import MainPost from "./Components/Home/postFeed/MainPost";
 import QuestionForm from "./Components/Home/AskMe/QuestionForm";
 import ForgotPassword from "./Components/trainee/TraineAdmin/ForgotPassword/forgotpassword";
 import Purchases from "./Components/Profile/Purchases/Purchases";
-import Payment from "./Components/Profile/Payment/Payment";
+import Payment from "./Components/Profile/Payment/PaymentHistory";
 import MyCourse from "./Components/mycourse/MyCourse";
 import PremiumCourses from "./Components/PremiumCourses/PremiumCourses";
 import DataAnalytics from "./Components/Profile/BrowseProject/dataAnalytics/DataAnalytics";
@@ -131,7 +131,7 @@ import Dashboard from "./Admin/Components/pymentData/MainDashBoard";
 import TraineeDashboard from "./Components/trainee/TraineeDashboard/TraineeDashboard";
 import ThemeToggle from "./Components/trainee/TraineeDashboard/Theamtoggle";
 import ScrollToTop from "./ScrollToTop ";
-
+import UserRouter from "./Routers/UserRouter";
 
 // import ReportsAndMasters from "./Components/Meeting/hospita/reports";
 // import Sarvices from "./Components/Meeting/hospita/sarvices";
@@ -146,17 +146,17 @@ function App() {
     <>
       <div>
         <BrowserRouter
-        future={{
-          v7_startTransition: true, // Opt into React.startTransition behavior
-          v7_relativeSplatPath: true, // Opt into new relative path resolution
-        }}
+          future={{
+            v7_startTransition: true, // Opt into React.startTransition behavior
+            v7_relativeSplatPath: true, // Opt into new relative path resolution
+          }}
         >
-        <ScrollToTop />
+          <ScrollToTop />
           <Routes>
             {/* <Route path="" element={<SidebarMain/>} /> */}
             <Route path="/" element={<Home />} />
             <Route path="/theme" element={<ThemeToggle />} />
-            
+
             <Route path="/admin_login" element={<AdminLogin />} />
             <Route path="/about_us" element={<AboutUs />} />
             <Route path="/options" element={<Options />} />
@@ -175,15 +175,13 @@ function App() {
             <Route path="/productscount" element={<ProductsCount />} />
             <Route path="/tableforadmin" element={<TableforAdmin />} />
 
-
-
             {/* traine Login */}
             <Route path="/trainelogin" element={<Traine_Login />} />
 
-            
-            <Route path="/traineedashbord/*" element={<TraineeDashboard />}>
-  
-</Route>
+            <Route
+              path="/traineedashbord/*"
+              element={<TraineeDashboard />}
+            ></Route>
             {/* <Route path="/traineedashbord#/report" element={<StatusPage />} /> */}
             {/* <Route path="/traineedashbord/assignmentoverview" element={<AssignmentOverview />} /> */}
             {/* <Route path="/trainee" element={<Trainee />} /> */}
@@ -197,10 +195,6 @@ function App() {
 
             <Route path="/todo" element={<Todo />} />
 
-
-
-
-
             {/* admin */}
             <Route path="/admin/*" element={<AdminRouter />} />
             <Route path="/trainee-courses" element={<TraineeCourses />} />
@@ -208,10 +202,10 @@ function App() {
             <Route path="/countofproducts" element={<CountOfProduct />} />
             <Route path="/countofcustomers" element={<CountOfCustomers />} />
 
+            {/* user */}
+            <Route path="/user/*" element={<UserRouter />} />
             {/* WSpace */}
-
             <Route path="/WSpace" element={<WSpace />} />
-            
             <Route path="/googleCalender" element={<GoogleCalendar />} />
             <Route path="/mylearning" element={<MyLearning />} />
             <Route path="/Certificates" element={<Certificates />} />
