@@ -6,9 +6,9 @@ pipeline {
 
     environment { 
 
-        CONTAINER_NAME = 'education' 
+        CONTAINER_NAME_F = 'educationfront'  
+        CONTAINER_NAME_B = 'educationback'
 
-        CONTAINER_NAME_N = 'educationnew' 
 
         IMAGE_NAME = 'image'          // Docker image name 
 
@@ -16,7 +16,8 @@ pipeline {
 
         DOCKER_REPO = 'jagadishspyd/e-education' // Replace with your Docker Hub username/repository 
 
-        TAG = "1.0"                 // Tag for the Docker image (e.g., latest or versioned) 
+        TAG_F = "1.0"  // Tag for the Docker image (e.g., latest or versioned)
+        TAG_B = "1.0BE"
 
     } 
 
@@ -66,7 +67,7 @@ pipeline {
 
                 echo 'Building Docker image' 
 
-                sh 'docker build -t $DOCKER_REPO:$TAG .' 
+                sh 'docker build -t $DOCKER_REPO:$TAG_F .' 
 
             } 
 
@@ -114,7 +115,7 @@ pipeline {
 
                     echo 'Pushing Docker image to Docker Hub' 
 
-                    sh 'docker push $DOCKER_REPO:$TAG' 
+                    sh 'docker push $DOCKER_REPO:$TAG_F' 
 
                 } 
 
@@ -130,17 +131,38 @@ pipeline {
 
                 echo 'Deleting container and images...' 
 
-                sh 'docker rm -f $CONTAINER_NAME || true' 
+                sh 'docker rm -f $CONTAINER_NAME_F || true' 
 
-                sh 'docker rm -f $CONTAINER_NAME_N || true' 
+                sh 'docker rm -f $CONTAINER_NAME_F || true' 
 
-                sh 'docker rmi $DOCKER_REPO:$TAG || true' 
+                sh 'docker rmi $DOCKER_REPO:$TAG_F || true' 
 
                // sh 'docker system prune -af || true' 
 
             } 
 
         } 
+        
+        stage('Cleanup Docker Space') {
+            steps {
+                script {
+                    sh '''
+                    echo "Stopping Docker services..."
+                    sudo systemctl stop docker.socket || true
+                    sudo systemctl stop docker || true
+
+                    echo "Cleaning up Docker data..."
+                    sudo rm -rf /var/lib/docker || true
+
+                    echo "Restarting Docker service..."
+                    sudo systemctl start docker
+
+                    echo "Verifying Docker status..."
+                    sudo systemctl status docker || true
+                    '''
+                }
+            }
+        }
 
  
 
@@ -150,7 +172,8 @@ pipeline {
 
                 echo 'Pulling Docker image from Docker Hub' 
 
-                sh 'docker pull $DOCKER_REPO:$TAG' 
+                sh 'docker pull $DOCKER_REPO:$TAG_F'
+                sh 'docker pull $DOCKER_REPO:$TAG_B'
 
             } 
 
@@ -164,7 +187,8 @@ pipeline {
 
                 echo 'Creating a new Docker container' 
 
-                sh 'docker run -d --name $CONTAINER_NAME_N -p 80:80 $DOCKER_REPO:$TAG' 
+                sh 'docker run -d --name $CONTAINER_NAME_F -p 80:80 $DOCKER_REPO:$TAG_F'
+                sh 'docker run -d --name $CONTAINER_NAME_B -p 8082:81 $DOCKER_REPO:$TAG_B'
 
             } 
 
