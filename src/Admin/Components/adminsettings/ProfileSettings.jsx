@@ -2,25 +2,33 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
+import {  useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
 import { motion } from "framer-motion";
+// import { useNavigate } from "react-router-dom";
+
 const ProfileSettings = ({ jwt }) => {
   const { auth } = useSelector((state) => state);
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  // const jwt = localStorage.getItem("jwt");
+  const navigate = useNavigate();
+
+  
   const handleLogout = () => {
-    // console.log("Logging out...");
-    // localStorage.removeItem("user");
-    // window.location.href = "/login";
-    setShowSuccessPopup(true); // Show success popup after logging out
+    localStorage.removeItem("jwt");
+
+    setShowSuccessPopup(true); // Show success popup
     setTimeout(() => {
-      setShowSuccessPopup(false); // Hide the success popup after animation
+      setShowSuccessPopup(false);
+      navigate("/admin_login"); // Redirect after animation
     }, 1500);
-    // Wait for animation duration before hiding
+
     setShowPopup(false);
   };
+  
   const [profile, setProfile] = useState({
     employeeId: "",
     firstName: "",
@@ -29,7 +37,7 @@ const ProfileSettings = ({ jwt }) => {
     phoneNumber: "",
     profilePhoto: "",
   });
-
+ 
   const themesBackGroundColor = [
     { value: "light", colorClass: "bg-light-theme" },
     { value: "dark", colorClass: "bg-dark-theme" },

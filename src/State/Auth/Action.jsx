@@ -126,13 +126,13 @@ export const trainee = (traineeData) => async (dispatch) => {
   }
 };
 
-export const getAllCustomers = (token) => {
+export const getAllCustomers = (jwt) => {
   return async (dispatch) => {
     dispatch({ type: GET_ALL_CUSTOMERS_REQUEST });
     try {
       const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
         headers: {
-          "Authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${jwt}`
         }
       });
       const users = response.data;
@@ -189,7 +189,7 @@ export const getTrainee = (jwt) => async (dispatch) => {
   }
 };
 
-export const logout = (token) => {
+export const logout = (jwt) => {
   return async (dispatch) => {
     dispatch({ type: LOGOUT });
     localStorage.clear();

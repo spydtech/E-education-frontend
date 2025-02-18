@@ -25,6 +25,7 @@ function NewTaskForm() {
               "Authorization": `Bearer ${jwt}`, // Attach token in headers
             },
           });
+          console.log("API Response:", response.data);
           setTasks(response.data); // Assuming API returns an array of tasks
         } catch (error) {
           console.error("Error fetching tasks:", error);
@@ -77,7 +78,9 @@ function NewTaskForm() {
           </thead>
           <tbody>
             {tasks.map((task, index) => (
-              <tr key={index} className={`border-b ${index % 2 === 1 ? "bg-gray-100" : ""}`}>
+              <tr key={index}
+              onClick={() => setSelectedTask(task)}
+              className={`border-b ${index % 2 === 1 ? "bg-gray-100" : ""}`}>
                 <td className="p-4">{task.assignmentDescription}</td>
                 <td className="p-4">{task.chatGroup}</td>
                 <td className="p-4">{task.participants}</td>
@@ -85,7 +88,7 @@ function NewTaskForm() {
                 <td className="p-4">{task.dueDate}</td>
                 <td className="p-4">
                   <svg 
-                    onClick={() => handleTaskClick(task)}
+                  onClick={(e) => { e.stopPropagation(); setSelectedTask(task); }}
                     width="176" height="66" viewBox="0 0 176 66" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M86.25 25H82.25C81.7196 25 81.2109 25.2107 80.8358 25.5858C80.4607 25.9609 80.25 26.4696 80.25 27V39C80.25 39.5304 80.4607 40.0391 80.8358 40.4142C81.2109 40.7893 81.7196 41 82.25 41H94.25C94.7804 41 95.2891 40.7893 95.6642 40.4142C96.0393 40.0391 96.25 39.5304 96.25 39V35M88.25 33L96.25 25M96.25 25V30M96.25 25H91.25" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -96,7 +99,8 @@ function NewTaskForm() {
         </table>
       </div>
 
-      {selectedTask && <TaskModal task={selectedTask} onClose={handleCloseModal} />}
+     {/* Task Modal */}
+     {selectedTask && <TaskModal task={selectedTask} onClose={() => setSelectedTask(null)} />}
     </div>
   );
 }

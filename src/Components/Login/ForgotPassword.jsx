@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import IMG from '../../assets/logo/E-eLogo.png'
-import forgotpassword from "../../assets/undraw_Forgotpassword.png";
+// import IMG from '../../assets/logo/E-eLogo.png'
+// import forgotpassword from "../../assets/undraw_Forgotpassword.png";
 import { sendOtp, updatePassword, verifyOtp } from "../../Config/api"; // Import API functions
 import "animate.css";
 
@@ -106,20 +106,20 @@ function ForgotPassword() {
         id="main"
         className="my-10 grid md:lg:xl:grid-cols-2 grid-cols-1 justify-center items-center"
       >
-        <div className="flex justify-center items-center" id="image">
+        {/* <div className="flex justify-center items-center" id="image">
           <img
             src={forgotpassword}
             className="w-auto mx-auto"
             alt="Forgot Password"
           />
-        </div>
+        </div> */}
         <div className="p-5" id="forgot-password">
           <div className="text-center">
-            <img
+            {/* <img
               src={IMG}
               className="flex justify-center items-center w-56 mx-auto "
               alt="Logo"
-            />
+            /> */}
             <div className="p-2 animate__animated animate__backInDown mb-10 text-8xl text-start font-lora font-bold text-sky-600">
               Forgot Your Password?
             </div>

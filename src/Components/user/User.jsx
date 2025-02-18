@@ -13,7 +13,7 @@ import {
 } from "@mui/icons-material";
 import { FaCalendarAlt } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
-import Dashboard from "./userComponents/Dashboard";
+import UserDashboard from "./userComponents/Dashboard";
 import MyLearning from "./userComponents/mylearning/MyLearning";
 import CourseGroup from "./userComponents/CourseGroup";
 import Assignment from "./userComponents/Assignment";
@@ -26,6 +26,7 @@ import { MdAssignment } from "react-icons/md";
 import { MdGroup } from "react-icons/md";
 import { FaRegBookmark } from "react-icons/fa6";
 import AssignmentDetais from "./userComponents/AssignmentDetail";
+import UserSupport from "./userComponents/UserSupport";
 const menu = [
   { name: "Dashboard", path: "/user/dashboard", icon: <MdSpaceDashboard /> },
   { name: "My Learning", path: "/user/mylearning", icon: <MdMenuBook /> },
@@ -41,6 +42,7 @@ const menu = [
     icon: <FaRegBookmark />,
   },
   { name: "Calendar Sync", path: "/user/calendar", icon: <FaCalendarAlt /> },
+  { name: "Support", path: "/user/support", icon: <MdOutlineSettings /> },
   { name: "Settings", path: "/user/settings", icon: <MdOutlineSettings /> },
 ];
 
@@ -112,14 +114,16 @@ const User = () => {
         </Box> */}
           <Box component="main" className="p-4">
             <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/mylearning" element={<MyLearning />} />
               <Route path="/coursegroup" element={<CourseGroup />} />
               <Route path="/assignment" element={<Assignment />} />
               <Route path="/notes/highlights" element={<Notes_Highlights />} />
               <Route path="/calendar" element={<UCalendar />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/support" element={<UserSupport />} />
               <Route path="/assignment/viewassignments" element={<AssignmentDetais />} />
+
             </Routes>
           </Box>
         </div>

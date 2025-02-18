@@ -38,7 +38,7 @@ const ThemeSettings = () => {
   }, [theme]);
 
   return (
-    <div className="bg-[#000000] bg-opacity-20 p-6 flex items-center justify-center rounded-lg min-h-screen shadow-md text-white">
+    <div className="bg-[#000000] h-[500px] bg-opacity-20 p-6 flex items-center justify-center rounded-lg  shadow-md text-white">
       <div className="grid xl:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4 mt-4">
         {themes.map((t) => (
           <button

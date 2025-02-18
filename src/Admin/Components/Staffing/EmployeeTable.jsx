@@ -10,7 +10,7 @@ const EmployeeTable = () => {
   }, []);
 
   return (
-    <div className="flex justify-center min-h-screen mx-auto p-2">
+    <div className="flex justify-center min-h-screen mx-auto p-2 font-poppins">
       <div className="bg-white shadow-lg w-full">
         <h2 className="text-2xl font-bold text-center bg-[#001510] text-white py-4 ">
           Employee List

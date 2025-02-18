@@ -61,8 +61,8 @@ const PasswordSettings = ({ jwt }) => {
   };
 
   return (
-    <div className="flex items-center justify-center rounded-lg min-h-screen bg-[#000000] bg-opacity-20">
-      <div className="p-3 w-auto">
+    <div className="flex  items-center h-[500px]  justify-center rounded-lg  bg-[#000000] bg-opacity-20">
+      <div className="p-0 ">
         <div className="space-y-5 w-full mt-2 block">
           <div className="w-full">
             <label className="pr-2 mb-1 text-sm text-gray-400">

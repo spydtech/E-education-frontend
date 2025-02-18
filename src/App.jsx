@@ -16,7 +16,7 @@ import Settings from "./Components/Profile/Settings";
 import PostFeeds from "./Components/Home/post/PostFeeds";
 import MainPost from "./Components/Home/postFeed/MainPost";
 import QuestionForm from "./Components/Home/AskMe/QuestionForm";
-import ForgotPassword from "./Components/trainee/TraineAdmin/ForgotPassword/forgotpassword";
+import ForgotPassword from "./Components/Login/ForgotPassword";
 import Purchases from "./Components/Profile/Purchases/Purchases";
 import Payment from "./Components/Profile/Payment/PaymentHistory";
 import MyCourse from "./Components/mycourse/MyCourse";

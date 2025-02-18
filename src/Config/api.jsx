@@ -20,9 +20,9 @@ export const updatePassword = async (email, password, confirmPassword) => {
     return axios.post(`${API_BASE_URL}/auth/confirmpwd/${email}`, { password, confirmPassword });
 };
 
-const token = localStorage.getItem('jwt');
+const jwt = localStorage.getItem('jwt');
 
-api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 
 api.defaults.headers.post['Content-Type'] = 'application/json';
 

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import PasswordSettings from "./PasswordSettings";
-import ProfileSettings from "./ProfileSettings";
-import ThemeSettings from "./ThemeSettings";
+import TraineeStatus from "./TraineeStatus";
+import EmployeeStatus from "./EmployeeStatus";
+// import EmployeeTable from "./EmployeeTable";
+// import TraineeTable121 from "./TraineeTable121";
+// import ThemeSettings from "./ThemeSettings";
 
-const AdminSettings = () => {
+const StatusOfStaff = () => {
   const [activeTab, setActiveTab] = useState("password");
   const jwt = localStorage.getItem("jwt");
 
@@ -15,10 +17,10 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-32  -mt-24">
+    <div className="w-full mx-auto p-6  font-poppins">
       {/* Tab Buttons */}
       <div className="flex justify-evenly space-x-4 mb-6">
-        {["password", "profile", "theme"].map((tab) => (
+        {["trainer", "authorized staff"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -36,29 +38,29 @@ const AdminSettings = () => {
       {/* Animated Content Switching */}
       <div className="relative">
         <AnimatePresence mode="wait">
-          {activeTab === "password" && (
+          {activeTab === "trainer" && (
             <motion.div
-              key="password"
+              key="trainer"
               variants={tabVariants}
               initial="initial"
               animate="animate"
               exit="exit"
             >
-              <PasswordSettings jwt={jwt} />
+              <TraineeStatus jwt={jwt} />
             </motion.div>
           )}
-          {activeTab === "profile" && (
+          {activeTab === "authorizedstaff" && (
             <motion.div
-              key="profile"
+              key="authorizedstaff"
               variants={tabVariants}
               initial="initial"
               animate="animate"
               exit="exit"
             >
-              <ProfileSettings jwt={jwt} />
+              <EmployeeStatus jwt={jwt} />
             </motion.div>
           )}
-          {activeTab === "theme" && (
+          {/* {activeTab === "theme" && (
             <motion.div
               key="theme"
               variants={tabVariants}
@@ -68,11 +70,11 @@ const AdminSettings = () => {
             >
               <ThemeSettings />
             </motion.div>
-          )}
+          )} */}
         </AnimatePresence>
       </div>
     </div>
   );
 };
 
-export default AdminSettings;
+export default StatusOfStaff;

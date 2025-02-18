@@ -85,12 +85,7 @@ const StatusButtonEmployee = () => {
       >
         {isLoggedIn ? "Check Out" : "Check In"}
       </button>
-      <button
-        onClick={() => navigate("/admin/status/employee")}
-        className="px-1 py-2 text-white rounded"
-      >
-        <FaArrowCircleRight className="h-8 w-8 text-black" />
-      </button>
+      
     </div>
   );
 };

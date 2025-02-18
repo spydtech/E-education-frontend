@@ -1,34 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const assignments = [
-  {
-    id: 1,
-    course: "Java",
-    assignedBy: "Ruben Runte",
-    assignedDate: "10/02/2025",
-    dueDate: "20/02/2025",
-    status: "New",
-    approval: "Pending",
-    description: "Complete the Java OOP concepts assignment.",
-    file: "Java_Assignment.pdf",
-  },
-  {
-    id: 2,
-    course: "PHP",
-    assignedBy: "Ruben Runte",
-    assignedDate: "12/02/2025",
-    dueDate: "22/02/2025",
-    status: "Submitted",
-    approval: "Pending",
-    description: "Write a PHP script for CRUD operations.",
-    file: "PHP_Assignment.pdf",
-  },
-];
+// const assignments = [
+//   {
+//     id: 1,
+//     course: "Java",
+//     assignedBy: "Ruben Runte",
+//     assignedDate: "10/02/2025",
+//     dueDate: "20/02/2025",
+//     status: "New",
+//     approval: "Pending",
+//     description: "Complete the Java OOP concepts assignment.",
+//     file: "Java_Assignment.pdf",
+//   },
+//   {
+//     id: 2,
+//     course: "PHP",
+//     assignedBy: "Ruben Runte",
+//     assignedDate: "12/02/2025",
+//     dueDate: "22/02/2025",
+//     status: "Submitted",
+//     approval: "Pending",
+//     description: "Write a PHP script for CRUD operations.",
+//     file: "PHP_Assignment.pdf",
+//   },
+// ];
 
-const getStatusClass = (status) => {
-  switch (status) {
+const getStatusClass = (submissionStatus) => {
+  switch (submissionStatus) {
     case "New":
       return "bg-yellow-200 text-yellow-700";
     case "Submitted":
@@ -40,8 +41,9 @@ const getStatusClass = (status) => {
   }
 };
 
-const getApprovalClass = (approval) => {
-  switch (approval) {
+
+const getApprovalClass = (taskStatus) => {
+  switch (taskStatus) {
     case "Approved":
       return "bg-green-200 text-green-700";
     case "Pending":
@@ -55,6 +57,32 @@ const getApprovalClass = (approval) => {
 
 const Assignment = () => {
   const navigate = useNavigate();
+  const [assignments, setAssignments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const jwt = localStorage.getItem("jwt");
+  
+ // Fetch assignments from API
+ useEffect(() => {
+  const fetchAssignments = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/task/getAllTasks/by-user", {
+        headers: {
+          Authorization: `Bearer ${jwt}`, // Include JWT token if needed
+        },
+      });
+      setAssignments(response.data); // Assuming API returns an array of assignments
+    } catch (err) {
+      console.error("Error fetching assignments:", err);
+      setError("Failed to load assignments.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchAssignments();
+}, []);
+
 
   return (
     <div className="p-6 bg-white min-h-screen">
@@ -78,18 +106,18 @@ const Assignment = () => {
                 className="hover:bg-gray-100 cursor-pointer"
                 onClick={() => navigate("/user/assignment/viewassignments", { state: assignment })}
               >
-                <td className="py-3 px-4 ">{assignment.course}</td>
-                <td className="py-3 px-4 ">{assignment.assignedBy}</td>
-                <td className="py-3 px-4 ">{assignment.assignedDate}</td>
+                <td className="py-3 px-4 ">{assignment.chatGroup}</td>
+                <td className="py-3 px-4 ">{assignment.trainerName}</td>
+                <td className="py-3 px-4 ">{assignment.assignmentDate}</td>
                 <td className="py-3 px-4 ">{assignment.dueDate}</td>
                 <td className="py-3 px-4 ">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(assignment.status)}`}>
-                    {assignment.status}
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusClass(assignment.submissionStatus)}`}>
+                    {assignment.submissionStatus}
                   </span>
                 </td>
                 <td className="py-3 px-4 ">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getApprovalClass(assignment.approval)}`}>
-                    {assignment.approval}
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getApprovalClass(assignment.taskStatus)}`}>
+                    {assignment.taskStatus}
                   </span>
                 </td>
                 <td className="py-3 px-4  text-center">
