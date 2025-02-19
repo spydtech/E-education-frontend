@@ -26,9 +26,17 @@ const AddTask = () => {
         const response = await axios.get("http://localhost:8080/api/chat-groups/get/users/email", {
           headers: { Authorization: `Bearer ${jwt}` },
         });
-
+  
         if (Array.isArray(response.data)) {
-          setGroups(response.data);
+          // Remove duplicate chat groups
+          const uniqueGroups = response.data.reduce((acc, group) => {
+            if (!acc.some(g => g.chatGroupName === group.chatGroupName)) {
+              acc.push(group);
+            }
+            return acc;
+          }, []);
+  
+          setGroups(uniqueGroups);
           setGroupUsers(response.data);
           setFilteredUsers(response.data);
         } else {
@@ -40,9 +48,10 @@ const AddTask = () => {
         setLoading(false);
       }
     };
-
+  
     fetchGroups();
   }, [jwt]);
+  
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -178,16 +187,27 @@ const AddTask = () => {
         </div>
 
         {/* Select Group */}
-        <div>
-          <label className="block text-sm font-medium">Select Group</label>
-          {loading ? <p>Loading groups...</p> : groups.map((group) => (
-            <label key={group.chatGroupName}>
-              <input type="radio" name="chatGroup" value={group.chatGroupName}
-               checked={task.chatGroup === group.chatGroupName} onChange={handleChange} />
-              {group.chatGroupName}
-            </label>
-          ))}
-        </div>
+       {/* Select Group */}
+<div>
+  <label className="block text-sm font-medium">Select Group</label>
+  {loading ? (
+    <p>Loading groups...</p>
+  ) : (
+    groups.map((group) => (
+      <label key={group.chatGroupName} className="block">
+        <input 
+          type="radio" 
+          name="chatGroup" 
+          value={group.chatGroupName} 
+          checked={task.chatGroup === group.chatGroupName} 
+          onChange={handleChange} 
+        />
+        {group.chatGroupName}
+      </label>
+    ))
+  )}
+</div>
+
 
         {/* User Selection Table */}
         {task.chatGroup  && (

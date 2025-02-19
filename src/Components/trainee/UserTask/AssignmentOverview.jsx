@@ -1,8 +1,48 @@
 import React, { useState } from "react";
 import { Download, ChevronLeft } from "lucide-react";
 
+
 const AssignmentOverview = () => {
   const [submissionStatus, setSubmissionStatus] = useState("Submitted");
+  const [taskStatus, setTaskStatus] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleStatusChange = (e) => setTaskStatus(e.target.value);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const jwt = localStorage.getItem("jwt");
+    const userId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:8080/api/task/task/approval/by-trainee", {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${jwt}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          taskId,
+          userId,
+          taskStatus,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to approve/reject task.");
+      }
+
+      alert("Task status updated successfully.");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg font-poppins">
@@ -24,6 +64,21 @@ const AssignmentOverview = () => {
         >
           {submissionStatus}
         </span>
+        <div>
+      <h3>Approve Task</h3>
+      <form onSubmit={handleSubmit}>
+        <select value={taskStatus} onChange={handleStatusChange} required>
+          <option value="">Select status</option>
+          <option value="APPROVED">Approved</option>
+          <option value="REJECTED">Rejected</option>
+        </select>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Submit Status"}
+        </button>
+      </form>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
       </div>
 
       {/* Assignment Description */}

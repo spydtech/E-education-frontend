@@ -27,7 +27,7 @@ function UsersRolesTable() {
   const themes = localStorage.getItem("theme");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [courseEndDate, setCourseEndDate] = useState("");
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/payment/user-courses", {
@@ -123,11 +123,17 @@ const handleCreateGroup = () => {
     return;
   }
 
+  if (!courseEndDate) {
+    setError("Please select a course end date.");
+    return;
+  }
+
   setError(""); // Clear any previous errors
 
   // Create group data with only emails for users and trainees
   const groupData = {
     groupName: groupName.trim(),
+    courseEndDate: courseEndDate, 
     users: selectedUsers.map((user) => user.email), 
     trainees: selectedTrainees.map((trainee) => trainee.email),  // Only email
   };
@@ -235,6 +241,13 @@ const handleAddMember = (user) => {
     value={groupName}
     onChange={handleGroupNameChange}
     placeholder="Type the group name here"
+    className="border-b-2 border-gray-300 outline-none w-full sm:w-1/3 text-lg ml-4"
+  />
+   <input
+    type="date"
+    value={courseEndDate}
+    onChange={(e) => setCourseEndDate(e.target.value)}
+    placeholder="Course End Date"
     className="border-b-2 border-gray-300 outline-none w-full sm:w-1/3 text-lg ml-4"
   />
 </div>

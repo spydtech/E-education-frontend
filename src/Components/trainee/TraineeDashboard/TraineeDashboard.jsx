@@ -574,6 +574,10 @@ import { IoSettingsSharp } from "react-icons/io5";
 import Traineeprofile from "../../../assets/Calender/traineeprofile.png";
 import Eeducationlogo from "../../../assets/logo/E-educationlogo.png";
 import AssignmentOverview from "../UserTask/AssignmentOverview";
+import TraineeSettings from "../traineesettings/TraineeSettings "
+import VideoList from "../uploadSessions/VideoList";
+import VideoUploadForm from "../uploadSessions/videosData";
+import VideoStatus from "../uploadSessions/VideoStatus";
 
 const themesBackGroundColor = [
   { value: "light", colorClass: "bg-light-theme" },
@@ -607,8 +611,8 @@ const menu = [
     icon: <ApprovalIcon className="w-6 h-6 mr-2" />,
   },
   {
-    name: "User",
-    path: "/traineedashbord/user",
+    name: "Upload Session",
+    path: "/traineedashbord/uploadsession",
     icon: <FaUserAlt className="w-6 h-6 mr-2" />,
   },
   {
@@ -849,8 +853,13 @@ const TraineeDashboard = () => {
           <Route path="/approvals" element={<NewTaskForm />} />
           <Route path="/user" element={<UserAccount />} />
           <Route path="/status" element={<TraineeStatus />} />
-          <Route path="/settings" element={<Navigation />} />
+          {/* <Route path="/settings" element={<Navigation />} /> */}
+          <Route path="/uploadsession" element={<VideoList />} />
+          <Route path="/video-status/:id" element={<VideoStatus />} />
+          <Route path="/upload-data" element={<VideoUploadForm />} />
+          <Route path="/settings" element={<TraineeSettings />} />
           <Route path="/assignmentoverview" element={<AssignmentOverview />} />
+
         </Routes>
       </div>
     </div>
