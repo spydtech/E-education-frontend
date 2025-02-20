@@ -1,5 +1,5 @@
 # Step 1: Build Stage
-FROM node:latest AS builder
+FROM node:20-alpine
 WORKDIR /E-education-frontend
 
 # Ensure package.json and package-lock.json are copied from the build context (current directory)
@@ -9,7 +9,7 @@ RUN npm install
  
 # Copy the rest of the project files
 COPY . .
-RUN npm audit fix --force
+RUN npm audit fix
 RUN npm run build
  
 # Step 2: NGINX Stage
