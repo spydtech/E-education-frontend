@@ -1,5 +1,5 @@
 # Step 1: Build Stage
-FROM node:20-alpine
+FROM node:latest AS builder
 WORKDIR /E-education-frontend
 
 # Ensure package.json and package-lock.json are copied from the build context (current directory)
