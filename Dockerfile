@@ -9,7 +9,7 @@ RUN npm install
  
 # Copy the rest of the project files
 COPY . .
-RUN npm audit fix
+RUN npm audit fix --force
 RUN npm run build
  
 # Step 2: NGINX Stage
