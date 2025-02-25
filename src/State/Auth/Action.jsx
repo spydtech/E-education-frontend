@@ -26,7 +26,7 @@ import {
   TRAINEE_LOGIN_FAILURE
 } from './ActionType';
 
-const token = localStorage.getItem('jwt');
+const jwt = localStorage.getItem('jwt');
 
 
 // Action creators for registering a user

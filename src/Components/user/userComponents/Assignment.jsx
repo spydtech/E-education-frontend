@@ -3,31 +3,6 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// const assignments = [
-//   {
-//     id: 1,
-//     course: "Java",
-//     assignedBy: "Ruben Runte",
-//     assignedDate: "10/02/2025",
-//     dueDate: "20/02/2025",
-//     status: "New",
-//     approval: "Pending",
-//     description: "Complete the Java OOP concepts assignment.",
-//     file: "Java_Assignment.pdf",
-//   },
-//   {
-//     id: 2,
-//     course: "PHP",
-//     assignedBy: "Ruben Runte",
-//     assignedDate: "12/02/2025",
-//     dueDate: "22/02/2025",
-//     status: "Submitted",
-//     approval: "Pending",
-//     description: "Write a PHP script for CRUD operations.",
-//     file: "PHP_Assignment.pdf",
-//   },
-// ];
-
 const getStatusClass = (submissionStatus) => {
   switch (submissionStatus) {
     case "New":

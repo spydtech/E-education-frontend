@@ -322,6 +322,8 @@
 // };
 
 // export default RegisterTrainee;
+
+
 import React, { useState } from "react";
 import { BsCheck2Circle } from "react-icons/bs";
 import { IoClose } from "react-icons/io5"; // Close icon

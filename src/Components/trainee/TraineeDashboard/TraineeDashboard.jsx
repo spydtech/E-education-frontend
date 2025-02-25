@@ -858,7 +858,7 @@ const TraineeDashboard = () => {
           <Route path="/video-status/:id" element={<VideoStatus />} />
           <Route path="/upload-data" element={<VideoUploadForm />} />
           <Route path="/settings" element={<TraineeSettings />} />
-          <Route path="/assignmentoverview" element={<AssignmentOverview />} />
+          <Route path="/assignmentoverview/:id" element={<AssignmentOverview />} />
 
         </Routes>
       </div>

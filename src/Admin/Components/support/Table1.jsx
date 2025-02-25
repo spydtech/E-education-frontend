@@ -58,6 +58,12 @@ const Table1 = () => {
     <>
       <div className="p-4">
         <div className="flex justify-end items-end gap-2">
+        <Link to="/admin/raise-tickets-table">
+            <button className="bg-[#494949] text-white px-3 py-3 rounded-lg">
+              {" "}
+              view tickets{" "}
+            </button>
+          </Link>
           <Link to="/admin/supportchatbox">
             <button className="bg-[#494949] text-white px-3 py-3 rounded-lg">
               {" "}

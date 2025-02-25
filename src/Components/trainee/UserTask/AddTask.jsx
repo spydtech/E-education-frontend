@@ -23,7 +23,7 @@ const AddTask = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/chat-groups/get/users/email", {
+        const response = await axios.get("http://localhost:8080/api/groups/get/users/email", {
           headers: { Authorization: `Bearer ${jwt}` },
         });
   

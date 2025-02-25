@@ -23,7 +23,7 @@ function Tab() {
     const fetchGroups = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:8080/api/chat-groups", {
+        const response = await fetch("http://localhost:8080/api/groups", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -94,7 +94,7 @@ function Tab() {
 
   const handleDeleteGroup = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/chat-groups/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/groups/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${jwt}`,
@@ -132,7 +132,7 @@ function Tab() {
         return;
       }
 
-      const response = await fetch(`http://localhost:8080/api/chat-groups/${id}`, {
+      const response = await fetch(`http://localhost:8080/api/groups/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -102,7 +102,9 @@ const AccessField = () => {
 
           {/* Trainer Form Inside the Container */}
           {activeForm === "trainer"  && (
-            <div className="w-[300px] p-4 -mt-10 mr-32">
+            <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="w-[300px] p-4 -mt-10 mr-32">
               <RegisterTrainee />
             </div>
           )}
@@ -120,7 +122,9 @@ const AccessField = () => {
 
           {/* Employee Form Inside the Container */}
           {activeForm === "employee" && (
-            <div className="w-[300px] p-4 -mt-10 mr-32">
+            <div 
+            onClick={(e) => e.stopPropagation()} 
+            className="w-[300px] p-4 -mt-10 mr-32">
               <RegisterEmployee />
             </div>
           )}

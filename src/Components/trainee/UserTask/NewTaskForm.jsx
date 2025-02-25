@@ -16,24 +16,36 @@ function NewTaskForm() {
 
   // Fetch tasks from API
   useEffect(() => {
+    let isMounted = true; // To prevent state updates after unmount
+  
     const fetchTasks = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/task/getAll/by-trainee",
+        const response = await axios.get(
+          "http://localhost:8080/api/task/getAll/by-trainee",
           {
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${jwt}`, // Attach token in headers
+              Authorization: `Bearer ${jwt}`, // Attach token in headers
             },
-          });
+          }
+        );
+  
+        if (isMounted) {
           console.log("API Response:", response.data);
-          setTasks(response.data); // Assuming API returns an array of tasks
-        } catch (error) {
-          console.error("Error fetching tasks:", error);
+          setTasks(response.data); // Update state only if component is still mounted
         }
-      };
-    
-      fetchTasks();
-    }, []); // Runs on
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+  
+    fetchTasks();
+  
+    return () => {
+      isMounted = false; // Cleanup function
+    };
+  }, []); // Ensure dependency array is empty so it runs only once
+  
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);

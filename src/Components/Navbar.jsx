@@ -1369,11 +1369,12 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    if (jwt) {
-      dispatch(getUser(jwt));
+    const storedJwt = localStorage.getItem("jwt");
+    if (storedJwt) {
+      dispatch(getUser(storedJwt));
     }
-    console.log("Auth State:", auth);
-  }, [jwt, auth.jwt, dispatch]);
+  }, [dispatch]);
+  
 
   useEffect(() => {
     const handleResize = () => {

@@ -41,6 +41,7 @@ import ManageUsers from "./Staffing/ManageUsers";
 import StatusOfStaff from "./status/StatusOfStaff";
 import VideoDashboard from "./cms/VideoDashboard";
 import VideoApproval from "./cms/VideoApproval";
+import TicketsTable from "./support/TicketsTable";
 
 const themesBackGroundColor = [
   { value: "light", colorClass: "bg-light-theme" },
@@ -446,7 +447,7 @@ useEffect(() => {
           <Route path="/payment-data" element={<PaymentDashboard />} />
           <Route path="/sales-report" element={<SealsReports />} />
           <Route path="/users/create-group" element={<CreateGroup />} />
-          <Route path="/users/existing-group" element={<ExistingGroup />} />
+          {/* <Route path="/users/existing-group" element={<ExistingGroup />} /> */}
           <Route path="/accessField" element={<AccessField />} />
           <Route path="/register-employee" element={<RegisterEmployee />} />
           <Route path="/register-trainee" element={<RegisterTrainee />} />
@@ -458,6 +459,7 @@ useEffect(() => {
           <Route path="/settings" element={<AdminSettings />} />
           <Route path="/supportchatbox" element={<ChatSupport />} />
           <Route path="/ticketstable" element={<Table1 />} />
+          <Route path="/raise-tickets-table" element={<TicketsTable />} />
           <Route path="/staffing" element={<ManageUsers />} />
           <Route path="/status" element={<StatusOfStaff />} />
           <Route path="/videodashboard" element={<VideoDashboard />} />

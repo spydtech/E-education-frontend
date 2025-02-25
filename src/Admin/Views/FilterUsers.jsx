@@ -123,7 +123,7 @@ const handleCreateGroup = () => {
     return;
   }
 
-  if (!courseEndDate) {
+  if (!courseEndDate.trim()) {
     setError("Please select a course end date.");
     return;
   }
@@ -133,16 +133,16 @@ const handleCreateGroup = () => {
   // Create group data with only emails for users and trainees
   const groupData = {
     groupName: groupName.trim(),
-    courseEndDate: courseEndDate, 
+    courseEndDate: courseEndDate.trim(), 
     users: selectedUsers.map((user) => user.email), 
-    trainees: selectedTrainees.map((trainee) => trainee.email),  // Only email
+    trainees: selectedTrainees.length > 0 ? selectedTrainees[0].email : "",  // Only email
   };
 
   // Log groupData to verify its structure
   console.log("Group Data:", groupData);
 
   // Make the POST request
-  fetch("http://localhost:8080/api/chat-groups", {
+  fetch("http://localhost:8080/api/groups", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -160,7 +160,7 @@ const handleCreateGroup = () => {
     })
     .then((data) => {
       console.log("Group created successfully:", data);
-      navigate("/admin/users/existing-group");
+      // navigate("/admin/users/existing-group");
     })
     .catch((error) => {
       console.error("Error creating group:", error);
@@ -390,7 +390,7 @@ const handleAddMember = (user) => {
      
       
         {/* Group Form and Search Section */}
-        {showGroupForm && (
+        {/* {showGroupForm && (
           <div className="fixed inset-0 bg-black/50 flex  justify-center items-center z-50">
             <div
               className={` bg-white  lg:min-w-[640px]  overflow-x-auto border-2 border-[#153243]  rounded-lg p-4 relative`}
@@ -418,7 +418,7 @@ const handleAddMember = (user) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
         {/* Trainee Search Section */}
         {showTraineeSearch && (
           <div className="fixed   inset-0 bg-black/50 flex justify-center items-center z-50 overflow-auto">
