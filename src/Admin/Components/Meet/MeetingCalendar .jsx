@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import axios from "axios"; // Import axios
+import { API_BASE_URL } from "../../../Config/api";
 
 const MeetingCalendar = () => {
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,7 @@ const MeetingCalendar = () => {
         setLoading(true);
         console.log("Fetching meetings...");
 
-        const response = await axios.get("http://localhost:8080/api/meeting/getAll", {
+        const response = await axios.get(`${API_BASE_URL}/api/meeting/getAll`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,

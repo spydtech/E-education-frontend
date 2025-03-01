@@ -42,6 +42,7 @@ import StatusOfStaff from "./status/StatusOfStaff";
 import VideoDashboard from "./cms/VideoDashboard";
 import VideoApproval from "./cms/VideoApproval";
 import TicketsTable from "./support/TicketsTable";
+import { API_BASE_URL } from "../../Config/api";
 
 const themesBackGroundColor = [
   { value: "light", colorClass: "bg-light-theme" },
@@ -172,6 +173,7 @@ const Admin = () => {
   const themes = localStorage.getItem("theme");
   const jwt = localStorage.getItem("jwt");
   const auth = useSelector((state) => state.auth);
+  
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -183,10 +185,21 @@ const Admin = () => {
   //////////////////////////////////////////////
   // Fetch admin name and image
   useEffect(() => {
-    if (jwt) {
-        dispatch(getUser(jwt));
-    }
-}, [jwt, dispatch]);
+      const storedJwt = localStorage.getItem("jwt");
+    
+      if (storedJwt) {
+        dispatch(getUser(storedJwt)); // Fetch user info
+      }
+    }, [dispatch]);
+    
+    useEffect(() => {
+      if (auth.user && auth.user.role === "ADMIN") {
+        getUser(auth.user.id);
+      }
+    }, [auth.user]);
+
+
+
 
 // Function to get the current page name based on the path
 const getCurrentPageName = () => {
@@ -223,7 +236,7 @@ useEffect(() => {
  useEffect(() => {
    const fetchUserProfile = async () => {
      try {
-       const profilePhotoResponse = await axios.get(`http://localhost:8080/api/users/${auth.user?.email}/profile-photo`, {
+       const profilePhotoResponse = await axios.get(`${API_BASE_URL}/api/users/${auth.user?.email}/profile-photo`, {
          responseType: 'arraybuffer',  // Ensures we get the binary data for the image
          headers: {
            Authorization: `Bearer ${jwt}`,

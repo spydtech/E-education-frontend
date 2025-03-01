@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AddTask from "./AddTask";
 import TaskModal from "./TaskModal";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 
 
@@ -21,7 +22,7 @@ function NewTaskForm() {
     const fetchTasks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/task/getAll/by-trainee",
+          `${API_BASE_URL}/api/task/getAll/by-trainee`,
           {
             headers: {
               "Content-Type": "application/json",

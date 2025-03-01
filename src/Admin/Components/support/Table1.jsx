@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TicketCards from "./TicketCards";
 import { Link } from "react-router-dom";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { API_BASE_URL } from "../../../Config/api";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -35,16 +36,48 @@ const Table1 = () => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
-    const storedTickets = JSON.parse(localStorage.getItem("tickets")) || [];
-    console.log("Loaded Tickets from Storage:", storedTickets);
-
-    const updatedTickets = storedTickets.map((ticket) => ({
-      ...ticket,
-      issueDate: ticket.issueDate || new Date().toISOString().split("T")[0],
-    }));
-
-    setTickets(updatedTickets);
+    const fetchTickets = async () => {
+      const jwt = localStorage.getItem("jwt");
+  
+      if (!jwt) {
+        setError("Unauthorized: No token found");
+        setLoading(false);
+        return;
+      }
+  
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/chat-support/getAll`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+  
+        const mappedTickets = response.data.map(ticket => ({
+          ticketId: ticket.ticketNo,
+          userName: ticket.userName,
+          userId: ticket.userId,
+          issueDate: ticket.ticketRaisedOn || "N/A",
+          status: ticket.status || "Pending", // Get status from API
+          assignedTo: ticket.assignedTo || "Unassigned",
+          priority: ticket.priority || "Medium", // ✅ Get priority from API if available
+          category: ticket.requestTicketType,
+          channel: ticket.channel || "Email",
+          completionDate: ticket.completionDate || "N/A",
+        }));
+  
+        setTickets(mappedTickets);
+      } catch (err) {
+        setError("Failed to fetch tickets. Please try again.");
+        console.error("Error fetching tickets:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchTickets();
   }, []);
+  
+
 
   const updateTicket = (index, field, value) => {
     const updatedTickets = tickets.map((ticket, i) =>

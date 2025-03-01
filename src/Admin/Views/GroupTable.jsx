@@ -511,6 +511,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { IoCloseCircle } from "react-icons/io5";
 import { FaTrashAlt, FaPencilAlt, FaPlus } from "react-icons/fa";
+import { API_BASE_URL } from "../../Config/api";
 
 function GroupTable({ groupName, users, onRemoveUser, onAddUser, trainees, groupId,  }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -543,7 +544,7 @@ const handleUserSearchChangeByCourse = (event) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/payment/user-courses", {
+      .get(`${API_BASE_URL}/api/payment/user-courses`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -562,7 +563,7 @@ const handleUserSearchChangeByCourse = (event) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/trainee/getAllTrainee", {
+      .get(`${API_BASE_URL}/trainee/getAllTrainee`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -586,7 +587,7 @@ const handleUserSearchChangeByCourse = (event) => {
   const handleSaveGroup = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/chat-groups/${groupId}`,
+        `${API_BASE_URL}/api/chat-groups/${groupId}`,
         { groupName: editedGroupName },
         {
           headers: {
@@ -614,7 +615,7 @@ const handleUserSearchChangeByCourse = (event) => {
   const handleAddUser = async (user) => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/chat-groups/${groupId}/add-users`,
+        `${API_BASE_URL}/api/chat-groups/${groupId}/add-users`,
         [user.email],
         {
           headers: {
@@ -677,7 +678,7 @@ const handleUserSearchChangeByCourse = (event) => {
       // Call API to add the trainee to the group
       try {
         const response = await axios.post(
-          `http://localhost:8080/api/chat-groups/${groupId}/add-trainees`,
+          `${API_BASE_URL}/api/chat-groups/${groupId}/add-trainees`,
           [trainee.email], // Assuming you have trainee email
           {
             headers: {

@@ -173,8 +173,11 @@
 
 
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StatusButtonTrainee  from "../status/StatusButtonTrainee";
+import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
+import dayjs from "dayjs";
 
 const Card = ({ children, className }) => (
   <div className={`bg-white shadow-md rounded-lg p-4 ${className}`}>{children}</div>
@@ -201,6 +204,96 @@ export default function Dashboard() {
     { id: 2, text: "Develop strategies for analyzing text structure, purpose, and tone", completed: false },
     { id: 3, text: "Develop strategies for analyzing text structure, purpose, and tone", completed: false },
   ]);
+  const [usersCount, setUserCount] = useState(0);
+  const [enrolledGroups, setEnrolledGroups] = useState(0);
+  const [completedGroups, setCompletedGroups] = useState(0);
+  const [taskOverview, setTaskOverview] = useState({
+    totalTasks: 0,
+    evaluatedTasks: 0,
+    underReview: 0
+  });
+  const [meetings, setMeetings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [duration, setDuration] = useState("0h 0m"); 
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const jwt = localStorage.getItem("jwt");  // 🔥 Get JWT from storage
+        const response = await axios.get(`${API_BASE_URL}/api/groups/get/count`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+  
+        // ✅ Extract `data` from response
+        const { payload } = response.data;  // 🔥 Fix: Use `response.data.payload`
+  
+        // ✅ Update state with correct values
+        setUserCount(payload.usersCount || 0);
+        setEnrolledGroups(payload.enrolledGroups || 0);
+        setCompletedGroups(payload.completedGroups || 0);
+      } catch (error) {
+        console.error("Error fetching counts:", error);
+      }
+    };
+  
+    fetchCounts();
+  }, []);
+
+  useEffect(() => {
+    const fetchTaskOverview = async () => {
+      try {
+        const jwt = localStorage.getItem("jwt");  // Get JWT from storage
+        const response = await axios.get(`${API_BASE_URL}/api/task/taskOverview`, {
+          headers: { Authorization: `Bearer ${jwt}` }
+        });
+  
+        if (response.status === 200) {
+          setTaskOverview({
+            totalTasks: response.data.totalTasks || 0,
+            evaluatedTasks: response.data.evaluatedTasks || 0,
+            underReview: response.data.underReviewTasks || 0
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching Task Overview:", error);
+      }
+    };
+  
+    fetchTaskOverview();
+  }, []);
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      try {
+        const jwt = localStorage.getItem("jwt");
+        if (!jwt) {
+          setError("User not authenticated");
+          return;
+        }
+
+        const response = await axios.get(`${API_BASE_URL}/api/meeting/getAll/upcoming/meetings`, {
+          headers: { Authorization: `Bearer ${jwt}` },
+        });
+
+        if (response.status === 200) {
+          setMeetings(response.data || []);
+        } else {
+          setError("Failed to fetch meetings");
+        }
+      } catch (err) {
+        setError("Error fetching meetings");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMeetings();
+  }, []);
+  
 
   const toggleTask = (id) => {
     setTasks(tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task));
@@ -210,33 +303,59 @@ export default function Dashboard() {
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Hi, Welcome Back</h1>
-        <StatusButtonTrainee />
+        <StatusButtonTrainee  setDuration={setDuration} />
       </div>
       
       <div className="grid grid-cols-4 gap-4 mt-6">
-        <Card className="bg-yellow-200 text-center"><p>My Students</p><h2 className="text-2xl">3,056,78</h2></Card>
-        <Card className="bg-green-200 text-center"><p>Enrolled Groups</p><h2 className="text-2xl">3</h2></Card>
-        <Card className="bg-red-200 text-center"><p>Completed Course</p><h2 className="text-2xl">6</h2></Card>
-        <Card className="bg-purple-200 text-center"><p>Total Hrs</p><h2 className="text-2xl">12hrs 30 min</h2></Card>
+      <Card className="bg-yellow-200 text-center">
+          <p>My Students</p>
+          <h2 className="text-2xl">{usersCount.toLocaleString()}</h2>
+        </Card>
+        <Card className="bg-green-200 text-center">
+          <p>Enrolled Groups</p>
+          <h2 className="text-2xl">{enrolledGroups}</h2>
+        </Card>
+        <Card className="bg-red-200 text-center">
+          <p>Completed Courses</p>
+          <h2 className="text-2xl">{completedGroups}</h2>
+        </Card>
+        <Card className="bg-purple-200 text-center">
+          <p>Total Hrs</p>
+          
+          <h2 className="text-2xl">{duration}</h2> {/* 🔥 Show session duration */}
+        </Card>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mt-6">
-        <Card>
-          <h3 className="text-lg font-semibold">Task Overview</h3>
-          <div className="grid grid-cols-3 text-center mt-2">
-            <div><p>Total task created</p><h2>17</h2></div>
-            <div><p>No of Evaluated Task</p><h2>17</h2></div>
-            <div><p>Under Review</p><h2>17</h2></div>
-          </div>
-        </Card>
-        <Card className="bg-blue-100">
-          <h3 className="font-semibold">Upcoming Meeting</h3>
-          <p className="font-bold">UI/UX Fundamentals</p>
-          <p>dD/MM/YYYY HH:MM:SS</p>
-          <p>Group - UI/UX</p>
-          <p className="text-red-500">Starts in 30min</p>
-          <a href="#" className="text-blue-500 underline">Click here to join</a>
-        </Card>
+      <Card>
+    <h3 className="text-lg font-semibold">Task Overview</h3>
+    <div className="grid grid-cols-3 text-center mt-2">
+      <div>
+        <p>Total Tasks Created</p>
+        <h2>{taskOverview.totalTasks}</h2>
+      </div>
+      <div>
+        <p>Evaluated Tasks</p>
+        <h2>{taskOverview.evaluatedTasks}</h2>
+      </div>
+      <div>
+        <p>Under Review</p>
+        <h2>{taskOverview.underReview}</h2>
+      </div>
+    </div>
+  </Card>
+  <Card className="bg-blue-100 p-4 rounded-lg shadow">
+      <h3 className="font-semibold">{meetings.title}</h3>
+      <p className="font-bold">{meetings.topic}</p>
+      <p>{dayjs(meetings.startTime).format("DD/MM/YYYY")}</p>
+      <p>Group - {meetings.group}</p>
+      <p className="text-red-500">
+        Starts in {dayjs(meetings.startTime).diff(dayjs(), "minute")} min
+      </p>
+      <a href={meetings.link} className="text-blue-500 underline">
+        Click here to join
+      </a>
+    </Card>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mt-6">

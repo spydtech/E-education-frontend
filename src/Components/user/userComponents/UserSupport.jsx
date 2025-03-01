@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getUser, logout } from "../../../State/Auth/Action";
+import { Disclosure } from "@headlessui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { API_BASE_URL } from "../../../Config/api";
 
 const UserSupport = () => {
   const [messages, setMessages] = useState([
-    { id: 1, sender: "user", text: "Sapiente asperiores ut inventore.", time: "12:00:08" },
-    { id: 2, sender: "support", text: "How can I help you?" },
+  
   ]);
   const [newMessage, setNewMessage] = useState("");
+  
+ 
+  const jwt = localStorage.getItem("jwt");
+  const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
+    
+  const userEmail = auth?.user?.email || localStorage.getItem("email") || "email";
+  const adminEmail = "pa1velagana@gmail.com"
+
+
+  
+   useEffect(() => {
+     if (jwt) {
+       dispatch(getUser(jwt));
+     }
+   }, [jwt, dispatch]);
+ 
+  
+
   const [formData, setFormData] = useState({
     userName: "",
     emailId: "",
@@ -17,6 +40,7 @@ const UserSupport = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  
 
   // Handle input changes
   const handleChange = (e) => {
@@ -35,9 +59,12 @@ const UserSupport = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:8080/chat-support/create/chatSupport",
+        `${API_BASE_URL}/api/chat-support/create/chatSupport`,
         formattedRequest,
-        { headers: { "Content-Type": "application/json" } }
+        { headers: 
+          { "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`
+           } }
       );
   
       console.log("Success:", response.data);
@@ -49,39 +76,76 @@ const UserSupport = () => {
   };
   
   
+  // ✅ Fetch chat messages when component mounts
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/chat/getAllUserMessages/email?email=${adminEmail}`,
+          { headers: { Authorization: `Bearer ${jwt}` } }
+        );
+
+        console.log("Fetched Messages:", response.data); // Debugging
+        setMessages(response.data.messages || []); // Ensure it's always an array
+      } catch (error) {
+        console.error("Error fetching messages:", error.response?.data || error.message);
+        setError("Failed to fetch messages");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, [adminEmail, jwt]);
   
   
   
   
-  
-  
-  const sendMessage = () => {
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString(); // Example: "2/25/2025, 4:30 PM"
+};
+
+   // Send message
+   const sendMessage = async () => {
     if (newMessage.trim() === "") return;
 
     const userMessage = {
-      id: messages.length + 1,
-      sender: "user",
-      text: newMessage,
-      time: new Date().toLocaleTimeString(),
+        senderEmail: userEmail,
+        receiverEmail: adminEmail,
+        message: newMessage,
+        timestamp: new Date().toISOString(),
     };
 
-    setMessages([...messages, userMessage]);
-    setNewMessage("");
+    console.log("Sending message:", userMessage); // Debugging
 
-    setTimeout(() => {
-      const supportReply = {
-        id: messages.length + 2,
-        sender: "support",
-        text: "Thank you for reaching out. We will assist you shortly.",
-      };
-      setMessages((prevMessages) => [...prevMessages, supportReply]);
-    }, 1000);
-  };
+    try {
+        const response = await axios.post(
+            `${API_BASE_URL}/api/chat/sendMessage`,
+            userMessage,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`, // Include JWT if needed
+                },
+            }
+        );
+
+        console.log("Message Sent Response:", response.data); // Debugging
+
+        setMessages((prevMessages) => [...prevMessages, response.data]);
+        setNewMessage(""); // Clear input after sending
+    } catch (error) {
+        console.error("Error sending message:", error.response?.data || error.message);
+        alert("Failed to send message. Please try again.");
+    }
+};
+
 
   return (
     <div className="flex min-h-screen bg-gray-100 font-poppins">
       {/* Chat Section */}
-      <div className="w-2/3 bg-white shadow-md rounded-md flex flex-col">
+      <div className="w-2/3 bg-white shadow-md rounded-md flex flex-col ">
         {/* Chat Header */}
         <div className="bg-blue-500 text-white p-4 flex justify-between items-center rounded-t-md">
           <div className="flex items-center gap-2">
@@ -100,28 +164,37 @@ const UserSupport = () => {
           </button>
         </div>
 
+       
         {/* Chat Messages */}
-        <div className="flex-1 p-4 overflow-y-auto">
-          {messages.map((msg) => (
-            <div key={msg.id} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} mb-2`}>
-              {msg.sender === "support" && (
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt="Support"
-                  className="w-8 h-8 rounded-full mr-2"
-                />
-              )}
-              <div
-                className={`p-3 rounded-lg max-w-xs ${
-                  msg.sender === "user" ? "bg-gray-300 text-gray-900" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                <p>{msg.text}</p>
-                {msg.time && <span className="block text-xs text-gray-500">{msg.time}</span>}
-              </div>
-            </div>
-          ))}
-        </div>
+        <div className="flex-1 p-4 overflow-y-auto h-[400px]">
+  {messages.map((msg, index) => (
+    <div
+      key={index}
+      className={`flex mb-2 ${msg.email === userEmail ? "justify-end" : "justify-start"}`}
+    >
+      {msg.email !== userEmail && (
+        <img
+          src="https://via.placeholder.com/30"
+          alt="Support"
+          className="w-8 h-8 rounded-full mr-2"
+        />
+      )}
+      <div
+        className={`p-3 rounded-lg max-w-xs ${
+          msg.email === userEmail
+            ? "bg-blue-300 text-white"
+            : "bg-gray-200 text-gray-900"
+        }`}
+      >
+        <p>{msg.message}</p>
+        <span className="block text-xs text-gray-500">
+          {new Date(msg.timestamp).toLocaleString()}
+        </span>
+      </div>
+    </div>
+  ))}
+</div>
+
 
         {/* Chat Input */}
         <div className="bg-gray-200 p-3 flex items-center rounded-b-md">
@@ -139,7 +212,7 @@ const UserSupport = () => {
       </div>
 
       {/* Complaint Box */}
-      <div className="w-1/3 bg-white shadow-md rounded-md p-6 ml-4">
+      <div className="w-1/3 bg-white shadow-md rounded-md p-6 ml-4 overflow-hidden">
       <h2 className="text-xl font-semibold">Create Quick Complaint</h2>
       <p className="text-gray-600 mb-4">Write and address new Queries and Requests</p>
 

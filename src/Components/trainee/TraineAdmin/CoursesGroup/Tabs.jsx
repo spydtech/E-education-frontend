@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { SearchIcon } from "@heroicons/react/outline";
 import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
+import { API_BASE_URL } from "../../../../Config/api";
 
 const Tab = () => {
   const [groupUsers, setGroupUsers] = useState([]);
@@ -17,7 +18,7 @@ const Tab = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/groups/get/users/email",
+          `${API_BASE_URL}/api/groups/get/users/email`,
           { headers: { Authorization: `Bearer ${jwt}` } }
         );
 
@@ -126,7 +127,7 @@ const Tab = () => {
               ) : filteredUsers.length > 0 ? (
                 filteredUsers.map((user, index) => (
                   <tr key={index} className="border border-gray-200">
-                    <td className="p-3 border border-gray-300">{user.id}</td>
+                    <td className="p-3 border border-gray-300">{user.userID}</td>
                     <td className="flex items-center space-x-2 p-3 border border-gray-300">
                       {/* Circle with Initials */}
                       <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white text-lg font-semibold">

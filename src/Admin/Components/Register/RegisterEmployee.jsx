@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BsCheck2Circle } from "react-icons/bs";
 import { IoClose } from "react-icons/io5"; // Import the close icon
+import { API_BASE_URL } from "../../../Config/api";
 
 function generateUsername() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -17,7 +18,7 @@ function generatePassword(length = 12) {
   return password;
 }
 
-const API_URL = "http://localhost:8080/auth/employee/register";
+const API_URL = `${API_BASE_URL}/auth/employee/register`;
 const RegisterEmployee = () => {
   const [employeeId, setEmployee] = useState(null);
   const [firstName, setFirstName] = useState("");

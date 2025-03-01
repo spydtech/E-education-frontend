@@ -388,6 +388,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../State/Auth/Action";
 import axios from "axios";
 import MeetingCalendar from "./MeetingCalendar "
+import { API_BASE_URL } from "../../../Config/api";
 
 const MeetingForm = () => {
   const [title, setTitle] = useState("");
@@ -415,7 +416,7 @@ const MeetingForm = () => {
     const fetchGroups = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:8080/api/chat-groups", {
+        const response = await fetch(`${API_BASE_URL}/api/groups`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -461,7 +462,7 @@ const MeetingForm = () => {
         setLoading(true);
         console.log("Fetching meetings...");
   
-        const response = await axios.get("http://localhost:8080/api/meeting/getAll", {
+        const response = await axios.get(`${API_BASE_URL}/api/meeting/getAll`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,
@@ -529,7 +530,7 @@ const MeetingForm = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/meeting/save", {
+      const response = await fetch(`${API_BASE_URL}/api/meeting/save`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -599,7 +600,7 @@ const MeetingForm = () => {
     setShowForm(false);
   };
 
-  const themes = localStorage.getItem("theme");
+  // const themes = localStorage.getItem("theme");
 
   return (
     <div className="grid gap-4 px-2 font-poppins">
@@ -638,7 +639,7 @@ width="40" height="40" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/
       )}
 
       {showForm && (
-  <div className={`fixed left-1/3 flex justify-center items-center ${themes === "dark" ? "bg-black text-black" : "text-[#494949] bg-white"} `}>
+  <div className={`fixed left-1/3 flex justify-center items-center  `}>
     <div className="w-[450px] h-auto p-6 border rounded-xl shadow-md bg-white">
       <form onSubmit={handleSubmit}>
         <h1 className="text-lg font-semibold mb-4 text-center">Schedule New Meeting</h1>

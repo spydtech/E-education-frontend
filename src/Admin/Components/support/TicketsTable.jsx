@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BiLinkExternal } from "react-icons/bi";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { getUser } from "../../../State/Auth/Action";
 
 const TicketsTable = () => {
  
@@ -19,8 +24,26 @@ const TicketsTable = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const jwt = localStorage.getItem("jwt");
   const [ticket, setTicket] = useState(null);
+  const jwt = localStorage.getItem("jwt");
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+
+   useEffect(() => {
+        const storedJwt = localStorage.getItem("jwt");
+      
+        if (storedJwt) {
+          dispatch(getUser(storedJwt)); // Fetch user info
+        }
+      }, [dispatch]);
+      
+      useEffect(() => {
+        if (auth.user && auth.user.role === "ADMIN") {
+          getUser(auth.user.id);
+        }
+      }, [auth.user]);
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -33,7 +56,7 @@ const TicketsTable = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:8080/chat-support/getAll", {
+        const response = await axios.get(`${API_BASE_URL}/api/chat-support/getAll`, {
           headers: {
             Authorization: `Bearer ${jwt}`,
           },
@@ -64,23 +87,58 @@ const TicketsTable = () => {
     }));
   };
 
-  const submitTicket = () => {
-    const newTickets = [...tickets, ticketData];
-    console.log("Saving Tickets:", newTickets);
-    setTickets(newTickets);
-    setIsTicketOpen(false);
+  const submitTicket = async () => {
+    if (!ticket) {
+      console.error("No ticket selected for update.");
+      return;
+    }
 
-    setTicketData({
-      userName: "",
-      userId: "",
-      status: "Created",
-      assignedTo: "",
-      priority: "",
-      category: "",
-      channel: "",
-      issueDate: "",
-      completionDate: "",
-    });
+    const jwt = localStorage.getItem("jwt");
+    if (!jwt) {
+      setError("Unauthorized: No token found");
+      return;
+    }
+
+    if (!ticket.ticketNo) {
+      console.error("Error: Ticket Number is undefined!");
+      return;
+    }
+
+    const updatedTicket = {
+      assignedTo: ticket.assignedTo,
+      status: ticket.status,
+      priority: ticket.priority,
+      channel: ticket.channel,
+      completionDate: ticket.completionDate,
+    };
+
+    console.log("Updating Ticket:", updatedTicket); // ✅ Debugging log
+
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/api/chat-support/update/${ticket.ticketNo}`,
+        updatedTicket,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Ticket updated successfully:", response.data);
+
+      setTickets((prevTickets) =>
+        prevTickets.map((t) =>
+          t.ticketNo === ticket.ticketNo ? { ...t, ...updatedTicket } : t
+        )
+      );
+
+      setIsTicketOpen(false);
+    } catch (error) {
+      console.error("Error updating ticket:", error);
+      setError("Failed to update ticket. Please try again.");
+    }
   };
 
   
@@ -121,7 +179,7 @@ const TicketsTable = () => {
           {tickets.map((ticket) => (
             <tr key={ticket.id} className="border border-gray-200">
               <td className="p-3">{ticket.ticketNo}</td>
-              <td className="p-3">{ticket.email}</td>
+              <td className="p-3">{ticket.emailId}</td>
               <td className="p-3">{ticket.contactNumber}</td>
               <td className="p-3">{ticket.requestTicketType}</td>
               <td className="p-3">{ticket.ticketRaisedOn}</td>
@@ -186,10 +244,10 @@ const TicketsTable = () => {
                   }
                 >
                   <option value="">Select Status</option>
-                  <option>Created</option>
-                  <option>Pending</option>
-                  <option>Closed</option>
-                  <option>Resolved</option>
+                  <option>CREATED</option>
+                  <option>PENDING</option>
+                  <option>CLOSED</option>
+                  <option>RESOLVED</option>
                 </select>
               </div>
             </div>
@@ -248,20 +306,24 @@ const TicketsTable = () => {
                   </div>
                   <div>
                     <label className="text-gray-600">Assigned To</label>
-                    <select
-                      required
-                      className="border p-2 w-full rounded"
-                      onChange={(e) =>
-                        setTicket({
-                          ...ticket,
-                          assignedTo: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="">Select Staff</option>
-                      <option>John Doe</option>
-                      <option>Jane Smith</option>
-                    </select>
+                    <select required className="border p-2 w-full rounded" 
+  onChange={(e) =>
+    setTicket({
+      ...ticket,
+      assignedTo: e.target.value,
+    })
+  }
+>
+  <option value="">Select Staff</option>
+  {auth.user ? (
+    <option value={`${auth.user.firstName} ${auth.user.lastName}`}>
+      {auth.user.firstName} {auth.user.lastName}
+    </option>
+  ) : (
+    <option disabled>Loading...</option>
+  )}
+</select>
+
                   </div>
                   <div>
                     <label className="text-gray-600">Priority</label>
@@ -276,9 +338,9 @@ const TicketsTable = () => {
                       }
                     >
                       <option value="">Select Priority</option>
-                      <option>Low</option>
-                      <option>Medium</option>
-                      <option>High</option>
+                      <option>LOW</option>
+                      <option>MEDIUM</option>
+                      <option>HIGH</option>
                     </select>
                   </div>
                   <div>
@@ -306,8 +368,8 @@ const TicketsTable = () => {
                       }
                     >
                       <option value="">Select Channel</option>
-                      <option>Chat</option>
-                      <option>Email</option>
+                      <option>CHAT</option>
+                      <option>EMAIL</option>
                     </select>
                   </div>
                 </div>

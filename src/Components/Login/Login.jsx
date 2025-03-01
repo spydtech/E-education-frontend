@@ -326,6 +326,7 @@ import IMG from "../../assets/E- education logo .png";
 import BackgroundIMG from "../../../src/assetss/login/loginimg.jpg";
 import { login } from "../../State/Auth/Action";
 import axios from 'axios';
+import { API_BASE_URL } from "../../Config/api";
 
 
 function Login() {
@@ -354,7 +355,7 @@ function Login() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/signin', userData);
+      const response = await axios.post(`${API_BASE_URL}/auth/signin`, userData);
       if (response.data.status) {
         localStorage.setItem('jwt', response.data.jwt);
         dispatch(login(userData));

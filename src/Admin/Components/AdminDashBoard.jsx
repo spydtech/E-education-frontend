@@ -2,6 +2,16 @@ import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { FiExternalLink } from "react-icons/fi";
 import StatusButtonEmployee from "./status/StatusButtonEmployee";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "../../Config/api";
+import { fetchUserStatusCount } from "../../State/ActiveUsers/CountStatus";
+import {fetchEmployeesCount, fetchTrainersCount } from "../../State/ActiveUsers/CountStatus";
+import { fetchAllMeetings } from "../../State/Meetings/AllMeeting";
+import { getUser } from "../../State/Auth/Action";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 
 const AdminDashBoard = () => {
@@ -30,39 +40,134 @@ const AdminDashBoard = () => {
     { day: "Sun", hours: 0 },
   ];
 
-  const scheduledMeetings = [
-    { title: "UI/UX Fundamentals", group: "UI/UX", link: "#" },
-    { title: "React Basics", group: "Frontend", link: "#" },
-  ];
+  
 
   const tickets = [
     { id: "45436", user: "45436", category: "Payment", date: "2-2-2021", channel: "Chat" },
     { id: "45437", user: "45437", category: "Support", date: "3-2-2021", channel: "Email" },
   ];
 
+  const [stats, setStats] = useState({
+    newStudents: 0,
+    activeCourses: 0,
+  });
+  const [userCount, setUserCount] = useState({ active: 0, inactive: 0 });
+  const [employeeCount, setEmployeeCount] = useState(0);
+  const [trainerCount, setTrainerCount] = useState(0);
+  const [meetings, setMeetings] = useState([]);
+  const auth = useSelector((state) => state.auth);
+  
+
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+    useEffect(() => {
+        if (auth.user && auth.user.role === "ADMIN") {
+          getUser(auth.user.id);
+        }
+      }, [auth.user]);
+
+  useEffect(() => {
+    const getMeetings = async () => {
+      const data = await fetchAllMeetings();
+      console.log("Meetings Data:", data); // Debugging log
+      if (Array.isArray(data)) {
+        setMeetings(data);
+      } else if (data && Array.isArray(data.payload)) {
+        setMeetings(data.payload);
+      } else {
+        console.error("Unexpected data format:", data);
+        setMeetings([]); // Set empty array to prevent errors
+      }
+    };
+  
+    getMeetings();
+  }, []);
+  
+
+  useEffect(() => {
+    const getCounts = async () => {
+      const empCount = await fetchEmployeesCount();
+      const trainCount = await fetchTrainersCount();
+      if (empCount !== null) setEmployeeCount(empCount);
+      if (trainCount !== null) setTrainerCount(trainCount);
+    };
+
+    getCounts();
+  }, []);
+
+  useEffect(() => {
+    const getUserCount = async () => {
+      const data = await fetchUserStatusCount();
+      if (data) {
+        setUserCount(data);
+      }
+    };
+    
+    getUserCount();
+  }, []);
+
+  const jwt = localStorage.getItem("jwt");
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        console.log("Using token:", jwt);
+    
+        const response = await axios.get(`${API_BASE_URL}/api/groups/get/count/by-admin`, {
+          headers: { Authorization: `Bearer ${jwt}` }
+        });
+    
+        console.log("Fetched data:", response.data);
+    
+        if (response.status === 200 && response.data.payload) {
+          setStats({
+            newStudents: response.data.payload.usersCount || 0,
+            activeCourses: response.data.payload.activeCourses || 0
+          });
+        } else {
+          console.error("Unexpected API response:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    
+  
+    fetchStats();
+  }, []);
+  
+  
+
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-white min-h-screen font-poppins">
     {/* Header */}
     <div className="flex justify-between items-center mb-4">
-      <h1 className="text-3xl font-semibold">Hi,</h1>
+    {auth?.user ? (
+  <h1 className="text-3xl font-semibold">
+    Hi, {auth.user.firstName} {auth.user.lastName}
+  </h1>
+) : (
+  <h1 className="text-3xl font-semibold">Loading...</h1>
+)}
+
       <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><StatusButtonEmployee /></button>
     </div>
     <p className="text-gray-600">Welcome Back</p>
 
     {/* Stats Cards */}
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 my-6">
-      {[
-        { title: "New Students", value: "3,056,78", color: "bg-yellow-100" },
-        { title: "No. of Trainers", value: "450", color: "bg-green-100" },
-        { title: "Active Courses", value: "564", color: "bg-red-100" },
-        { title: "No. of Employees", value: "250", color: "bg-purple-100" },
-      ].map((card, index) => (
-        <div key={index} className={`${card.color} p-6 rounded-md shadow-md text-center`}>
-          <p className="text-gray-700">{card.title}</p>
-          <p className="text-2xl font-semibold">{card.value}</p>
-        </div>
-      ))}
-    </div>
+        {[
+          { title: "New Students", value: stats.newStudents, color: "bg-yellow-100" },
+          { title: "No. of Trainers", value: trainerCount.trainersCount, color: "bg-green-100" },
+          { title: "Active Courses", value: stats.activeCourses, color: "bg-red-100" },
+          { title: "No. of Employees", value: employeeCount, color: "bg-purple-100" },
+        ].map((card, index) => (
+          <div key={index} className={`${card.color} p-6 rounded-md  text-center`}>
+            <p className="text-gray-700">{card.title}</p>
+            <p className="text-2xl font-semibold">{card.value}</p>
+          </div>
+        ))}
+      </div>
 
     {/* Date Selector */}
     <div className="mb-6">
@@ -74,7 +179,7 @@ const AdminDashBoard = () => {
 
     {/* Graphs Section */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="col-span-2 bg-white p-6 rounded-md shadow-md">
+      <div className="col-span-2 bg-[#FFF7F5] p-6 rounded-md ">
         <h2 className="text-lg font-semibold">User Growth yesterday</h2>
         <p className="text-green-600">+5% More Than Yesterday</p>
         <ResponsiveContainer width="100%" height={200}>
@@ -87,32 +192,39 @@ const AdminDashBoard = () => {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-white p-6 rounded-md shadow-md">
+      <div className="bg-[#FFF7F5] p-6 rounded-md ">
         <h2 className="text-lg font-semibold flex justify-between">
           Scheduled Meetings <FiExternalLink />
         </h2>
-        {scheduledMeetings.map((meeting, index) => (
-          <div key={index} className="p-4 mt-3 bg-gray-100 rounded-md">
-            <p className="font-semibold">{meeting.title}</p>
-            <p className="text-sm text-gray-600">Group - {meeting.group}</p>
-            <a href={meeting.link} className="text-blue-500">
-              Meeting Link - Link
-            </a>
-          </div>
-        ))}
+        {Array.isArray(meetings) ? (
+  meetings.map((meeting, index) => (
+    <div key={index} className="p-4 mt-3  border-2 rounded-3xl border-black">
+      <p className="font-semibold">{meeting.title}</p>
+      <p className="text-sm text-gray-600">Group - {meeting.groupName}</p>
+      <p className="text-sm text-gray-600">From - {meeting.fromDate} {meeting.fromTime}</p>
+      <p className="text-sm text-gray-600">To - {meeting.toDate} {meeting.toTime}</p>
+      <a href={meeting.link} className="text-blue-500">
+        Meeting Link - Link
+      </a>
+    </div>
+  ))
+) : (
+  <p>No meetings available</p>
+)}
+
       </div>
     </div>
 
     {/* Tickets & Login Activity */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
       {/* Tickets */}
-      <div className="col-span-2">
-        <h2 className="text-lg font-semibold flex justify-between">
+      <div className="col-span-2 bg-[#FFF7F5] p-4">
+        <h2 className="text-xl font-semibold flex justify-between">
           Tickets <FiExternalLink />
         </h2>
 
         {/* New Tickets */}
-        <div className="mt-3 bg-white p-4 rounded-md shadow-md">
+        <div className="mt-3  p-4 rounded-md">
           <h3 className="font-semibold">New Tickets <span className="text-red-500">5</span></h3>
           <table className="w-full mt-2 text-sm">
             <thead>
@@ -140,21 +252,21 @@ const AdminDashBoard = () => {
       </div>
 
       {/* Login Activity */}
-      <div>
+      <div className="bg-[#FFF7F5] p-4">
         <h2 className="text-lg font-semibold">Login Activity</h2>
         <div className="grid grid-cols-2 gap-4 mt-3">
-          <div className="bg-white p-4 rounded-md text-center shadow-md">
+          <div className="border-2  p-4 rounded-2xl text-center ">
             <p className="text-gray-600">Active Logins</p>
-            <p className="text-xl font-semibold">17</p>
+            <p className="text-xl font-semibold text-[#FF9B26]">{userCount.activeUserCount}</p>
           </div>
-          <div className="bg-white p-4 rounded-md text-center shadow-md">
+          <div className="border-2  p-4 rounded-2xl text-center ">
             <p className="text-gray-600">Inactive Users</p>
-            <p className="text-xl font-semibold">17</p>
+            <p className="text-xl font-semibold text-[#FF9B26]" >{userCount.inActiveUserCount}</p>
           </div>
         </div>
 
         {/* Active Hours */}
-        <div className="bg-white p-6 rounded-md shadow-md mt-4">
+        <div className="bg-[#FFF7F5] p-6 rounded-md  mt-4">
           <h2 className="text-lg font-semibold">My Active Hours</h2>
           <ResponsiveContainer width="100%" height={150}>
             <BarChart data={activeHoursData}>

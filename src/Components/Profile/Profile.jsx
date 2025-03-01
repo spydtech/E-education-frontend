@@ -677,6 +677,7 @@ import profilebg from "../../assetss/profile/profilebg.jpg";
 import dp from "../../assets/women2.png";
 
 import Navbar from "../Navbar";
+import { API_BASE_URL } from "../../Config/api";
 
 
 const UserProfile = () => {
@@ -723,14 +724,14 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/users/profile", {
+        const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${jwt}`,
           },
         });
         const user = response.data;
         const fullName = `${user.firstName} ${user.lastName}`;
-        const profilePhotoResponse = await axios.get(`http://localhost:8080/api/users/${user.email}/profile-photo`, {
+        const profilePhotoResponse = await axios.get(`${API_BASE_URL}/api/users/${user.email}/profile-photo`, {
           responseType: 'arraybuffer',  // Ensures we get the binary data for the image
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -765,7 +766,7 @@ const UserProfile = () => {
     console.log("Saving data:", formData); // Log the data being sent
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/users/${auth.user.id}`,
+        `${API_BASE_URL}/api/users/${auth.user.id}`,
         formData,
         {
           headers: {
@@ -800,7 +801,7 @@ const UserProfile = () => {
   
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/users/${auth.user.email}/profile-photo`, // URL for profile photo update
+        `${API_BASE_URL}/api/users/${auth.user.email}/profile-photo`, // URL for profile photo update
         formData,
         {
           headers: {

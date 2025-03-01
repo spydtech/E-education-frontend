@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FiEdit } from "react-icons/fi";
+import { API_BASE_URL } from "../../../Config/api";
 
 const ProfileSettings = ({ jwt }) => {
   const { auth } = useSelector((state) => state);
@@ -54,7 +55,7 @@ const ProfileSettings = ({ jwt }) => {
     }
 
     try {
-      const response = await axios.get("http://localhost:8080/trainee/profile", {
+      const response = await axios.get(`${API_BASE_URL}/trainee/profile`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -93,7 +94,7 @@ const ProfileSettings = ({ jwt }) => {
 
     try {
       const response = await axios.put(
-        "http://localhost:8080/trainee/update/trainee/email",
+        `${API_BASE_URL}/trainee/update/trainee/email`,
         profile, // Sending the updated profile data
         {
           headers: {

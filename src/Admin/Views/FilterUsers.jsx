@@ -6,6 +6,7 @@ import { IoCloseCircle } from "react-icons/io5";
 import { useTheme } from "@mui/material";
 import { FaBars, FaPlus, FaPen } from "react-icons/fa";
 import Tab from "./TraineeCourses";
+import { API_BASE_URL } from "../../Config/api";
 
 
 function UsersRolesTable() {
@@ -28,9 +29,10 @@ function UsersRolesTable() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseEndDate, setCourseEndDate] = useState("");
+
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/payment/user-courses", {
+      .get(`${API_BASE_URL}/api/payment/user-courses`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -52,7 +54,7 @@ function UsersRolesTable() {
     }
 
     axios
-      .get("http://localhost:8080/trainee/getAllTrainee", {
+      .get(`${API_BASE_URL}/trainee/getAllTrainee`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -142,7 +144,7 @@ const handleCreateGroup = () => {
   console.log("Group Data:", groupData);
 
   // Make the POST request
-  fetch("http://localhost:8080/api/groups", {
+  fetch(`${API_BASE_URL}/api/groups`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

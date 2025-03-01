@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import GroupTable from "./GroupTable";
 import { FaTrashAlt, FaPencilAlt, FaPlus  } from "react-icons/fa";
+import { API_BASE_URL } from "../../Config/api";
 
 function Tab() {
   const [openTab, setOpenTab] = useState(1);
@@ -23,7 +24,7 @@ function Tab() {
     const fetchGroups = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:8080/api/groups", {
+        const response = await fetch(`${API_BASE_URL}/api/groups`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +64,7 @@ function Tab() {
 
   const handleRemoveUser = async (id, userId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/chat-groups/${id}/remove-user`, {
+      const response = await fetch(`${API_BASE_URL}/api/chat-groups/${id}/remove-user`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +95,7 @@ function Tab() {
 
   const handleDeleteGroup = async (id) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/groups/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/groups/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${jwt}`,
@@ -132,7 +133,7 @@ function Tab() {
         return;
       }
 
-      const response = await fetch(`http://localhost:8080/api/groups/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/groups/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

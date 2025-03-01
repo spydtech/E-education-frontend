@@ -220,6 +220,7 @@ import IMG from "../../assets/E- education logo .png";
 import { useDispatch } from "react-redux";
 import { login } from "../../State/Auth/Action";
 import axios from "axios";
+import { API_BASE_URL } from "../../Config/api";
 
 export default function AdminLogin() {
   const dispatch = useDispatch();
@@ -243,7 +244,7 @@ export default function AdminLogin() {
     };
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/signin", userData);
+      const response = await axios.post(`${API_BASE_URL}/auth/signin`, userData);
       const { jwt, role, status } = response.data;
       if (jwt && status && role === "ADMIN") {
         localStorage.setItem("jwt", jwt);

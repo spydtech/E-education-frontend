@@ -7,6 +7,7 @@ import {  useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "../../../Config/api";
 // import { useNavigate } from "react-router-dom";
 
 const ProfileSettings = ({ jwt }) => {
@@ -69,7 +70,7 @@ const ProfileSettings = ({ jwt }) => {
     const fetchProfileData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/users/profile",
+          `${API_BASE_URL}/api/users/profile`,
           {
             headers: { Authorization: `Bearer ${jwt}` },
           }
@@ -97,7 +98,7 @@ const ProfileSettings = ({ jwt }) => {
 
     try {
       await axios.put(
-        `http://localhost:8080/api/users/profile/update/${auth.user.id}`,
+        `${API_BASE_URL}/api/users/profile/update/${auth.user.id}`,
         formData,
         {
           headers: {

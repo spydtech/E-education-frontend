@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { BiArrowBack } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
+import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 export default function VideoUploadForm() {
   const [title, setTitle] = useState("");
@@ -10,17 +12,82 @@ export default function VideoUploadForm() {
   const [description, setDescription] = useState("");
   const [videoFile, setVideoFile] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+   const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [groupUsers, setGroupUsers] = useState([]); // Store groups
+  
+    const jwt = localStorage.getItem("jwt");
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/groups/get/users/email`,
+          { headers: { Authorization: `Bearer ${jwt}` } }
+        );
+
+        if (Array.isArray(response.data)) {
+          setGroupUsers(response.data);
+        
+        } else {
+          throw new Error("Unexpected API response format");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [jwt]);
 
   const handleFileUpload = (event) => {
     setVideoFile(event.target.files[0]);
   };
 
-  const handleSubmit = () => {
-    if (title && group && description && videoFile) {
-      setIsSubmitted(true); // Show the popup
-    } else {
+  const handleSubmit = async () => {
+    if (!title || !group || !description || !videoFile) {
       alert("Please fill in all required fields!");
+      return;
+    }
+ 
+    const formData = new FormData();
+    formData.append("video", videoFile);
+    formData.append("title", title);
+    formData.append("groupName", group);
+    formData.append("videoDescription", description);
+ 
+    
+ 
+    if (!jwt) {
+      alert("Unauthorized: No token found. Please log in again.");
+      return;
+    }
+ 
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/video/send/video`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${jwt}`, //  Ensure JWT is included
+        },
+        body: formData, //  Let browser set 'Content-Type'
+      });
+ 
+      const data = await response.json();
+ 
+      if (response.ok) {
+        alert(" Video uploaded successfully!");
+        setTitle("");
+        setGroup("");
+        setDescription("");
+        setVideoFile(null);
+      } else {
+        alert(` Error: ${data.message || "Failed to upload video."}`);
+      }
+    } catch (error) {
+      console.error(" Upload error:", error);
+      alert(" Server error: Failed to upload video.");
     }
   };
 
@@ -62,20 +129,20 @@ export default function VideoUploadForm() {
         />
       </div>
 
-      {/* Select Group */}
-      <div className="mb-4">
-        <label className="block text-gray-600 font-medium mb-1">Select Group *</label>
-        <select
-          value={group}
-          onChange={(e) => setGroup(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Select Group</option>
-          <option value="Java">Java</option>
-          <option value="Python">Python</option>
-          <option value="Web Development">Web Development</option>
-        </select>
-      </div>
+      <select
+  value={group}
+  onChange={(e) => setGroup(e.target.value)}
+  className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+>
+  <option value="">Select Group</option>
+  {[...new Set(groupUsers.map((group) => group.chatGroupName))].map((chatGroupName, index) => (
+    <option key={index} value={chatGroupName}>
+      {chatGroupName}
+    </option>
+  ))}
+</select>
+
+
 
       {/* Video Description */}
       <div className="mb-4">

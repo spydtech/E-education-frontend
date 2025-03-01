@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Download, ChevronLeft } from "lucide-react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const AssignmentOverview = () => {
   const { id } = useParams();
@@ -61,7 +62,7 @@ const AssignmentOverview = () => {
   
     try {
       await axios.put(
-        "http://localhost:8080/api/task/task/approval/by-trainee", // Use PUT instead of POST
+        `${API_BASE_URL}/api/task/task/approval/by-trainee`, // Use PUT instead of POST
         null, // No request body since we are using params
         {
           headers: {

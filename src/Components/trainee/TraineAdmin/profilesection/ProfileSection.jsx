@@ -271,6 +271,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import TraineForgotPassword from "../ForgotPassword/forgotpassword";
 import Themetoggle from "../../TraineeDashboard/Theamtoggle";
+import { API_BASE_URL } from "../../../../Config/api";
 // import { useTheme } from "@mui/material";
 
 const ProfileSection = () => {
@@ -328,7 +329,7 @@ const ProfileSection = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:8080/trainee/profile", {
+      const response = await axios.get(`${API_BASE_URL}/trainee/profile`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
@@ -427,7 +428,7 @@ const ProfileSection = () => {
   return (
     <>
       <div className="flex items-center justify-center">
-        <div className={` ${themes === "dark" && "bg-black"} bg-[#204349] w-full max-w-[800px] p-6 rounded-lg shadow-lg mx-auto`}>
+        <div className={`  bg-[#204349] w-full max-w-[800px] p-6 rounded-lg shadow-lg mx-auto`}>
           {/* Profile and Details section */}
           <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
             {/* Profile Image */}

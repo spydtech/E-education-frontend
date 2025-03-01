@@ -114,6 +114,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { API_BASE_URL } from "../../../Config/api";
 
 const UpdatePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -136,7 +137,7 @@ const UpdatePassword = () => {
     try {
       const email = auth.user.email; // Get the user's email dynamically
       const response = await axios.put(
-        `http://localhost:8080/api/users/password/${email}`,
+        `${API_BASE_URL}/api/users/password/${email}`,
         {
           oldPassword,
           newPassword,

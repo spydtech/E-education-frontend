@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const getStatusClass = (submissionStatus) => {
   switch (submissionStatus) {
@@ -41,7 +42,7 @@ const Assignment = () => {
  useEffect(() => {
   const fetchAssignments = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/task/getAllTasks/by-user", {
+      const response = await axios.get(`${API_BASE_URL}/api/task/getAllTasks/by-user`, {
         headers: {
           Authorization: `Bearer ${jwt}`, // Include JWT token if needed
         },

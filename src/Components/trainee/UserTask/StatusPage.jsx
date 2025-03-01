@@ -148,6 +148,7 @@ import React, { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const getStatusClass = (status) => {
   switch (status) {
@@ -173,7 +174,7 @@ const StatusPage = () => {
     const fetchTasks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/task/getAll/submission/by-trainee",
+          `${API_BASE_URL}/api/task/getAll/submission/by-trainee`,
           {
             headers: {
               "Content-Type": "application/json",

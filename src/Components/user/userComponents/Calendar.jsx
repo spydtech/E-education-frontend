@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import { API_BASE_URL } from "../../../Config/api";
 
 const UCalendar = () => {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ const UCalendar = () => {
       try {
         console.log("Fetching meetings..."); // Debugging log
         const response = await fetch(
-          "http://localhost:8080/api/meeting/getAll/user/meetings",
+          `${API_BASE_URL}/api/meeting/getAll/user/meetings`,
           {
             method: "GET",
             headers: {

@@ -150,7 +150,7 @@ const getUserRequest = () => ({ type: GET_USER_REQUEST });
 const getUserSuccess = (user) => ({ type: GET_USER_SUCCESS, payload: user });
 const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error });
 
-export const getUser = (jwt) => async (dispatch) => {
+export const getUser = (jwt, role) => async (dispatch) => {
   dispatch(getUserRequest());
 
   try {
@@ -158,6 +158,7 @@ export const getUser = (jwt) => async (dispatch) => {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
+      params: { role },
     });
     const user = response.data;
     localStorage.setItem('user', JSON.stringify(user));

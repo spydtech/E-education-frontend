@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const TraineeTable = () => {
   const [trainees, setTrainees] = useState([]);
@@ -7,7 +8,7 @@ const TraineeTable = () => {
 const jwt = localStorage.getItem("jwt");
   useEffect(() => {
     axios
-      .get("http://localhost:8080/trainee/getAllTrainee", {
+      .get(`${API_BASE_URL}/trainee/getAllTrainee`, {
         headers: {
           Authorization: `Bearer ${jwt}`, // Send JWT token to authenticate the request
         },

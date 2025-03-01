@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid, Paper, Typography, Button, MenuItem, Select } from '@mui/material';
+import { API_BASE_URL } from '../../Config/api';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
@@ -13,7 +14,7 @@ const Orders = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/orders');
+            const response = await axios.get(`${API_BASE_URL}/api/orders`);
             setOrders(response.data);
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -23,7 +24,7 @@ const Orders = () => {
     const handleUpdateStatus = async () => {
         if (selectedOrder) {
             try {
-                await axios.put(`http://localhost:8080/api/orders/${selectedOrder.id}`, {
+                await axios.put(`${API_BASE_URL}/api/orders/${selectedOrder.id}`, {
                     status: selectedOrder.status,
                 });
                 fetchOrders();

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaFilePdf, FaDownload } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const AssignmentDetails = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const AssignmentDetails = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/task/task/submitted/by-user",
+        `${API_BASE_URL}/api/task/task/submitted/by-user`,
         formData,
         {
           headers: {
@@ -124,7 +125,7 @@ const AssignmentDetails = () => {
             <FaFilePdf className="text-red-500 text-2xl" />
             <span className="flex-1 text-sm">{assignment.file}</span>
             <a
-              href={`http://localhost:8080/api/task/download/${assignment.id}`}
+              href={`${API_BASE_URL}/api/task/download/${assignment.id}`}
               download
               className="text-gray-500 hover:text-black cursor-pointer"
             >

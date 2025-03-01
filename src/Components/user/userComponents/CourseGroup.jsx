@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const CourseGroup = () => {
   // Course Data with Assignments
@@ -53,7 +54,7 @@ const CourseGroup = () => {
   useEffect(() => {
     const fetchAssignments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/task/getAllTasks/by-user", {
+        const response = await axios.get(`${API_BASE_URL}/api/task/getAllTasks/by-user`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
   

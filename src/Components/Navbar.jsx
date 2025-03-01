@@ -1370,10 +1370,17 @@ const Navbar = () => {
 
   useEffect(() => {
     const storedJwt = localStorage.getItem("jwt");
+  
     if (storedJwt) {
-      dispatch(getUser(storedJwt));
+      dispatch(getUser(storedJwt)); // Fetch user info
     }
   }, [dispatch]);
+  
+  useEffect(() => {
+    if (auth.user && auth.user.role === "customer") {
+      getUser(auth.user.id);
+    }
+  }, [auth.user]);
   
 
   useEffect(() => {

@@ -328,6 +328,7 @@ import React, { useState } from "react";
 import { BsCheck2Circle } from "react-icons/bs";
 import { IoClose } from "react-icons/io5"; // Close icon
 import img1 from "../../../assetss/AccessFields/trainer.png"
+import { API_BASE_URL } from "../../../Config/api";
 
 // Utility functions
 function generateUsername() {
@@ -361,7 +362,7 @@ const RegisterTrainee = () => {
   const [emailError, setEmailError] = useState("");
 
   // Backend API URL
-  const API_URL = "http://localhost:8080/trainee/register";
+  const API_URL = `${API_BASE_URL}/trainee/register`;
 
   const validateInputs = () => {
     let isValid = true;

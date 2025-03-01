@@ -9,9 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { getUser, logout } from "../../../State/Auth/Action";
 import { Disclosure } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
+import { API_BASE_URL } from "../../../Config/api";
 
 
-const API_BASE_URL = "http://localhost:8080/report";
+
 
 const courses = [
   {
@@ -66,7 +67,7 @@ const UserDashboard = () => {
 
   const fetchToDoList = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/get`, {
+      const response = await fetch(`${API_BASE_URL}/report/get`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

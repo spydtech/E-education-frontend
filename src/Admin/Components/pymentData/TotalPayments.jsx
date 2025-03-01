@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../../Config/api";
 
 const AllPaymentsTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -8,7 +9,7 @@ const AllPaymentsTable = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/payment/all", {
+      .get(`${API_BASE_URL}/api/payment/all`, {
         headers: {
           Authorization: `Bearer ${jwt}`, // Send JWT token to authenticate the request
         },

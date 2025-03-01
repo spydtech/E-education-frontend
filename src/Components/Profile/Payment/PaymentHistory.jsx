@@ -1,60 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaChevronDown } from "react-icons/fa";
-
-const transactionsData = [
-  { id: "EEDU98087965", date: "Wed Feb 5, 2025", time: "10:45:20 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "Debit card", status: "Successful" },
-  { id: "EEDU98087966", date: "Wed Feb 5, 2025", time: "10:45:21 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "UPI", status: "Failed" },
-  { id: "EEDU98087967", date: "Wed Feb 5, 2025", time: "10:45:22 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "Credit Card", status: "Processing" },
-  { id: "EEDU98087968", date: "Wed Feb 5, 2025", time: "10:45:23 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "IMPS - Banking", status: "Successful" },
-  { id: "EEDU98087969", date: "Wed Feb 5, 2025", time: "10:45:24 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "Debit card", status: "Successful" },
-  { id: "EEDU98087970", date: "Thu Feb 6, 2025", time: "11:00:20 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "Debit card", status: "Successful" },
-  { id: "EEDU98087971", date: "Thu Feb 6, 2025", time: "11:00:30 am", course: "UI/UX Design", amount: "17899.00 INR", paymentType: "Credit Card", status: "Processing" },
-];
+import { API_BASE_URL } from "../../../Config/api";
 
 const statusColors = {
-  Successful: "bg-blue-100 text-blue-600",
-  Failed: "bg-red-100 text-red-600",
-  Processing: "bg-orange-100 text-orange-600",
+  COMPLETED: "bg-blue-100 text-blue-600",
+  FAILED: "bg-red-100 text-red-600",
+  PROCESSING: "bg-orange-100 text-orange-600",
 };
 
 const PaymentHistory = () => {
+  const [transactions, setTransactions] = useState([]); // Initialize transactions state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const transactionsPerPage = 5;
 
-  // Calculate total pages
-  const totalPages = Math.ceil(transactionsData.length / transactionsPerPage);
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const token = localStorage.getItem("jwt"); // Get JWT token from localStorage
+        if (!token) {
+          setError("Unauthorized. Please log in.");
+          setLoading(false);
+          return;
+        }
 
-  // Slice transactions for the current page
-  const currentTransactions = transactionsData.slice(
+        const response = await axios.get(`${API_BASE_URL}/api/payment/getAll/paymentHistory`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // ✅ Convert `courseDetails` from string to object
+        const formattedTransactions = response.data.map((txn) => ({
+          ...txn,
+          courseDetails: txn.courseDetails ? JSON.parse(txn.courseDetails) : { courseNames: [], coursePrices: [] },
+        }));
+
+        setTransactions(formattedTransactions); // Store parsed transactions in state
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+        setError("Failed to load payment history.");
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
+  }, []);
+
+  // Pagination Logic
+  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
+  const currentTransactions = transactions.slice(
     (currentPage - 1) * transactionsPerPage,
     currentPage * transactionsPerPage
   );
 
-  // Pagination Handler
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  if (loading) return <p className="p-6 text-center">Loading...</p>;
+  if (error) return <p className="p-6 text-center text-red-500">{error}</p>;
+
   return (
-    <div className="p-6 bg-white  font-poppins">
-      {/* Header and Filters */}
-      <div className="flex justify-between items-center mb-4">
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
-          All Transactions <FaChevronDown className="ml-2" />
-        </button>
-        <div className="flex gap-2">
-          {["Date", "Amount", "Course Type", "Payment Status", "Payment Type"].map((filter) => (
-            <button key={filter} className="border px-4 py-2 rounded-lg flex items-center">
-              {filter} <FaChevronDown className="ml-1" />
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className="p-6 bg-white font-poppins">
+      <h2 className="text-lg font-semibold mb-4">Payment History</h2>
 
       {/* Transactions Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left ">
+        <table className="w-full text-left">
           <thead>
             <tr className="border-b-2 border-b-black">
-              {["Transaction ID", "Date of Transaction", "Time of Transaction", "Course Name", "Amount", "Payment Type", "Status"].map(
+              {["Transaction ID", "Date", "User Name", "Courses", "Amount", "Payment Type", "Status"].map(
                 (header) => (
                   <th key={header} className="px-4 py-2 text-gray-600">{header}</th>
                 )
@@ -62,21 +79,29 @@ const PaymentHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {currentTransactions.map((txn, index) => (
-              <tr key={index} className="border-b">
-                <td className="px-4 py-2">{txn.id}</td>
-                <td className="px-4 py-2">{txn.date}</td>
-                <td className="px-4 py-2">{txn.time}</td>
-                <td className="px-4 py-2">{txn.course}</td>
-                <td className="px-4 py-2">{txn.amount}</td>
-                <td className="px-4 py-2">{txn.paymentType}</td>
-                <td className="px-4 py-2">
-                  <span className={`px-2 py-1 rounded-full text-xs ${statusColors[txn.status]}`}>
-                    {txn.status}
-                  </span>
+            {currentTransactions.length > 0 ? (
+              currentTransactions.map((txn, index) => (
+                <tr key={index} className="border-b">
+                  <td className="px-4 py-2">{txn.razorpayPaymentId}</td>
+                  <td className="px-4 py-2">{new Date(txn.createdAt).toLocaleDateString()}</td>
+                  <td className="px-4 py-2">{txn.userName}</td>
+                  <td className="px-4 py-2">{txn.courseDetails.courseNames.join(", ")}</td>
+                  <td className="px-4 py-2">{txn.totalAmount.toFixed(2)} INR</td>
+                  <td className="px-4 py-2">{txn.paymentMethod}</td>
+                  <td className="px-4 py-2">
+                    <span className={`px-2 py-1 rounded-full text-xs ${statusColors[txn.paymentStatus]}`}>
+                      {txn.paymentStatus}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="7" className="text-center py-4 text-gray-500">
+                  No transactions found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -84,8 +109,8 @@ const PaymentHistory = () => {
       {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
         <p className="text-gray-500">
-          {Math.min((currentPage - 1) * transactionsPerPage + 1, transactionsData.length)}-
-          {Math.min(currentPage * transactionsPerPage, transactionsData.length)} of {transactionsData.length}
+          {Math.min((currentPage - 1) * transactionsPerPage + 1, transactions.length)}-
+          {Math.min(currentPage * transactionsPerPage, transactions.length)} of {transactions.length}
         </p>
 
         <div className="flex items-center space-x-2">

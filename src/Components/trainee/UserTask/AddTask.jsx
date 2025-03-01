@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL} from "../../../Config/api";
 
 const AddTask = () => {
   const [task, setTask] = useState({
@@ -23,7 +24,7 @@ const AddTask = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/groups/get/users/email", {
+        const response = await axios.get(`${API_BASE_URL}/api/groups/get/users/email`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
   
@@ -119,7 +120,7 @@ const AddTask = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:8080/api/task/tasks/upload/by-trainee",
+        `${API_BASE_URL}/api/task/tasks/upload/by-trainee`,
         formData,
         {
           headers: {

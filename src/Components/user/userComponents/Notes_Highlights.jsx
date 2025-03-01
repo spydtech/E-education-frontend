@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaFilePdf, FaCloudDownloadAlt, FaAngleLeft   } from "react-icons/fa";
+import { API_BASE_URL } from "../../../Config/api";
 
-const API_BASE_URL = "http://localhost:8080/report";
+
 
 const colors = ["bg-blue-100", "bg-green-100", "bg-red-100", "bg-yellow-100", "bg-purple-100", "bg-pink-100", "bg-indigo-100"];
 
@@ -22,7 +23,7 @@ function Notes_Highlights() {
 
   const fetchNotes = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/get`, {
+      const response = await fetch(`${API_BASE_URL}/report/get`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +52,7 @@ function Notes_Highlights() {
 
       if (editingNoteId) {
         // Update note
-        const response = await fetch(`${API_BASE_URL}/updateReport/${editingNoteId}`, {
+        const response = await fetch(`${API_BASE_URL}/report/updateReport/${editingNoteId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +94,7 @@ function Notes_Highlights() {
   // Delete a note
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/delete/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/report/delete/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${jwt}`,

@@ -782,7 +782,7 @@ const TraineeDashboard = () => {
     <div className="flex h-screen relative font-poppins ">
       {(isSmallScreen ? sideBarVisible : true) && (
         <div
-          className={`fixed  p-2 inset-0 z-40 ${
+          className={`fixed   inset-0 z-40 ${
             sideBarVisible || !isSmallScreen ? "block" : "hidden"
           } md:static md:block`}
           style={{ width: drawerWidth }}

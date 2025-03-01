@@ -324,9 +324,11 @@ import { useDispatch } from 'react-redux';
 import { trainee } from '../../../State/Auth/Action';
 // import traineloginpageimage from "../../../assetss/login/traineloginpageimage.png";
 import IMG from "../../../assets/E- education logo .png";
+import { API_BASE_URL } from '../../../Config/api';
 import axios from 'axios';
 
-const API_URL = "http://localhost:8080/trainee/signin"; // Backend API URL
+
+
 
 const Traine_Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
@@ -344,7 +346,7 @@ const Traine_Login = () => {
     };
   
     try {
-      const response = await axios.post('http://localhost:8080/trainee/signin', traineeData);
+      const response = await axios.post(`${API_BASE_URL}/trainee/signin`, traineeData);
       console.log(response);
       if (response.data.status) {
         localStorage.setItem('jwt', response.data.jwt);
