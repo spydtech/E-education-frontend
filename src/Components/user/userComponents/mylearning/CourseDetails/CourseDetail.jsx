@@ -34,6 +34,7 @@
 import CourseVideoList from "./CourseVideoList";
 import VideoPlayer from "./VideoPlayer";
 
+
 export default function CourseDetail({ course, onBack }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
 

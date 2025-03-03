@@ -81,7 +81,7 @@ const UserSupport = () => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/chat/getAllUserMessages/email?email=${adminEmail}`,
+          `${API_BASE_URL}/api/chat/getAllUserMessages/email?email=${userEmail}`,
           { headers: { Authorization: `Bearer ${jwt}` } }
         );
 
@@ -96,7 +96,7 @@ const UserSupport = () => {
     };
 
     fetchMessages();
-  }, [adminEmail, jwt]);
+  }, [userEmail, jwt]);
   
   
   
