@@ -132,6 +132,8 @@ import TraineeDashboard from "./Components/trainee/TraineeDashboard/TraineeDashb
 import ThemeToggle from "./Components/trainee/TraineeDashboard/Theamtoggle";
 import ScrollToTop from "./ScrollToTop ";
 import UserRouter from "./Routers/UserRouter";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // import ReportsAndMasters from "./Components/Meeting/hospita/reports";
 // import Sarvices from "./Components/Meeting/hospita/sarvices";
@@ -152,6 +154,7 @@ function App() {
           }}
         >
           <ScrollToTop />
+          <ToastContainer />
           <Routes>
             {/* <Route path="" element={<SidebarMain/>} /> */}
             <Route path="/" element={<Home />} />

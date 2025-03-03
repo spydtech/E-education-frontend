@@ -917,7 +917,6 @@
 //   );
 // }
 
-
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import { CiCamera } from "react-icons/ci";
@@ -930,32 +929,33 @@ import { AiOutlineVideoCamera, AiOutlineCalendar } from "react-icons/ai";
 import Modal from "@mui/material/Modal";
 import EmojiPicker from "emoji-picker-react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { API_BASE_URL } from "../../../Config/api";
 
 export default function Post() {
   const [tweetData, setTweetData] = useState({
-    id: Math.floor(Math.random() * 100000 + 1),
     content: "",
-    createdAt: new Date().toISOString(),
     image: "",
     video: "",
-    tags: [],
-    tweetedBy: { id: Math.floor(Math.random() * 100000 + 1), fullName: "" },
-    profilePicture: "",
-    isLiked: false,
-    comments: [],
   });
 
   const [formData, setFormData] = useState({
     fullName: "",
-    firstName: "",
-    lastName: "",
     email: "",
     profilePicture: "",
   });
 
-  const jwt = localStorage.getItem("jwt"); // Retrieve JWT from localStorage
+  const [tweets, setTweets] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [commentData, setCommentData] = useState("");
+  const [visibleComments, setVisibleComments] = useState({});
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
     fetchUserProfile();
@@ -964,7 +964,7 @@ export default function Post() {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/users/profile", {
+      const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
 
@@ -981,104 +981,66 @@ export default function Post() {
     }
   };
 
-
- 
-  
-   
   const fetchPosts = async () => {
-    setLoading(true); // Set loading state to true
-    setError(null); // Clear any previous errors
+    setLoading(true);
+    setError("");
 
-
-  
     try {
-      // Fetch all posts
-      const response = await axios.get("http://localhost:8080/api/posts/getPosts", {
+      const response = await axios.get(`${API_BASE_URL}/api/posts/getPosts`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
-  
-      // Fetch media files (images/videos) as blobs for each post
+
       const postsWithMedia = await Promise.all(
         response.data.map(async (post) => {
           let imgBlobUrl = null;
           let videoBlobUrl = null;
-          let profilePictureBlobUrl = null;
-  
-          // Fetch image as blob if it exists
+
           if (post.img) {
             try {
-              const imgResponse = await axios.get(`http://localhost:8080/api/posts/${post.id}/image`, {
-                responseType: "blob", // Fetch as blob
-                headers: { Authorization: `Bearer ${jwt}` },
-              });
-              imgBlobUrl = URL.createObjectURL(imgResponse.data); // Create object URL for the blob
-              console.log(`Fetched image for post ${post.id}:`, imgBlobUrl);
+              const imgResponse = await axios.get(
+                `${API_BASE_URL}/api/posts/${post.id}/image`,
+                {
+                  responseType: "blob",
+                  headers: { Authorization: `Bearer ${jwt}` },
+                }
+              );
+              imgBlobUrl = URL.createObjectURL(imgResponse.data);
             } catch (error) {
               console.error(`Error fetching image for post ${post.id}:`, error);
             }
           }
-  
-          // Fetch video as blob if it exists
+
           if (post.video) {
             try {
-              const videoResponse = await axios.get(`http://localhost:8080/api/posts/${post.id}/video`, {
-                responseType: "blob", // Fetch as blob
-                headers: { Authorization: `Bearer ${jwt}` },
-              });
-              videoBlobUrl = URL.createObjectURL(videoResponse.data); // Create object URL for the blob
-              console.log(`Fetched video for post ${post.id}:`, videoBlobUrl);
+              const videoResponse = await axios.get(
+                `${API_BASE_URL}/api/posts/${post.id}/video`,
+                {
+                  responseType: "blob",
+                  headers: { Authorization: `Bearer ${jwt}` },
+                }
+              );
+              videoBlobUrl = URL.createObjectURL(videoResponse.data);
             } catch (error) {
               console.error(`Error fetching video for post ${post.id}:`, error);
             }
           }
-  
-          // Fetch profile picture as blob if it exists
-          if (post.profilePicture) {
-            try {
-              const profilePictureResponse = await axios.get(
-                `http://localhost:8080/api/posts/${post.id}/profile-picture`,
-                {
-                  responseType: "blob", // Fetch as blob
-                  headers: { Authorization: `Bearer ${jwt}` },
-                }
-              );
-              profilePictureBlobUrl = URL.createObjectURL(profilePictureResponse.data); // Create object URL for the blob
-              console.log(`Fetched profile picture for post ${post.id}:`, profilePictureBlobUrl);
-            } catch (error) {
-              console.error(`Error fetching profile picture for post ${post.id}:`, error);
-            }
-          }
-  
-          // Return the post with media URLs
+
           return {
             ...post,
             img: imgBlobUrl,
             video: videoBlobUrl,
-            profilePicture: profilePictureBlobUrl || "/default-profile.png", // Fallback to a default image if no profile picture is found
           };
         })
       );
-  
-      // Update the state with the fetched posts
+
       setTweets(postsWithMedia);
-      setLoading(false); // Set loading state to false
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching posts:", error);
-      setError("Failed to load posts. Please try again later."); // Set error message
-      setLoading(false); // Set loading state to false
+      setError("Failed to load posts. Please try again later.");
+      setLoading(false);
     }
   };
-
-  const [tweets, setTweets] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [commentData, setCommentData] = useState("");
-  const [editTweetId, setEditTweetId] = useState(null);
-  const [visibleComments, setVisibleComments] = useState({});
-  const [file, setFile] = useState(null);
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setTweetData({ ...tweetData, content: e.target.value });
@@ -1102,7 +1064,7 @@ export default function Post() {
 
   const handlePost = async () => {
     if (!tweetData.content.trim() && !file) {
-      setMessage("Please add content or media.");
+      toast.error("Please add content or media.");
       return;
     }
 
@@ -1110,7 +1072,7 @@ export default function Post() {
     formDataToSend.append("name", formData.fullName);
     formDataToSend.append("content", tweetData.content);
     formDataToSend.append("postedBY", formData.fullName);
-    formDataToSend.append("createdAt", tweetData.createdAt);
+    formDataToSend.append("createdAt", new Date().toISOString());
 
     if (file) {
       formDataToSend.append("file", file, file.name);
@@ -1118,7 +1080,7 @@ export default function Post() {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/posts/createPost/media",
+        `${API_BASE_URL}/api/posts/createPost/media`,
         formDataToSend,
         { headers: { Authorization: `Bearer ${jwt}`, "Content-Type": "multipart/form-data" } }
       );
@@ -1126,33 +1088,43 @@ export default function Post() {
       if (response.status === 201 || response.status === 200) {
         const newPost = response.data;
 
-        // Send push notification
-        await axios.post(
-          "http://localhost:8080/api/notifications",
+        // Fetch media URLs for the new post
+        let imgBlobUrl = null;
+        let videoBlobUrl = null;
+
+        if (newPost.img) {
+          const imgResponse = await axios.get(
+            `${API_BASE_URL}/api/posts/${newPost.id}/image`,
+            { responseType: "blob", headers: { Authorization: `Bearer ${jwt}` } }
+          );
+          imgBlobUrl = URL.createObjectURL(imgResponse.data);
+        }
+
+        if (newPost.video) {
+          const videoResponse = await axios.get(
+            `${API_BASE_URL}/api/posts/${newPost.id}/video`,
+            { responseType: "blob", headers: { Authorization: `Bearer ${jwt}` } }
+          );
+          videoBlobUrl = URL.createObjectURL(videoResponse.data);
+        }
+
+        setTweets([
           {
-            userId: formData.fullName,
-            message: `${formData.fullName} posted: ${tweetData.content.slice(0, 50)}...`,
-            postId: newPost.id,
-            type: "NEW_POST",
+            ...newPost,
+            img: imgBlobUrl,
+            video: videoBlobUrl,
           },
-          { headers: { Authorization: `Bearer ${jwt}` } }
-        );
+          ...tweets,
+        ]);
 
-
-
-        setTweets([response.data, ...tweets]);
-        //notifcation msg
-        // toast.success("Post created successfully!");
-        setMessage("Post created successfully!");
-        setTweetData({ ...tweetData, content: "", image: "", video: "" });
+        toast.success("Post created successfully!");
+        setTweetData({ content: "", image: "", video: "" });
         setFile(null);
         setOpen(false);
-      } else {
-        throw new Error("Unexpected response status: " + response.status);
       }
     } catch (error) {
-      console.error("Error creating post:", error.response?.data || error.message);
-      setMessage(`Failed to create the post: ${error.response?.data?.message || error.message}`);
+      console.error("Error creating post:", error);
+      toast.error("Failed to create the post. Please try again.");
     }
   };
 
@@ -1164,8 +1136,11 @@ export default function Post() {
     );
   };
 
-  const handleCommentChange = (e) => {
-    setCommentData(e.target.value);
+  const toggleCommentInput = (id) => {
+    setVisibleComments((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   const addComment = (id) => {
@@ -1185,42 +1160,18 @@ export default function Post() {
     setCommentData("");
   };
 
-  const toggleCommentInput = (id) => {
-    setVisibleComments((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  // const deleteTweet = async (id) => {
-  //   try {
-  //     const response = await axios.delete(`http://localhost:8080/api/posts/deletePost/${id}`, {
-  //       headers: { Authorization: `Bearer ${jwt}` },
-  //     });
-
-  //     if (response.status === 200) {
-  //       setTweets(tweets.filter((tweet) => tweet.id !== id));
-  //       alert("Post deleted successfully");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting post:", error);
-  //     alert("Failed to delete post");
-  //   }
-  // };
-
   const onEmojiClick = (emojiData) => {
     if (emojiData && emojiData.emoji) {
       setTweetData((prevData) => ({
         ...prevData,
         content: prevData.content + emojiData.emoji,
       }));
-    } else {
-      console.error("Failed to select emoji:", emojiData);
     }
   };
 
   return (
     <div className="lg:w-[500px] xl:w-[620px] 2xl:w-[800px] w-auto rounded-lg bg-[#0098f1]">
+      
       <div className="p-4">
         <div className="flex">
           <textarea
@@ -1236,7 +1187,7 @@ export default function Post() {
             <CiCamera className="w-[25px] h-[25px] cursor-pointer" />
             <input
               type="file"
-              accept="image/,video/"
+              accept="image/*,video/*"
               className="hidden"
               onChange={handleAddMedia}
             />
@@ -1269,7 +1220,7 @@ export default function Post() {
                 <CiCamera className="w-[25px] h-[25px] text-black" />
                 <input
                   type="file"
-                  accept="image/,video/"
+                  accept="image/*,video/*"
                   className="hidden"
                   onChange={handleAddMedia}
                 />
@@ -1299,7 +1250,7 @@ export default function Post() {
                 className="bg-[#0098f1] text-white py-2 px-4 rounded"
                 onClick={handlePost}
               >
-                {editTweetId ? "Update" : "Post"}
+                Post
               </button>
             </div>
           </div>
@@ -1307,101 +1258,88 @@ export default function Post() {
       </Modal>
 
       <div className="bg-white mt-3 pl-3 overflow-y-auto max-h-[500px]">
-  {loading && <p className="text-white">Loading posts...</p>}
-  {error && <p className="text-red-500">{error}</p>}
-  {tweets.map((tweet) => (
-    <div className="p-4 border border-gray-300 rounded-lg mt-4" key={tweet.id}>
-      <div className="flex text-start space-x-5">
-        <Avatar
-          alt={tweet.postedBY || "Unknown User"}
-          src={tweet.profilePicture || "/default-profile.png"}
-        />
-        <div className="text-start">
-          <div className="font-semibold">{tweet.postedBY || "Unknown User"}</div>
-          <div className="text-sm text-gray-500">
-            {new Date(tweet.dateTime).toLocaleString()}
-          </div>
-        </div>
-        {/* <div className="ml-auto flex items-center gap-2">
-          <FaEdit
-            className="text-[#0098f1] cursor-pointer"
-            onClick={() => editTweet(tweet)}
-          />
-          <FaTrash
-            className="text-red-600 cursor-pointer"
-            onClick={() => deleteTweet(tweet.id)}
-          />
-        </div> */}
-      </div>
-      <div className="mt-2">{tweet.content}</div>
-
-      {/* Display image if available */}
-      {tweet.img && (
-        <img
-          src={tweet.img}
-          className="mt-2 max-w-full h-auto rounded-lg"
-          alt="Post media"
-        />
-      )}
-
-      {/* Display video if available */}
-      {tweet.video && (
-        <video controls className="mt-2 max-w-full h-auto rounded-lg">
-          <source src={tweet.video} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      )}
-
-      <div className="mt-2 flex justify-between items-center border-t gap-8 py-4">
-        <div
-          className="flex justify-center items-center flex-row gap-2 text-[#0098F1] mr-4 cursor-pointer"
-          onClick={() => toggleLike(tweet.id)}
-        >
-          {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
-          <span>{tweet.isLiked ? "1" : "Like"}</span>
-        </div>
-        <div
-          className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]"
-          onClick={() => toggleCommentInput(tweet.id)}
-        >
-          <FaRegComment />
-          <span>Comment</span>
-        </div>
-        <div className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]">
-          <IoShareSocialOutline />
-          <span>Share</span>
-        </div>
-      </div>
-
-      {/* Comment section */}
-      {visibleComments[tweet.id] && (
-        <div className="mt-2">
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            placeholder="Write a comment..."
-            value={commentData}
-            onChange={handleCommentChange}
-          />
-          <button
-            className="mt-2 bg-[#0098f1] text-white py-2 px-4 rounded"
-            onClick={() => addComment(tweet.id)}
-          >
-            Comment
-          </button>
-          <div className="mt-4">
-            {tweet.comments &&
-              tweet.comments.map((comment) => (
-                <div key={comment.id} className="p-2 bg-gray-100 rounded mt-2">
-                  {comment.text}
+        {loading && <p className="text-white">Loading posts...</p>}
+        {error && <p className="text-red-500">{error}</p>}
+        {tweets.map((tweet) => (
+          <div className="p-4 border border-gray-300 rounded-lg mt-4" key={tweet.id}>
+            <div className="flex text-start space-x-5">
+              <Avatar
+                alt={tweet.postedBY || "Unknown User"}
+                src={tweet.profilePicture || "/default-profile.png"}
+              />
+              <div className="text-start">
+                <div className="font-semibold">{tweet.postedBY || "Unknown User"}</div>
+                <div className="text-sm text-gray-500">
+                  {new Date(tweet.dateTime).toLocaleString()}
                 </div>
-              ))}
+              </div>
+            </div>
+            <div className="mt-2">{tweet.content}</div>
+
+            {tweet.img && (
+              <img
+                src={tweet.img}
+                className="mt-2 max-w-full h-auto rounded-lg"
+                alt="Post media"
+              />
+            )}
+
+            {tweet.video && (
+              <video controls className="mt-2 max-w-full h-auto rounded-lg">
+                <source src={tweet.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
+
+            <div className="mt-2 flex justify-between items-center border-t gap-8 py-4">
+              <div
+                className="flex justify-center items-center flex-row gap-2 text-[#0098F1] mr-4 cursor-pointer"
+                onClick={() => toggleLike(tweet.id)}
+              >
+                {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
+                <span>{tweet.isLiked ? "1" : "Like"}</span>
+              </div>
+              <div
+                className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]"
+                onClick={() => toggleCommentInput(tweet.id)}
+              >
+                <FaRegComment />
+                <span>Comment</span>
+              </div>
+              <div className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]">
+                <IoShareSocialOutline />
+                <span>Share</span>
+              </div>
+            </div>
+
+            {visibleComments[tweet.id] && (
+              <div className="mt-2">
+                <input
+                  type="text"
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  placeholder="Write a comment..."
+                  value={commentData}
+                  onChange={(e) => setCommentData(e.target.value)}
+                />
+                <button
+                  className="mt-2 bg-[#0098f1] text-white py-2 px-4 rounded"
+                  onClick={() => addComment(tweet.id)}
+                >
+                  Comment
+                </button>
+                <div className="mt-4">
+                  {tweet.comments &&
+                    tweet.comments.map((comment) => (
+                      <div key={comment.id} className="p-2 bg-gray-100 rounded mt-2">
+                        {comment.text}
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      )}
-    </div>
-  ))}
-</div>
+        ))}
+      </div>
     </div>
   );
 }

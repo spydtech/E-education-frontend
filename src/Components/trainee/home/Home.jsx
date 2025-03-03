@@ -300,26 +300,26 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-white min-h-screen font-poppins">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Hi, Welcome Back</h1>
         <StatusButtonTrainee  setDuration={setDuration} />
       </div>
       
       <div className="grid grid-cols-4 gap-4 mt-6">
-      <Card className="bg-yellow-200 text-center">
+      <Card className="bg-[#f8e6c0] text-center">
           <p>My Students</p>
           <h2 className="text-2xl">{usersCount.toLocaleString()}</h2>
         </Card>
-        <Card className="bg-green-200 text-center">
+        <Card className="bg-[#d9f6e3] text-center">
           <p>Enrolled Groups</p>
           <h2 className="text-2xl">{enrolledGroups}</h2>
         </Card>
-        <Card className="bg-red-200 text-center">
+        <Card className="bg-[#f4d3d6] text-center">
           <p>Completed Courses</p>
           <h2 className="text-2xl">{completedGroups}</h2>
         </Card>
-        <Card className="bg-purple-200 text-center">
+        <Card className="bg-[#e4d4f6] text-center">
           <p>Total Hrs</p>
           
           <h2 className="text-2xl">{duration}</h2> {/* 🔥 Show session duration */}

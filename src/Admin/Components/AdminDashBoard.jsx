@@ -192,7 +192,7 @@ const AdminDashBoard = () => {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-[#FFF7F5] p-6 rounded-md ">
+      <div className="bg-[#FFF7F5] p-6 rounded-md overflow-y-auto h-[360px]">
         <h2 className="text-lg font-semibold flex justify-between">
           Scheduled Meetings <FiExternalLink />
         </h2>

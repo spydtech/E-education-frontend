@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaEdit, FaTrash, FaFilePdf, FaCloudDownloadAlt, FaAngleLeft   } from "react-icons/fa";
 import { API_BASE_URL } from "../../../Config/api";
+import axios from "axios";
 
 
 
@@ -67,7 +68,7 @@ function Notes_Highlights() {
         setEditingNoteId(null);
       } else {
         // Create new note
-        const response = await fetch(`${API_BASE_URL}/createReport`, {
+        const response = await fetch(`${API_BASE_URL}/report/createReport`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -200,7 +201,7 @@ function Notes_Highlights() {
 
       {/* Notepad Modal */}
       {isOpen && (
-        <div className="fixed inset-0  bg-opacity-50 flex justify-center items-center font-poppins">
+        <div className="relative -top-24 inset-0  bg-opacity-50 flex justify-center items-center font-poppins">
           <div className="bg-white rounded-lg  w-[850px] h-[500px] shadow-xl p-2">
             <div className="flex space-x-2 bg-[#c7e0ed] p-2 rounded-t-2xl py-2">
             <FaAngleLeft  onClick={() => setIsOpen(false)} className="text-gray-500 text-2xl" /> 

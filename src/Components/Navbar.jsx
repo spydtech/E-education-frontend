@@ -1368,13 +1368,7 @@ const Navbar = () => {
     ],
   };
 
-  useEffect(() => {
-    const storedJwt = localStorage.getItem("jwt");
   
-    if (storedJwt) {
-      dispatch(getUser(storedJwt)); // Fetch user info
-    }
-  }, [dispatch]);
   
   useEffect(() => {
     if (auth.user && auth.user.role === "customer") {
@@ -1403,7 +1397,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem("jwt");
-    navigate("/");
+    navigate("/login");
   };
 
   const toggleSidebar = () => {
@@ -1428,15 +1422,11 @@ const Navbar = () => {
     setShowDropdown(!showDropdown); // Toggle the dropdown
   };
   const menuItems = [
-    { name: "My Courses", href: "/MyCourse" },
-    { name: "Purchases", href: "/Purchases" },
-    { name: "Profile", href: "/Profile" },
-    { name: "Settings", href: "/Settings" },
-    { name: "Updates", href: "/" },
-    { name: "WorkSpace", href: "/WSpace" },
-    { name: "Accomplishments", href: "#" },
-    { name: "Help Center", href: "#" },
-    { name: "Logout", href: "/login", onClick: handleLogout },
+    { name: "Dashboard", href: "/user/dashboard" },
+    
+    { name: "Settings", href: "/user/Settings" },
+   
+    // { name: "Logout", href: "/login", onClick: handleLogout },
   ];
 
   const allCourses = Object.values(courses).flat();
@@ -1453,7 +1443,7 @@ const Navbar = () => {
     <>
       <Disclosure
         as="nav"
-        className={`sticky top-0 z-50 ${
+        className={`sticky font-poppins top-0 z-50 ${
           isScrolled ? "bg-white " : "bg-white "
         }`}
       >
@@ -1662,11 +1652,23 @@ const Navbar = () => {
                                   key={index}
                                   href={item.href}
                                   onClick={item.onClick}
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                  className=" flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                                 >
-                                  {item.name}
+                                 
+                                
+                                 <p className="justify-center items-center p-2 text-lg">{item.name}</p>
                                 </a>
                               ))}
+                             <div 
+  onClick={handleLogout}  // ✅ Use `onClick` (not `onclick`)
+  className="flex px-4 py-2 border-t-2 border-grey-500 cursor-pointer"
+>
+  <p className="flex justify-center items-center w-10 h-10 rounded-full bg-[#0098F1] text-white cursor-pointer text-center font-bold">
+    {auth.user?.firstName?.[0]?.toUpperCase() || "U"}  {/* ✅ Prevent crash if `auth.user` is null */}
+  </p>
+  <p className="justify-center items-center p-2 text-lg">Logout</p>
+</div>
+
                             </div>
                           )}
                       </div>

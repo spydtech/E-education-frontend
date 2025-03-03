@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UpdatePassword from "../../Profile/updatepassword/Update_Password";
 import PaymentHistory from "../../Profile/Payment/PaymentHistory";
+import UserProfile from "../../Profile/Profile";
 
 
 const Settings = () => {
@@ -18,7 +19,7 @@ const Settings = () => {
     <div className="w-full mx-auto p-6 ">
       {/* Tab Buttons */}
       <div className="flex justify-evenly space-x-4 mb-6">
-        {["update password", "payment history"].map((tab) => (
+        {["update password", "payment history", "profile"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -58,17 +59,17 @@ const Settings = () => {
               <PaymentHistory jwt={jwt} />
             </motion.div>
           )}
-          {/* {activeTab === "theme" && (
+          {activeTab === "profile" && (
             <motion.div
-              key="theme"
+              key="profile"
               variants={tabVariants}
               initial="initial"
               animate="animate"
               exit="exit"
             >
-             
+             <UserProfile jwt={jwt} />
             </motion.div>
-          )} */}
+          )}
         </AnimatePresence>
       </div>
     </div>

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { MdNotificationAdd, MdOutlineCancel } from "react-icons/md";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Rightside = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [notifications, setNotifications] = useState([
-    "New comment on your post",
-    "You have a new follower",
-    "Your profile was updated successfully",
-    "System update available",
-    "New message from John Doe",
-    "Reminder: Meeting at 3 PM",
-    "Password change successful",
+    // "New comment on your post",
+    // "You have a new follower",
+    // "Your profile was updated successfully",
+    // "System update available",
+    // "New message from John Doe",
+    // "Reminder: Meeting at 3 PM",
+    // "Password change successful",
   ]);
   const [deletingIndex, setDeletingIndex] = useState(null);
 
@@ -70,6 +72,7 @@ const Rightside = () => {
               <div className="absolute top-2 right-2 text-red-500 hover:text-red-700 cursor-pointer">
                 <MdOutlineCancel onClick={() => handleDelete(index)} />
               </div>
+              <ToastContainer />
               {notification}
             </div>
           ))}

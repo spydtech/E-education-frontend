@@ -8,6 +8,7 @@ import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { IoShareSocialOutline } from "react-icons/io5";
 import Avatar from "@mui/material/Avatar";
 import { CiCamera } from "react-icons/ci";
+import { API_BASE_URL } from "../../../Config/api";
 
 
 
@@ -68,7 +69,7 @@ const LeftSide = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/users/profile", {
+        const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
 
@@ -77,7 +78,7 @@ const LeftSide = () => {
 
         // Fetch profile photo
         const profilePhotoResponse = await axios.get(
-          `http://localhost:8080/api/users/${user.email}/profile-photo`,
+          `${API_BASE_URL}/api/users/${user.email}/profile-photo`,
           { responseType: "arraybuffer", headers: { Authorization: `Bearer ${jwt}` } }
         );
 
@@ -110,7 +111,7 @@ const LeftSide = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:8080/api/posts/user/postList", {
+        const response = await axios.get(`${API_BASE_URL}/api/posts/user/postList`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
 
@@ -128,7 +129,7 @@ const LeftSide = () => {
             // Fetch image
             if (post.img) {
               try {
-                const imgResponse = await axios.get(`http://localhost:8080/api/posts/${post.id}/image`, {
+                const imgResponse = await axios.get(`${API_BASE_URL}/api/posts/${post.id}/image`, {
                   responseType: "blob",
                   headers: { Authorization: `Bearer ${jwt}` },
                 });
@@ -141,7 +142,7 @@ const LeftSide = () => {
             // Fetch video
             if (post.video) {
               try {
-                const videoResponse = await axios.get(`http://localhost:8080/api/posts/${post.id}/video`, {
+                const videoResponse = await axios.get(`${API_BASE_URL}/api/posts/${post.id}/video`, {
                   responseType: "blob",
                   headers: { Authorization: `Bearer ${jwt}` },
                 });
@@ -155,7 +156,7 @@ const LeftSide = () => {
             if (post.profilePicture) {
               try {
                 const profilePictureResponse = await axios.get(
-                  `http://localhost:8080/api/posts/${post.id}/profile-picture`,
+                  `${API_BASE_URL}/api/posts/${post.id}/profile-picture`,
                   { responseType: "blob", headers: { Authorization: `Bearer ${jwt}` } }
                 );
                 profilePictureBlobUrl = URL.createObjectURL(profilePictureResponse.data);
@@ -221,7 +222,7 @@ const LeftSide = () => {
 
   const deleteTweet = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/posts/deletePost/${id}`, {
+      const response = await axios.delete(`${API_BASE_URL}/api/posts/deletePost/${id}`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
 
@@ -261,7 +262,7 @@ const LeftSide = () => {
   
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/posts/editPost/${editingPost.id}`,
+        `${API_BASE_URL}/api/posts/editPost/${editingPost.id}`,
         { content: editContent },
         { headers: { Authorization: `Bearer ${jwt}` } }
       );
@@ -333,7 +334,7 @@ const LeftSide = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/posts/createPost/media",
+        "${API_BASE_URL}/api/posts/createPost/media",
         formDataToSend,
         { headers: { Authorization: `Bearer ${jwt}`, "Content-Type": "multipart/form-data" } }
       );
@@ -341,17 +342,17 @@ const LeftSide = () => {
       if (response.status === 201 || response.status === 200) {
         const newPost = response.data;
 
-        // Send push notification
-        await axios.post(
-          "http://localhost:8080/api/notifications",
-          {
-            userId: formData.fullName,
-            message: `${formData.fullName} posted: ${tweetData.content.slice(0, 50)}...`,
-            postId: newPost.id,
-            type: "NEW_POST",
-          },
-          { headers: { Authorization: `Bearer ${jwt}` } }
-        );
+        // // Send push notification
+        // await axios.post(
+        //   "${API_BASE_URL}/api/notifications",
+        //   {
+        //     userId: formData.fullName,
+        //     message: `${formData.fullName} posted: ${tweetData.content.slice(0, 50)}...`,
+        //     postId: newPost.id,
+        //     type: "NEW_POST",
+        //   },
+        //   { headers: { Authorization: `Bearer ${jwt}` } }
+        // );
 
         setTweets([response.data, ...tweets]);
         toast.success("Post created successfully!");

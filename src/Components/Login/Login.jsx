@@ -355,11 +355,13 @@ function Login() {
     };
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/signin`, userData);
+      const response = await axios.post(`${API_BASE_URL}/auth/signin`, userData, {
+        headers: { "Content-Type": "application/json" }, // Ensure JSON format
+      });
       if (response.data.status) {
         localStorage.setItem('jwt', response.data.jwt);
         dispatch(login(userData));
-        navigate('/user/*');
+        navigate('/user/dashboard');
       } else {
         setError(response.data.message || 'Invalid credentials.');
       }
