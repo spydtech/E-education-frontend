@@ -29,7 +29,7 @@
 
   import { useState } from "react";
 import { CourseVideoList } from "./CourseVideoList";
-import { VideoPlayer } from "./VideoPlayer";
+import { VideoPlayer } from "./Videoplayer";
 
 export default function CourseDetail({ course, onBack }) {
   const [selectedVideo, setSelectedVideo] = useState(null);
