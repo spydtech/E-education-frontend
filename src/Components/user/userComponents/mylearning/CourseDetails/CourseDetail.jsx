@@ -27,13 +27,9 @@
 // }
 // 
 
-
-
-
- import { useState } from "react";
-import CourseVideoList from "./CourseVideoList";
-import VideoPlayer from "./VideoPlayer";
-
+  import { useState } from "react";
+import { CourseVideoList } from "./CourseVideoList";
+import { VideoPlayer } from "./VideoPlayer";
 
 export default function CourseDetail({ course, onBack }) {
   const [selectedVideo, setSelectedVideo] = useState(null);

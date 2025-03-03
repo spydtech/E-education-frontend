@@ -124,7 +124,7 @@
 // }
 
 import { useState, useEffect } from "react";
-import CourseDetail from "./CourseDetails/CourseDetail"
+import { CourseDetail } from "./CourseDetails/CourseDetail"
 import { API_BASE_URL } from "../../../../Config/api";
 import { useParams } from "react-router-dom";
 
