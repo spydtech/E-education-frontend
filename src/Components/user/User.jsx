@@ -27,6 +27,7 @@ import { MdGroup } from "react-icons/md";
 import { FaRegBookmark } from "react-icons/fa6";
 import AssignmentDetais from "./userComponents/AssignmentDetail";
 import UserSupport from "./userComponents/UserSupport";
+import Profile from "../Profile/Profile"
 const menu = [
   { name: "Dashboard", path: "/user/dashboard", icon: <MdSpaceDashboard /> },
   { name: "My Learning", path: "/user/mylearning", icon: <MdMenuBook /> },
@@ -121,8 +122,10 @@ const User = () => {
               <Route path="/notes/highlights" element={<Notes_Highlights />} />
               <Route path="/calendar" element={<UCalendar />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/support" element={<UserSupport />} />
               <Route path="/assignment/viewassignments" element={<AssignmentDetais />} />
+
 
             </Routes>
           </Box>

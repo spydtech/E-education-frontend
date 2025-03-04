@@ -217,7 +217,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/signUp" element={<SignUp />} />
             {/*  */}
-            <Route path="/Profile" element={<Profile />} />
+            {/* <Route path="/Profile" element={<Profile />} /> */}
             {/* <Route path="/PostFeeds" element={<PostFeeds />} /> */}
             <Route path="/QuestionForm" element={<QuestionForm />} />
             <Route path="/Settings" element={<Settings />} />

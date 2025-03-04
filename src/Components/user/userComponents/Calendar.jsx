@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -54,6 +55,54 @@ const UCalendar = () => {
     fetchMeetings();
   }, [jwt]);
 
+
+   // Request notification permission
+   useEffect(() => {
+    if ("Notification" in window) {
+      Notification.requestPermission().then((permission) => {
+        console.log("Notification permission:", permission);
+        if (permission === "denied") {
+          alert("Please enable notifications in browser settings.");
+        }
+      });
+    }
+  }, []);
+  
+  
+
+  const meetingListRef = useRef(meetingList);
+meetingListRef.current = meetingList;
+
+useEffect(() => {
+  const checkMeetings = () => {
+    const now = moment();
+
+    meetingListRef.current.forEach((meeting) => {
+      const meetingTime = moment(`${meeting.fromDate} ${meeting.fromTime}`, "YYYY-MM-DD hh:mm A");
+      const diffMinutes = meetingTime.diff(now, "minutes");
+
+      if (diffMinutes === 10) {
+        showNotification(meeting);
+      }
+    });
+  };
+
+  const interval = setInterval(checkMeetings, 60000); // Run every minute
+  return () => clearInterval(interval);
+}, []);
+
+
+  // Function to show notification
+  const showNotification = (meeting) => {
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification("Upcoming Meeting", {
+        body: `Your meeting "${meeting.title}" starts in 10 minutes.`,
+        icon: "/meeting-icon.png",
+      });
+    }
+  };
+
+
   // Filter meetings for the selected date
   const meetingsForSelectedDate = meetingList.filter(
     (meeting) =>
@@ -62,9 +111,9 @@ const UCalendar = () => {
   );
 
   return (
-    <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6 bg-gray-50 min-h-screen p-6">
+    <div className="h-[800px] font-poppins -mt-8  flex flex-col lg:flex-row space-y-0 lg:space-y-0 lg:space-x-6 bg-white min-h-screen p-6">
       {/* Calendar Section */}
-      <div className="bg-white p-6 shadow-lg rounded-xl w-full lg:w-2/3">
+      <div className="bg-white p-0 rounded-xl w-full lg:w-2/3 h-[500px]">
         <h1 className="text-2xl font-bold mb-4">
           {moment(selectedDate).format("DD MMM YYYY")}
         </h1>
@@ -90,7 +139,7 @@ const UCalendar = () => {
       </div>
 
       {/* Meetings Sidebar */}
-      <div className="bg-white p-6 shadow-lg rounded-xl w-full lg:w-1/3">
+      <div className="bg-white p-6  rounded-xl w-full lg:w-[350px] h-[500px] overflow-auto">
         <h2 className="text-xl font-semibold mb-4">
           Meetings for {moment(selectedDate).format("DD MMM YYYY")}
         </h2>
@@ -134,8 +183,8 @@ const UCalendar = () => {
         .custom-calendar {
           width: 100%;
           max-width: 800px;
-          height: 600px;
-          font-size: 16px;
+          height: 500px;
+          font-size: 14px;
         }
         .custom-calendar .react-calendar__tile {
           padding: 1.5em 0.5em;
