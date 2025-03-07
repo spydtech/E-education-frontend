@@ -1,14 +1,12 @@
 # Step 1: Build Stage
 FROM node:18 AS builder
 WORKDIR /E-education-frontend
+ 
 # Copy only package.json and package-lock.json first (optimizing Docker cache)
 COPY package*.json ./
  
-# Ensure the correct version of npm is used
-RUN npm install vite@latest @vitejs/plugin-react@latest --save-dev
- 
-# Install dependencies without dev dependencies
-RUN npm install --omit=dev && npm cache clean --force
+# Install all dependencies (including dev dependencies)
+RUN npm install
  
 # Copy the rest of the project files
 COPY . .
@@ -18,7 +16,9 @@ RUN npm run build
  
 # Step 2: NGINX Stage
 FROM nginx:latest
-COPY --from=builder /app/dist /usr/share/nginx/html  # Vite outputs to 'dist' folder
+ 
+# Copy the built files from the builder stage
+COPY --from=builder /E-education-frontend/dist /usr/share/nginx/html
  
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
