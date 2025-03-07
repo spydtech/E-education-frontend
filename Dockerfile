@@ -18,7 +18,7 @@ RUN npm run build
 FROM nginx:latest
  
 # Copy the built files from the builder stage
-COPY --from=builder /E-education-frontend/dist /usr/share/nginx/html
+COPY --from=builder /E-education-frontend/build/usr/share/nginx/html
  
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
