@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const BasicJavaScriptFoot = () => {
   const [courseName] = useState("Basic JavaScript"); // Placeholder for course name
-  const [coursePrice] = useState(34999);
+  const [coursePrice] = useState(4999);
   const [courseDuration] = useState("2 months");
   const navigate = useNavigate();
 

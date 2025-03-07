@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, IconButton, CircularProgress } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { API_BASE_URL } from "../Config/api";
+import { API_BASE_URL } from "../../Config/api";
 
-const Notification1 = ({ isOpen, onClose }) => {
+const NotificationBar = ({ isOpen, onClose }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -139,4 +139,4 @@ const Notification1 = ({ isOpen, onClose }) => {
   );
 };
 
-export default Notification1;
+export default NotificationBar;

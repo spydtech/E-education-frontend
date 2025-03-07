@@ -1,18 +1,10 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import { FaExternalLinkAlt, FaBell } from "react-icons/fa";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import MyLearning from "./mylearning/MyLearning";
-import Notes_Highlights from "./Notes_Highlights";
-import CourseGroup from "./CourseGroup";
 import { useNavigate } from "react-router-dom";
-// import { FaExternalLinkAlt } from "react-icons/fa";
 import { getUser, logout } from "../../../State/Auth/Action";
-import { Disclosure } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { API_BASE_URL } from "../../../Config/api";
-
-
-
 
 const courses = [
   {
@@ -46,22 +38,15 @@ const weeklyData = [
 ];
 
 const UserDashboard = () => {
-  // const [showNotes, setShowNotes] = useState(false);
-  // const [showCourseGroup, setShowCourseGroup] = useState(false);
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState("");
   const [dayOfWeek, setDayOfWeek] = useState("");
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [toDoItems, setToDoItems] = useState([]);
+  const jwt = localStorage.getItem("jwt");
 
-
-
-   // Define the to-do list items with data like text, date, and checked status
-   const [toDoItems, setToDoItems] = useState([]);
-   const jwt = localStorage.getItem("jwt");// Retrieve JWT token
-  
-   // Fetch the to-do items when the component mounts
-   useEffect(() => {
+  useEffect(() => {
     fetchToDoList();
   }, []);
 
@@ -71,52 +56,42 @@ const UserDashboard = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`, // Make sure the token is correct
+          Authorization: `Bearer ${jwt}`,
         },
       });
-  
+
       if (!response.ok) {
-        // Log the response body if it provides more details
         const errorData = await response.json();
         throw new Error(`Failed to fetch to-do list: ${errorData.message || response.statusText}`);
       }
-  
+
       const data = await response.json();
-      setToDoItems(data); // Update state with the fetched to-do list items
+      setToDoItems(data);
     } catch (error) {
       console.error("Error fetching to-do list:", error.message);
     }
   };
+
   useEffect(() => {
-    // Get current date
     const today = new Date();
     const formattedDate = today.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
     });
-
-    // Get current day name
     const dayName = today.toLocaleDateString("en-US", { weekday: "long" });
-
     setCurrentDate(formattedDate);
     setDayOfWeek(dayName);
-
-    // Get username from localStorage (assuming it's stored after login)
-    // const storedUsername = localStorage.getItem("username");
-    // setUsername(storedUsername || "User"); // Default to "User" if not found
   }, []);
- // Get username from auth state or localStorage
- const username = auth?.user?.firstName || localStorage.getItem("username") || "User";
 
- useEffect(() => {
-   if (jwt) {
-     dispatch(getUser(jwt));
-   }
- }, [jwt, dispatch]);
+  const username = auth?.user?.firstName || localStorage.getItem("username") || "User";
 
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, dispatch]);
 
-  // Handle checkbox changes to toggle checked status
   const handleCheckboxChange = (id) => {
     setToDoItems((prevItems) =>
       prevItems.map((item) =>
@@ -126,30 +101,29 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="p-6 bg-white min-h-screen font-poppins">
-       <div>
-        <h1 className="text-xl font-semibold">
-          Hi, <span className="font-normal">{username}</span>
-        </h1>
-        {/* <p className="text-gray-500">{localStorage.getItem("user_id") || "user_id"}</p> */}
+    <div className="p-4 sm:p-6 bg-white min-h-screen font-poppins">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div>
+          <h1 className="text-xl font-semibold">
+            Hi, <span className="font-normal">{username}</span>
+          </h1>
+        </div>
+        <div className="text-right mt-2 sm:mt-0">
+          <p className="text-gray-500">{currentDate}</p>
+          <p className="text-gray-500">{dayOfWeek}</p>
+        </div>
       </div>
-      <div className="text-right">
-        <p className="text-gray-500">{currentDate}</p>
-        <p className="text-gray-500">{dayOfWeek}</p>
-      </div>
-    
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
         {/* Course Progress */}
-        <div className="lg:col-span-2 bg-[#F2F8FF]  rounded-2xl p-4 relative">
-          <FaExternalLinkAlt
-            className="absolute top-4 right-4 text-gray-600 cursor-pointer"
-            onClick={() => setShowCourseGroup(true)}
-          />
+        <div className="lg:col-span-2 bg-[#F2F8FF] rounded-2xl p-4 relative">
+          <FaExternalLinkAlt className="absolute top-4 right-4 text-gray-600 cursor-pointer" />
           <h2 className="text-lg font-semibold">Course Progress</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 bg-[#F2F8FF]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             {courses.map((course) => (
-              <div key={course.id} className="bg-[#F2F8FF] rounded-lg  p-4 border-2">
+              <div key={course.id} className="bg-white rounded-lg p-4 border-2">
                 <div className="bg-blue-600 text-white p-2 rounded-t-lg font-bold">{course.name}</div>
                 <div className="p-2">
                   <p className="text-sm"><strong>Trainer:</strong> {course.trainer}</p>
@@ -172,21 +146,20 @@ const UserDashboard = () => {
         </div>
 
         {/* Upcoming Meeting */}
-        <div className="bg-[#F2F8FF]  rounded-2xl p-4 relative">
-          <FaBell className="absolute top-4 right-4 text-gray-600 " />
+        <div className="bg-[#F2F8FF] rounded-2xl p-4 relative">
+          <FaBell className="absolute top-4 right-4 text-gray-600" />
           <h2 className="text-lg font-semibold">Upcoming Meeting</h2>
-          <div className="border-2 rounded-lg p-2">
-         
-          <h3 className="font-semibold mt-2">UI/UX Fundamentals</h3>
-          <p className="text-gray-600">DD/MM/YYYY HH:MM:SS</p>
-          <p className="text-gray-500">Group - UI/UX</p>
-          <p className="text-red-500 font-semibold mt-1">Starts in <span className="text-red-600">30min</span></p>
-          <a href="#" className="text-blue-500 underline">Click here to join</a>
+          <div className="border-2 rounded-lg p-2 mt-2">
+            <h3 className="font-semibold">UI/UX Fundamentals</h3>
+            <p className="text-gray-600">DD/MM/YYYY HH:MM:SS</p>
+            <p className="text-gray-500">Group - UI/UX</p>
+            <p className="text-red-500 font-semibold mt-1">Starts in <span className="text-red-600">30min</span></p>
+            <a href="#" className="text-blue-500 underline">Click here to join</a>
           </div>
         </div>
 
         {/* Weekly Activity */}
-        <div className="lg:col-span-2 bg-[#F2F8FF]  rounded-2xl p-4">
+        <div className="lg:col-span-2 bg-[#F2F8FF] rounded-2xl p-4">
           <h2 className="text-lg font-semibold">This Week</h2>
           <p className="text-right text-sm text-gray-500">Mon - Sun</p>
           <div className="mt-4">
@@ -203,28 +176,27 @@ const UserDashboard = () => {
         </div>
 
         {/* To-do List */}
-        <div className="bg-yellow-200  rounded-lg p-4 relative">
-      <FaExternalLinkAlt
-        className="absolute top-4 right-4 text-gray-600 cursor-pointer"
-        onClick={() => navigate("/user/notes/highlights")}
-      />
-      <h2 className="text-lg font-semibold">To-do List</h2>
-      <p className="text-sm text-gray-600">14 June 2024</p>
-      <div className="mt-2 space-y-2">
-            {/* Map over the to-do items and display each one */}
+        <div className="bg-yellow-200 rounded-lg p-4 relative">
+          <FaExternalLinkAlt
+            className="absolute top-4 right-4 text-gray-600 cursor-pointer"
+            onClick={() => navigate("/user/notes/highlights")}
+          />
+          <h2 className="text-lg font-semibold">To-do List</h2>
+          <p className="text-sm text-gray-600">14 June 2024</p>
+          <div className="mt-2 space-y-2">
             {toDoItems.map((item) => (
               <div key={item.id} className="flex items-start">
                 <input
                   type="checkbox"
                   className="mt-1 mr-2"
                   checked={item.checked}
-                  onChange={() => handleCheckboxChange(item.id)} // Toggle checked status
+                  onChange={() => handleCheckboxChange(item.id)}
                 />
                 <p>{item.report}</p>
               </div>
             ))}
           </div>
-    </div>
+        </div>
       </div>
     </div>
   );

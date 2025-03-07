@@ -4,36 +4,23 @@ import { API_BASE_URL } from "../../Config/api";
 
 const token = localStorage.getItem("jwt");
 
-// Update with your backend URL
+///const API_BASE_URL = "http://localhost:8080"; // Change if needed
 
 export const likePost = async (postId, token) => {
-    if (!token) {
-      console.error("Authorization token is missing.");
-      return;
-    }
-  
-    try {
-      const response = await axios.put(
-        `${API_BASE_URL}/api/posts/${postId}/like`,
-        {}, // Empty body as it's a PUT request
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-  
-      console.debug("Post liked successfully:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error liking post:",
-        error.response ? error.response.data : error.message
-      );
-      throw error;
-    }
-  };
+  const response = await fetch(`${API_BASE_URL}/api/likes/${postId}`, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to like the post");
+  }
+
+  return response.json(); // Return updated like count
+};
 
 
  // Create a Comment
@@ -66,12 +53,29 @@ export const createComment = async (jwt, postId, commentData) => {
   
   
   export const fetchComments = async (postId) => {
+    if (!postId) {
+      console.error("Invalid postId:", postId);
+      return [];
+    }
+ 
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      console.error("User not authenticated. No token found.");
+      return [];
+    }
+ 
     try {
-      const response = await axios.get(`${API_BASE_URL}/comments/${postId}`);
+      console.log(`Fetching comments for postId: ${postId}`);
+      const response = await axios.get(`${API_BASE_URL}/comments/${postId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+ 
+      console.log("Comments fetched successfully:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Error fetching comments:", error);
-      throw error;
+      console.error("Error fetching comments:", error.response?.data || error.message);
+      return [];
     }
   };
+ 
   

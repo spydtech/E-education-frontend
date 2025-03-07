@@ -10,6 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import { CiCamera } from "react-icons/ci";
 import { API_BASE_URL } from "../../../Config/api";
 import { likePost } from "../../../State/Post/Postmethod";
+import { createComment, fetchComments  } from "../../../State/Post/Postmethod";
 
 // Modal Styles
 const customStyles = {
@@ -47,64 +48,174 @@ const LeftSide = () => {
   const [editContent, setEditContent] = useState("");
   const [editMedia, setEditMedia] = useState(null);
   const [likes, setLikes] = useState({});
+  const [comments, setComments] = useState({});
+    const [replyData, setReplyData] = useState(null); // { commentId, tweetId }
+    const [replyText, setReplyText] = useState("");
 
 
-  const jwt = localStorage.getItem("jwt"); // Retrieve JWT from localStorage
 
-  const handleLike = async (postId) => {
-    const token = localStorage.getItem("jwt");
-  
-    if (!token) {
-      console.error("User is not authenticated.");
-      return;
-    }
-  
-    try {
-      const updatedPost = await likePost(postId, token);
-  
-      setTweets((prevTweets) =>
-        prevTweets.map((tweet) =>
-          tweet.id === postId ? { ...tweet, isLiked: !tweet.isLiked } : tweet
-        )
-      );
-    } catch (error) {
-      console.error("Failed to like the post:", error);
-    }
-  };
+
+
+     const jwt = localStorage.getItem("jwt");
+    
+      const handleAddComment = async (postId) => {
+        if (!commentData.trim()) return;
+    
+        try {
+          const newComment = await createComment(jwt, postId, commentData);
+          setComments((prev) => ({
+            ...prev,
+            [postId]: [...(prev[postId] || []), newComment],
+          }));
+          setCommentData("");
+        } catch (error) {
+          console.error("Failed to create comment", error);
+        }
+      };
+    
+    
+      const toggleCommentInput = async (postId) => {
+        if (!visibleComments[postId]) {
+          setVisibleComments((prev) => ({ ...prev, [postId]: true }));
+          if (!comments[postId]) {
+            try {
+              const fetchedComments = await fetchComments(postId);
+              setComments((prev) => ({ ...prev, [postId]: fetchedComments }));
+            } catch (error) {
+              console.error("Failed to fetch comments", error);
+            }
+          }
+        } else {
+          setVisibleComments((prev) => ({ ...prev, [postId]: false }));
+        }
+      };
+
+   const handleAddReply = async (postId, commentId) => {
+      if (!replyText.trim()) return;
+    
+      const token = localStorage.getItem("jwt"); // Ensure the correct token key
+    
+      if (!token) {
+        console.error("User is not authenticated.");
+        alert("Session expired. Please log in again.");
+        return;
+      }
+    
+      try {
+        const response = await fetch(`${API_BASE_URL}/comments/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${token}`, // Corrected token key
+          },
+          body: new URLSearchParams({
+            postId: postId,
+            content: replyText,
+            parentCommentId: commentId, //  Send parentCommentId to link replies
+          }),
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Failed to add reply: ${response.statusText}`);
+        }
+    
+        const newReply = await response.json(); // Get the saved reply from backend
+    
+        //  Update state with the new reply from backend
+        setComments((prev) => ({
+          ...prev,
+          [postId]: prev[postId].map((comment) =>
+            comment.id === commentId
+              ? { ...comment, replies: [...(comment.replies || []), newReply] }
+              : comment
+          ),
+        }));
+    
+        setReplyText(""); 
+        setReplyData(null);
+      } catch (error) {
+        console.error("Failed to add reply:", error);
+        alert("An error occurred while adding the reply. Please try again.");
+      }
+    };
+
+ 
+   const handleLike = async (postId) => {
+     const token = localStorage.getItem("jwt");
+ 
+     if (!token) {
+       console.error("User is not authenticated.");
+       return;
+     }
+ 
+     try {
+       const updatedLikeCount = await likePost(postId, token);
+ 
+       setTweets((prevTweets) =>
+         prevTweets.map((tweet) =>
+           tweet.id === postId
+             ? { ...tweet, isLiked: !tweet.isLiked, likeCount: updatedLikeCount }
+             : tweet
+         )
+       );
+     } catch (error) {
+       console.error("Failed to like the post:", error);
+     }
+   };
   
 
-  // Fetch user profile data
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
-
+  
         const user = response.data;
         const fullName = `${user.firstName} ${user.lastName}`;
-
+  
         // Fetch profile photo
-        const profilePhotoResponse = await axios.get(
-          `${API_BASE_URL}/api/users/${user.email}/profile-photo`,
-          { responseType: "arraybuffer", headers: { Authorization: `Bearer ${jwt}` } }
-        );
-
-        const profilePhotoBlob = new Blob([profilePhotoResponse.data], { type: "image/jpeg" });
-        const profilePhotoUrl = URL.createObjectURL(profilePhotoBlob);
-
-        setFormData({
-          fullName,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          profilePhoto: profilePhotoUrl,
-        });
+        try {
+          const profilePhotoResponse = await axios.get(
+            `${API_BASE_URL}/api/users/${user.email}/profile-photo`,
+            { responseType: "arraybuffer", headers: { Authorization: `Bearer ${jwt}` } }
+          );
+  
+          const profilePhotoBlob = new Blob([profilePhotoResponse.data], { type: "image/jpeg" });
+          const profilePhotoUrl = URL.createObjectURL(profilePhotoBlob);
+  
+          setFormData({
+            fullName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            profilePhoto: profilePhotoUrl,
+          });
+        } catch (photoError) {
+          console.error("Error fetching profile photo:", photoError);
+          // Set a default profile photo if the photo fetch fails
+          setFormData({
+            fullName,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            profilePhoto: defaultProfilePic, // Use a default profile picture
+          });
+        }
       } catch (error) {
         console.error("Error fetching user profile data:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          console.error("Request data:", error.request);
+        } else {
+          console.error("Error message:", error.message);
+        }
       }
     };
-
+  
     fetchUserProfile();
   }, [jwt]);
 
@@ -358,8 +469,8 @@ const LeftSide = () => {
                     className="flex justify-center items-center flex-row gap-2 text-[#0098F1] mr-4 cursor-pointer"
                     onClick={() => handleLike(tweet.id)}
                   >
-                    {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
-                    <span>{tweet.isLiked ? "1" : "Like"}</span>
+                     {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
+                                    <span>{tweet.likeCount}</span>
                   </div>
                   <div
                     className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]"
@@ -376,30 +487,108 @@ const LeftSide = () => {
 
                 {/* Comment section */}
                 {visibleComments[tweet.id] && (
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      className="w-full border border-gray-300 rounded px-3 py-2"
-                      placeholder="Write a comment..."
-                      value={commentData}
-                      onChange={(e) => setCommentData(e.target.value)}
-                    />
-                    <button
-                      className="mt-2 bg-[#0098f1] text-white py-2 px-4 rounded"
-                      onClick={() => addComment(tweet.id)}
-                    >
-                      Comment
-                    </button>
-                    <div className="mt-4">
-                      {tweet.comments &&
-                        tweet.comments.map((comment) => (
-                          <div key={comment.id} className="p-2 bg-gray-100 rounded mt-2">
-                            {comment.text}
-                          </div>
-                        ))}
-                    </div>
-                  </div>
-                )}
+  <div className="mt-2">
+    <input
+      type="text"
+      className="w-full border border-gray-300 rounded px-3 py-2"
+      placeholder="Write a comment..."
+      value={commentData}
+      onChange={(e) => setCommentData(e.target.value)}
+    />
+    <button
+      className="mt-2 bg-[#0098f1] text-white py-2 px-4 rounded"
+      onClick={() => handleAddComment(tweet.id)}
+    >
+      Comment
+    </button>
+    <div className="mt-4">
+    {comments[tweet.id] &&
+  comments[tweet.id].map((comment) => (
+    <div
+      key={comment.id}
+      className="p-4 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm mt-3 flex items-start gap-4 transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+    >
+     {/* Profile Picture */}
+<img
+  src={comment.profilePicture || "/default-profile.png"}
+  alt={comment.name}
+  className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
+/>
+
+<div className="flex-1">
+  {/* User Name */}
+  <strong className="text-gray-800 dark:text-gray-200 font-semibold">
+    {comment.firstName
+      ? `${comment.firstName.split("@")[0]}` 
+      : "Unknown User"}
+  </strong>
+  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{comment.content}</p>
+
+        {/* Reply Button */}
+  <button
+          className="mt-2 text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
+        onClick={() => setReplyData({ commentId: comment.id, tweetId: tweet.id })}
+>
+  Reply
+</button>
+
+  {/* Reply Input Field */}
+  {replyData?.commentId === comment.id && (
+    <div className="mt-3">
+      <input
+        type="text"
+        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-all"
+        placeholder="Write a reply..."
+        value={replyText}
+        onChange={(e) => setReplyText(e.target.value)}
+      />
+      <button
+        className="mt-2 bg-green-500 hover:bg-green-600 text-white py-1.5 px-4 rounded-lg text-sm transition-all"
+        onClick={() => handleAddReply(tweet.id, comment.id)}
+      >
+        Reply
+      </button>
+    </div>
+  )}
+
+  {/* Display Replies */}
+  {comment.replies && comment.replies.length > 0 && (
+    <div className="ml-10 mt-3 space-y-2">
+      {comment.replies.map((reply) => (
+        <div
+          key={reply.id}
+          className="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 shadow-sm flex items-start gap-3"
+        >
+          {/* Profile Picture for Replies */}
+          <img
+            src={reply.profilePicture || "/default-profile.png"} 
+            alt={reply.firstName}
+            className="w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600"
+          />
+          <div>
+            {/* User Name for Replies */}
+            <strong className="text-gray-800 dark:text-gray-200 font-semibold">
+              {reply.firstName
+                ? `${reply.firstName.split("@")[0]}` 
+                : "Unknown User"}
+            </strong>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+              {reply.content}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+      
+    </div>
+  ))}
+
+    </div>
+  </div>
+)}
               </div>
             ))}
           </div>

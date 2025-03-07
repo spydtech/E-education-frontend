@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { MdMenuBook } from "react-icons/md";
-import { MdOutlineSettings } from "react-icons/md";
-import {
-  ExpandLess,
-  ExpandMore,
-  Dashboard as DashboardIcon,
-  Settings as SettingsIcon,
-} from "@mui/icons-material";
-import { FaCalendarAlt } from "react-icons/fa";
-import { GrStatusGood } from "react-icons/gr";
+import { IoMdMenu, IoMdClose } from "react-icons/io"; // Sidebar Toggle Icons
+import { MdSpaceDashboard, MdMenuBook, MdAssignment, MdGroup, MdOutlineSettings } from "react-icons/md";
+import { FaRegBookmark, FaCalendarAlt } from "react-icons/fa";
+import Navbar from "../Navbar";
 import UserDashboard from "./userComponents/Dashboard";
 import MyLearning from "./userComponents/mylearning/MyLearning";
 import CourseGroup from "./userComponents/CourseGroup";
@@ -20,28 +13,16 @@ import Assignment from "./userComponents/Assignment";
 import Notes_Highlights from "./userComponents/Notes_Highlights";
 import UCalendar from "./userComponents/Calendar";
 import Settings from "./userComponents/Settings";
-import Navbar from "../Navbar";
-import { MdSpaceDashboard } from "react-icons/md";
-import { MdAssignment } from "react-icons/md";
-import { MdGroup } from "react-icons/md";
-import { FaRegBookmark } from "react-icons/fa6";
-import AssignmentDetais from "./userComponents/AssignmentDetail";
+import Profile from "../Profile/Profile";
 import UserSupport from "./userComponents/UserSupport";
-import Profile from "../Profile/Profile"
+import AssignmentDetais from "./userComponents/AssignmentDetail";
+
 const menu = [
   { name: "Dashboard", path: "/user/dashboard", icon: <MdSpaceDashboard /> },
   { name: "My Learning", path: "/user/mylearning", icon: <MdMenuBook /> },
-  {
-    name: "Course and Group",
-    path: "/user/coursegroup",
-    icon: <MdGroup />,
-  },
+  { name: "Course & Group", path: "/user/coursegroup", icon: <MdGroup /> },
   { name: "Assignment", path: "/user/assignment", icon: <MdAssignment /> },
-  {
-    name: "Notes/HighLights",
-    path: "/user/notes/highlights",
-    icon: <FaRegBookmark />,
-  },
+  { name: "Notes/Highlights", path: "/user/notes/highlights", icon: <FaRegBookmark /> },
   { name: "Calendar Sync", path: "/user/calendar", icon: <FaCalendarAlt /> },
   { name: "Support", path: "/user/support", icon: <MdOutlineSettings /> },
   { name: "Settings", path: "/user/settings", icon: <MdOutlineSettings /> },
@@ -49,70 +30,65 @@ const menu = [
 
 const User = () => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [openSubMenu, setOpenSubMenu] = useState(null);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   if (jwt) {
-  //     dispatch(getUser(jwt));
-  //   }
-  // }, [dispatch]);
-
-  const getCurrentPageName = () => {
-    const currentPath = location.pathname;
-    return menu.find((item) => item.path === currentPath)?.name || "Dashboard";
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   return (
     <>
       <Navbar />
-      <div className="flex relative overflow-hidden h-[90vh]  font-poppins">
+      <div className="flex relative h-[90vh] font-poppins">
+        
+        {/* Sidebar Toggle Button (Only for Mobile & Tablet) */}
+        {isMobile || isTablet ? (
+          <button
+            onClick={toggleSidebar}
+            className="absolute top-0 left-4 z-50  text-gray-600 p-2 rounded-md"
+          >
+            {sidebarOpen ? <IoMdClose size={16} /> : <IoMdMenu size={16} />}
+          </button>
+        ) : null}
+
+        {/* Sidebar Navigation */}
         <motion.div
-          className={`fixed inset-0 z-40 ${
-            isSmallScreen ? "block" : "hidden"
-          } md:static md:block bg-[#6AC8FF]  text-white w-64`}
-          initial={{ x: -250 }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.5 }}
+          className={`fixed top-18 left-0 z-40 h-full w-64 bg-blue-500 text-white md:static md:block transform ${
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 transition-transform duration-300`}
         >
-          <ul className="mt-10 space-y-4">
-            {menu.map((item, index) => {
+          <ul className="mt-10 space-y-4 px-4">
+            {menu.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <motion.li
                   key={item.name}
                   whileHover={{ scale: 1.05 }}
-                  animate={
-                    isActive
-                      ? { scale: 1.1, fontSize: "1rem" }
-                      : { scale: 1, fontSize: "0.8rem" }
-                  }
-                  transition={{ duration: 0.3 }}
-                  className={`p-3 mx-5 flex items-center cursor-pointer rounded-md space-x-2 
-                  ${isActive ? "bg-[#0098F1] text-white " : "text-black"}`}
-                  onClick={() => navigate(item.path)}
+                  className={`p-3 flex items-center cursor-pointer rounded-md space-x-2 ${
+                    isActive ? "bg-blue-700 text-white" : "text-white"
+                  }`}
+                  onClick={() => {
+                    navigate(item.path);
+                    setSidebarOpen(false);
+                  }}
                 >
                   {item.icon} <span>{item.name}</span>
-                  {item.subMenu &&
-                    (openSubMenu === index ? <ExpandLess /> : <ExpandMore />)}
                 </motion.li>
               );
             })}
           </ul>
         </motion.div>
 
-        <div className="flex-grow h-[90vh] overflow-y-scroll">
-          {/* <Box
-          component="header"
-          className="p-2 bg-gray-800 text-white text-center"
+        {/* Main Content Area */}
+        <div
+          className={`flex-grow h-[90vh] overflow-y-auto transition-all duration-300 ${
+            sidebarOpen ? "opacity-50 pointer-events-none" : "opacity-100"
+          }`}
         >
-          <h1>{getCurrentPageName()}</h1>
-        </Box> */}
           <Box component="main" className="p-4">
             <Routes>
               <Route path="/dashboard" element={<UserDashboard />} />
@@ -125,8 +101,6 @@ const User = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/support" element={<UserSupport />} />
               <Route path="/assignment/viewassignments" element={<AssignmentDetais />} />
-
-
             </Routes>
           </Box>
         </div>

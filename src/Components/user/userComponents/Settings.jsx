@@ -4,7 +4,6 @@ import UpdatePassword from "../../Profile/updatepassword/Update_Password";
 import PaymentHistory from "../../Profile/Payment/PaymentHistory";
 import UserProfile from "../../Profile/Profile";
 
-
 const Settings = () => {
   const [activeTab, setActiveTab] = useState("password");
   const jwt = localStorage.getItem("jwt");
@@ -16,17 +15,17 @@ const Settings = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-6 ">
+    <div className="w-full md:max-w-6xl max-w-3xl mx-auto p-4 md:p-6">
       {/* Tab Buttons */}
-      <div className="flex justify-evenly space-x-4 mb-6">
+      <div className="flex flex-wrap justify-center md:justify-evenly space-x-2 md:space-x-4 mb-4">
         {["update password", "payment history", "profile"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-2  0 ${
+            className={`px-4 py-2 text-sm md:text-base rounded-lg transition-all duration-200 ${
               activeTab === tab
-                ? "  border-b-[4px] border-b-blue-500  transition-all duration-30 "
-                : "text-gray-400"
+                ? "border-b-4 border-blue-500 font-semibold text-blue-600"
+                : "text-gray-500 hover:text-blue-500"
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -35,7 +34,7 @@ const Settings = () => {
       </div>
 
       {/* Animated Content Switching */}
-      <div className="relative">
+      <div className="relative bg-white p-4 md:p-6 rounded-lg ">
         <AnimatePresence mode="wait">
           {activeTab === "update password" && (
             <motion.div
@@ -67,7 +66,7 @@ const Settings = () => {
               animate="animate"
               exit="exit"
             >
-             <UserProfile jwt={jwt} />
+              <UserProfile jwt={jwt} />
             </motion.div>
           )}
         </AnimatePresence>

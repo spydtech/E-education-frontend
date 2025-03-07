@@ -4,11 +4,12 @@ import backgroundImage from "../../../../assetss/Basic_Courses/BasicWordpress/bg
 
 const WordpressHero = () => {
   const [courseName] = useState("Basic WordPress");
-  const [coursePrice] = useState(14999);
+  const [coursePrice] = useState(4999);
+  const [courseDuration] = useState("2 months");
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

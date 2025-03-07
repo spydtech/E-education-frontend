@@ -63,70 +63,99 @@ export default function Post() {
 
 
   const toggleCommentInput = async (postId) => {
-    setVisibleComments((prev) => ({
-      ...prev,
-      [postId]: !prev[postId],
-    }));
-
-    if (!comments[postId]) {
-      try {
-        const fetchedComments = await fetchComments(postId);
-        setComments((prev) => ({
-          ...prev,
-          [postId]: fetchedComments,
-        }));
-      } catch (error) {
-        console.error("Failed to fetch comments", error);
+    if (!visibleComments[postId]) {
+      setVisibleComments((prev) => ({ ...prev, [postId]: true }));
+      if (!comments[postId]) {
+        try {
+          const fetchedComments = await fetchComments(postId);
+          setComments((prev) => ({ ...prev, [postId]: fetchedComments }));
+        } catch (error) {
+          console.error("Failed to fetch comments", error);
+        }
       }
+    } else {
+      setVisibleComments((prev) => ({ ...prev, [postId]: false }));
     }
   };
+  
 
   
 
   
 
   const handleLike = async (postId) => {
-      const token = localStorage.getItem("jwt");
-    
-      if (!token) {
-        console.error("User is not authenticated.");
-        return;
-      }
-    
-      try {
-        const updatedPost = await likePost(postId, token);
-    
-        setTweets((prevTweets) =>
-          prevTweets.map((tweet) =>
-            tweet.id === postId ? { ...tweet, isLiked: !tweet.isLiked } : tweet
-          )
-        );
-      } catch (error) {
-        console.error("Failed to like the post:", error);
-      }
-    };
+    const token = localStorage.getItem("jwt");
 
+    if (!token) {
+      console.error("User is not authenticated.");
+      return;
+    }
 
-    const handleAddReply = async (postId, commentId) => {
-      if (!replyText.trim()) return;
+    try {
+      const updatedLikeCount = await likePost(postId, token);
+
+      setTweets((prevTweets) =>
+        prevTweets.map((tweet) =>
+          tweet.id === postId
+            ? { ...tweet, isLiked: !tweet.isLiked, likeCount: updatedLikeCount }
+            : tweet
+        )
+      );
+    } catch (error) {
+      console.error("Failed to like the post:", error);
+    }
+  };
   
-      try {
-        const newReply = { id: Date.now(), content: replyText }; // Simulating a reply ID
-        setComments((prev) => ({
-          ...prev,
-          [postId]: prev[postId].map((comment) =>
-            comment.id === commentId
-              ? { ...comment, replies: [...(comment.replies || []), newReply] }
-              : comment
-          ),
-        }));
-        setReplyText("");
-        setReplyData(null);
-      } catch (error) {
-        console.error("Failed to add reply", error);
+
+
+  const handleAddReply = async (postId, commentId) => {
+    if (!replyText.trim()) return;
+  
+    const token = localStorage.getItem("jwt"); // Ensure the correct token key
+  
+    if (!token) {
+      console.error("User is not authenticated.");
+      alert("Session expired. Please log in again.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${API_BASE_URL}/comments/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: `Bearer ${token}`, // Corrected token key
+        },
+        body: new URLSearchParams({
+          postId: postId,
+          content: replyText,
+          parentCommentId: commentId, //  Send parentCommentId to link replies
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to add reply: ${response.statusText}`);
       }
-    };
-    
+  
+      const newReply = await response.json(); // Get the saved reply from backend
+  
+      //  Update state with the new reply from backend
+      setComments((prev) => ({
+        ...prev,
+        [postId]: prev[postId].map((comment) =>
+          comment.id === commentId
+            ? { ...comment, replies: [...(comment.replies || []), newReply] }
+            : comment
+        ),
+      }));
+  
+      setReplyText(""); 
+      setReplyData(null);
+    } catch (error) {
+      console.error("Failed to add reply:", error);
+      alert("An error occurred while adding the reply. Please try again.");
+    }
+  };
 
   useEffect(() => {
     fetchUserProfile();
@@ -162,7 +191,7 @@ export default function Post() {
         headers: { Authorization: `Bearer ${jwt}` },
       });
 
-      const postsWithMedia = await Promise.all(
+      const postsWithDetails = await Promise.all(
         response.data.map(async (post) => {
           let imgBlobUrl = null;
           let videoBlobUrl = null;
@@ -197,15 +226,31 @@ export default function Post() {
             }
           }
 
+          //  Fetch like details from backend
+          let isLiked = false;
+          let likeCount = 0;
+          try {
+            const likeResponse = await axios.get(
+              `${API_BASE_URL}/api/likes/${post.id}/details`,
+              { headers: { Authorization: `Bearer ${jwt}` } }
+            );
+            isLiked = likeResponse.data.isLiked;
+            likeCount = likeResponse.data.likeCount;
+          } catch (error) {
+            console.error(`Error fetching like details for post ${post.id}:`, error);
+          }
+
           return {
             ...post,
             img: imgBlobUrl,
             video: videoBlobUrl,
+            isLiked, // Store isLiked
+            likeCount, //  Store likeCount
           };
         })
       );
 
-      setTweets(postsWithMedia);
+      setTweets(postsWithDetails);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -213,10 +258,10 @@ export default function Post() {
       setLoading(false);
     }
   };
-
   const handleChange = (e) => {
-    setTweetData({ ...tweetData, content: e.target.value });
+    setTweetData({ ...tweetData, content: e.target.value.trimStart() });
   };
+  
 
   const handleAddMedia = (e) => {
     const selectedFile = e.target.files[0];
@@ -280,13 +325,14 @@ export default function Post() {
           videoBlobUrl = URL.createObjectURL(videoResponse.data);
         }
 
-        setTweets([
+         // Add the new post to the BEGINNING of the tweets array
+         setTweets((prevTweets) => [
           {
             ...newPost,
             img: imgBlobUrl,
             video: videoBlobUrl,
           },
-          ...tweets,
+          ...prevTweets, // Spread the existing tweets after the new post
         ]);
 
           // Call notification API
@@ -414,7 +460,7 @@ export default function Post() {
             <div className="flex text-start space-x-5">
               <Avatar
                 alt={tweet.postedBY || "Unknown User"}
-                src={tweet.profilePicture || "/default-profile.png"}
+                src={tweet.profilePicture || ""}
               />
               <div className="text-start">
                 <div className="font-semibold">{tweet.name || "Unknown User"}</div>
@@ -446,7 +492,7 @@ export default function Post() {
                 onClick={() => handleLike(tweet.id)}
               >
                 {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
-                <span>{tweet.isLiked ? "1" : "Like"}</span>
+                <span>{tweet.likeCount}</span>
               </div>
               <div
                 className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]"
@@ -483,63 +529,81 @@ export default function Post() {
       key={comment.id}
       className="p-4 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm mt-3 flex items-start gap-4 transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700"
     >
-      {/* Profile Picture */}
-      <img
-        src={comment.profilePicture || "/default-profile.png"}
-        alt={comment.user}
-        className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
-      />
+     {/* Profile Picture */}
+<img
+  src={comment.profilePicture || "/default-profile.png"}
+  alt={comment.name}
+  className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
+/>
 
-      <div className="flex-1">
-        {/* User Name with Initials */}
-        <strong className="text-gray-800 dark:text-gray-200 font-semibold">
-          {comment.user
-            ? `${comment.user.split(" ")[0][0]}. ${comment.user.split(" ")[1][0]}.`
-            : "Unknown User"}
-        </strong>
-        <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{comment.content}</p>
+<div className="flex-1">
+  {/* User Name */}
+  <strong className="text-gray-800 dark:text-gray-200 font-semibold">
+    {comment.firstName
+      ? `${comment.firstName.split("@")[0]}` 
+      : "Unknown User"}
+  </strong>
+  <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{comment.content}</p>
 
         {/* Reply Button */}
-        <button
+  <button
           className="mt-2 text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
-          onClick={() => setReplyData({ commentId: comment.id, tweetId: tweet.id })}
+        onClick={() => setReplyData({ commentId: comment.id, tweetId: tweet.id })}
+>
+  Reply
+</button>
+
+  {/* Reply Input Field */}
+  {replyData?.commentId === comment.id && (
+    <div className="mt-3">
+      <input
+        type="text"
+        className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-all"
+        placeholder="Write a reply..."
+        value={replyText}
+        onChange={(e) => setReplyText(e.target.value)}
+      />
+      <button
+        className="mt-2 bg-green-500 hover:bg-green-600 text-white py-1.5 px-4 rounded-lg text-sm transition-all"
+        onClick={() => handleAddReply(tweet.id, comment.id)}
+      >
+        Reply
+      </button>
+    </div>
+  )}
+
+  {/* Display Replies */}
+  {comment.replies && comment.replies.length > 0 && (
+    <div className="ml-10 mt-3 space-y-2">
+      {comment.replies.map((reply) => (
+        <div
+          key={reply.id}
+          className="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 shadow-sm flex items-start gap-3"
         >
-          Reply
-        </button>
-
-        {/* Reply Input Field */}
-        {replyData?.commentId === comment.id && (
-          <div className="mt-3">
-            <input
-              type="text"
-              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-all"
-              placeholder="Write a reply..."
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-            />
-            <button
-              className="mt-2 bg-green-500 hover:bg-green-600 text-white py-1.5 px-4 rounded-lg text-sm transition-all"
-              onClick={() => handleAddReply(tweet.id, comment.id)}
-            >
-              Reply
-            </button>
+          {/* Profile Picture for Replies */}
+          <img
+            src={reply.profilePicture || "/default-profile.png"} 
+            alt={reply.firstName}
+            className="w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600"
+          />
+          <div>
+            {/* User Name for Replies */}
+            <strong className="text-gray-800 dark:text-gray-200 font-semibold">
+              {reply.firstName
+                ? `${reply.firstName.split("@")[0]}` 
+                : "Unknown User"}
+            </strong>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+              {reply.content}
+            </p>
           </div>
-        )}
+        </div>
+      ))}
+    </div>
+  )}
+</div>
 
-        {/* Display Replies */}
-        {comment.replies && comment.replies.length > 0 && (
-          <div className="ml-10 mt-3 space-y-2">
-            {comment.replies.map((reply) => (
-              <div
-                key={reply.id}
-                className="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 shadow-sm"
-              >
-                {reply.content}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      
     </div>
   ))}
 

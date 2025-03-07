@@ -42,10 +42,11 @@ function Tab() {
           color: getRandomColor(),
           groupName: group.groupName || "Unnamed Group",
           users: Array.isArray(group.users) ? group.users : [],
-          trainees: Array.isArray(group.trainees) ? group.trainees : [],
-          createdAt: group.createdAt || "Unknown Date",
+          trainees: group.trainees || null, // Ensure it's an object
+          createdAt: group.courseStartDate || null, // Use courseStartDate instead
           editMode: false,
         }));
+        
         
         setGroups(formattedGroups);
         setError("");
@@ -239,10 +240,11 @@ function Tab() {
                   ))}
                   {group.users.length > 3 && <span className="ml-2 text-gray-500">+ {group.users.length - 3}</span>}
                 </div>
-                <p className="text-sm mt-2">
-                  <span className="font-semibold">Trainer:</span>{" "}
-                  {group.trainees.length > 0 ? group.trainees.map(t => t.fullName).join(", ") : "No Trainer"}
-                </p>
+                        <p className="text-sm mt-2">
+          <span className="font-semibold">Trainer:</span>{" "}
+          {group.trainees && group.trainees.fullName ? group.trainees.fullName : "No Trainer"}
+        </p>
+
 
                 <p className="text-sm"><span className="font-semibold">Created On:</span> {group.createdAt}</p>
               </div>

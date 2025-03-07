@@ -150,7 +150,7 @@ const AdminDashBoard = () => {
   <h1 className="text-3xl font-semibold">Loading...</h1>
 )}
 
-      <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><StatusButtonEmployee /></button>
+      {/* <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><StatusButtonEmployee /></button> */}
     </div>
     <p className="text-gray-600">Welcome Back</p>
 
