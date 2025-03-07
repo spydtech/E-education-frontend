@@ -5,7 +5,7 @@ WORKDIR /E-education-frontend
 # Ensure package.json and package-lock.json are copied from the build context (current directory)
 COPY package*.json ./
 # RUN npm  && npm cache clean --force
-RUN npm install --omit=dev && npm cache clean --force
+RUN npm cache clean --force
 RUN npm install vite@latest @vitejs/plugin-react@latest --save-dev
  
 # Copy the rest of the project files
