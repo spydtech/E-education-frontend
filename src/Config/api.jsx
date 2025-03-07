@@ -2,7 +2,7 @@
 import axios from 'axios';
 const DEPLOYED = 'https://e-commerce-server-production-0873.up.railway.app'
 
-export const API_BASE_URL = 'http://localhost:8082'; // Corrected
+export const API_BASE_URL = 'http://13.126.181.47:8082'; // Corrected
 
 
 
