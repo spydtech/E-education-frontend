@@ -5,7 +5,7 @@ WORKDIR /E-education-frontend
 COPY package*.json ./
  
 # Ensure the correct version of npm is used
-RUN npm install -g npm@latest
+RUN npm install vite@latest @vitejs/plugin-react@latest --save-dev
  
 # Install dependencies without dev dependencies
 RUN npm install --omit=dev && npm cache clean --force
