@@ -115,7 +115,7 @@ const VideoApproval = () => {
   
     try {
       const response = await fetch(
-        `http://localhost:8080/api/video/update/status?videoId=${video.id}&videoStatus=DELETED`,
+        `${API_BASE_URL}/api/video/update/status?videoId=${video.id}&videoStatus=DELETED`,
         {
           method: "PUT",
           headers: { Authorization: `Bearer ${jwt.trim()}` },

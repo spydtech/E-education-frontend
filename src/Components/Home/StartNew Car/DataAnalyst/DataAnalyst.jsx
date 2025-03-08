@@ -44,7 +44,7 @@ function DataAnalyst() {
       return;
     }
 
-    axios.post('http://localhost:8082/create-order', {
+    axios.post(`${API_BASE_URL}:8082/create-order`, {
       amount: amountInPaise, // Send the amount in paise to the backend
       currency: 'INR',
       name: 'E_ONLINE_EDU',

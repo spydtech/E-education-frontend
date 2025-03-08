@@ -9,10 +9,10 @@ import SignUp from "./Components/Login/SignUp";
 import Certificates from "./Components/Home/Professional Certificates/Certificates";
 import Profile from "./Components/Profile/Profile";
 import AdminRouter from "./Routers/AdminRouter";
-import WSpace from "./Components/Profile/WorkSpace1/WSpace";
+// import WSpace from "./Components/Profile/WorkSpace1/WSpace";
 // import TraineeSidebar from "./Components/trainee/TraineeDashboard/TraineeDashboard";
 // import WSpace from "./Components/trainee/UserTask/WSpace";
-import Settings from "./Components/Profile/Settings";
+// import Settings from "./Components/Profile/Settings";
 import PostFeeds from "./Components/Home/post/PostFeeds";
 import MainPost from "./Components/Home/postFeed/MainPost";
 import QuestionForm from "./Components/Home/AskMe/QuestionForm";
@@ -208,9 +208,9 @@ function App() {
             {/* user */}
             <Route path="/user/*" element={<UserRouter />} />
             {/* WSpace */}
-            <Route path="/WSpace" element={<WSpace />} />
+            {/* <Route path="/WSpace" element={<WSpace />} />
             <Route path="/googleCalender" element={<GoogleCalendar />} />
-            <Route path="/mylearning" element={<MyLearning />} />
+            <Route path="/mylearning" element={<MyLearning />} /> */}
             <Route path="/Certificates" element={<Certificates />} />
             <Route path="/features" element={<Features />} />
             <Route path="/login" element={<Login />} />
@@ -220,7 +220,7 @@ function App() {
             {/* <Route path="/Profile" element={<Profile />} /> */}
             {/* <Route path="/PostFeeds" element={<PostFeeds />} /> */}
             <Route path="/QuestionForm" element={<QuestionForm />} />
-            <Route path="/Settings" element={<Settings />} />
+            {/* <Route path="/Settings" element={<Settings />} /> */}
             {/*  */}
             <Route path="/Payment" element={<Payment />} />
             <Route path="/Purchases" element={<Purchases />} />

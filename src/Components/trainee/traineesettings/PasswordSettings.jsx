@@ -45,7 +45,7 @@ const PasswordSettings = ({ jwt }) => {
     try {
       const email = auth.user.email;
       const response = await axios.put(
-        `http://localhost:8080/api/users/password/${email}`,
+        `${API_BASE_URL}/api/users/password/${email}`,
         { oldPassword, newPassword, confirmPassword },
         {
           headers: { Authorization: `Bearer ${jwt}` },

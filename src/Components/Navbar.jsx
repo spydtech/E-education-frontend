@@ -220,78 +220,77 @@ const Navbar = () => {
                       alt="Logo"
                     />
                   </Link>
-                   {/* Mobile View: Notification and Profile */}
-                   <div className="lg:hidden flex items-center space-x-0 ml-4">
-                    {/* Notification Icon */}
-                    <button
-                      onClick={toggleNotificationPanel}
-                      className="relative"
-                    >
-                      <NotificationAdd className="text-[#0098f1] cursor-pointer text-xl" />
-                    </button>
+                 
+                  {/* Mobile View: Notification and Profile */}
+<div className="lg:hidden flex items-center space-x-0 ml-4">
+  {/* Notification Icon */}
+  <button
+    onClick={toggleNotificationPanel}
+    className="relative"
+  >
+    <NotificationAdd className="text-[#0098f1] cursor-pointer text-xl" />
+  </button>
 
-                    {/* Profile Dropdown */}
-                    <div className="relative  inline-block">
-                        <button
-                          className={`inline-flex items-center justify-center h-10 px-2 py-2 text-sm font-medium transition-colors rounded-md ${
-                            navigationMenu === "getting-started"
-                              ? "border-2 border-[#0098f1]"
-                              : "border-2 border-transparent"
-                          }`}
-                          onClick={() =>
-                            toggleNavigationMenu("getting-started")
-                          }
-                        >
-                          <p className=" flex justify-center items-center w-8 h-8 rounded-full bg-[#0098F1]  text-white cursor-pointer text-center font-bold">
-                          {auth.user?.firstName ? auth.user.firstName[0].toUpperCase() : "U"}
-                          </p>
+  {/* Profile Dropdown - Conditionally Render if User is Logged In */}
+  {auth.user && (
+    <div className="relative inline-block">
+      <button
+        className={`inline-flex items-center justify-center h-10 px-2 py-2 text-sm font-medium transition-colors rounded-md ${
+          navigationMenu === "getting-started"
+            ? "border-2 border-[#0098f1]"
+            : "border-2 border-transparent"
+        }`}
+        onClick={() => toggleNavigationMenu("getting-started")}
+      >
+        <p className="flex justify-center items-center w-8 h-8 rounded-full bg-[#0098F1] text-white cursor-pointer text-center font-bold">
+          {auth.user?.firstName ? auth.user.firstName[0].toUpperCase() : "U"}
+        </p>
 
-                          <svg
-                            className={`relative top-[1px] text-[#0098f1] ml-1 h-5 w-5 ease-out duration-300 ${
-                              navigationMenuOpen &&
-                              navigationMenu === "getting-started"
-                                ? "-rotate-180"
-                                : ""
-                            }`}
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                          </svg>
-                        </button>
+        <svg
+          className={`relative top-[1px] text-[#0098f1] ml-1 h-5 w-5 ease-out duration-300 ${
+            navigationMenuOpen && navigationMenu === "getting-started"
+              ? "-rotate-180"
+              : ""
+          }`}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
 
-                        {navigationMenuOpen &&
-                          navigationMenu === "getting-started" && (
-                            <div className="absolute z-10 text-sm mt-1 w-48 -ml-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              {menuItems.map((item, index) => (
-                                <a
-                                  key={index}
-                                  href={item.href}
-                                  onClick={item.onClick}
-                                  className=" flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                >
-                                  <p className="justify-center items-center p-2 text-sm">{item.name}</p>
-                                </a>
-                              ))}
-                              <div 
-                                onClick={handleLogout}
-                                className="flex px-4 py-2 border-t-2 border-grey-500 cursor-pointer"
-                              >
-                                <p className="flex justify-center items-center w-8 h-8 rounded-full bg-[#0098F1] text-white cursor-pointer text-center font-bold">
-                                  {auth.user?.firstName?.[0]?.toUpperCase() || "U"}
-                                </p>
-                                <p className="justify-center items-center p-2 text-sm">Logout</p>
-                              </div>
-                            </div>
-                          )}
-                      </div>
-                  </div>
+      {navigationMenuOpen && navigationMenu === "getting-started" && (
+        <div className="absolute z-10 text-sm mt-1 w-48 -ml-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+          {menuItems.map((item, index) => (
+            <a
+              key={index}
+              href={item.href}
+              onClick={item.onClick}
+              className="flex px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+            >
+              <p className="justify-center items-center p-2 text-sm">{item.name}</p>
+            </a>
+          ))}
+          <div 
+            onClick={handleLogout}
+            className="flex px-4 py-2 border-t-2 border-grey-500 cursor-pointer"
+          >
+            <p className="flex justify-center items-center w-8 h-8 rounded-full bg-[#0098F1] text-white cursor-pointer text-center font-bold">
+              {auth.user?.firstName?.[0]?.toUpperCase() || "U"}
+            </p>
+            <p className="justify-center items-center p-2 text-sm">Logout</p>
+          </div>
+        </div>
+      )}
+    </div>
+  )}
+</div>
                   {/* Desktop Search Bar */}
                   <div className="hidden  lg:flex relative w-full max-w-lg items-center ml-10">
                     <div className="relative w-full max-w-md mx-auto">

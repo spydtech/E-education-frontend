@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://13.126.181.47:8082';
+export const API_BASE_URL = "http://13.126.181.47:8082"; // Use HTTP instead of HTTPS
 
 
 
@@ -25,8 +25,12 @@ export const updatePassword = async (email, password, confirmPassword) => {
 };
 
 const jwt = localStorage.getItem('jwt');
+if (jwt) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+}
 
-api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+
+
 
 api.defaults.headers.post['Content-Type'] = 'application/json';
 
