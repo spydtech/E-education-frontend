@@ -1,8 +1,8 @@
 
 import axios from 'axios';
-const DEPLOYED = 'https://e-commerce-server-production-0873.up.railway.app'
+// const DEPLOYED = 'https://e-commerce-server-production-0873.up.railway.app'
 
-export const API_BASE_URL = 'http://13.126.181.47:8082'; // Corrected
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://13.126.181.47:8080';
 
 
 
