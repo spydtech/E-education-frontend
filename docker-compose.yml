@@ -43,7 +43,7 @@ services:
 
       - "8443:443"  # Map host port 8443 to container port 443 (HTTPS)
 
-      - "8080:80"   # Map host port 8080 to container port 80 (HTTP)
+      - "8081:80"   # Map host port 8080 to container port 80 (HTTP)
 
     volumes:
 
