@@ -38,7 +38,7 @@ export const emailExists = () => ({ type: EMAIL_EXISTS });
 export const register = (userData) => async (dispatch) => {
   dispatch(registerRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+    const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
     dispatch(registerSuccess());
     alert('OTP sent successfully. Please check your email to verify.');
   } catch (error) {
@@ -58,7 +58,7 @@ export const verifyOtp = (otpData) => async (dispatch) => {
   dispatch(verifyOtpRequest());
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/verify-otp`, otpData);
+    const response = await axios.post(`${API_BASE_URL}/api/auth/verify-otp`, otpData);
     const user = response.data;
     if (user.jwt) {
       localStorage.setItem('jwt', user.jwt);
@@ -81,7 +81,7 @@ export const login = (userData) => async (dispatch) => {
   try {
     // API call
     const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}/auth/signin`,
+      `${process.env.REACT_APP_API_BASE_URL}/api/auth/signin`,
       userData
     );
 
