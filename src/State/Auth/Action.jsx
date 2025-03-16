@@ -58,7 +58,7 @@ export const verifyOtp = (otpData) => async (dispatch) => {
   dispatch(verifyOtpRequest());
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/verify-otp`, otpData);
+    const response = await axios.post(`${API_BASE_URL}/auth/verify-otp`, otpData);
     const user = response.data;
     if (user.jwt) {
       localStorage.setItem('jwt', user.jwt);
@@ -81,7 +81,7 @@ export const login = (userData) => async (dispatch) => {
   try {
     // API call
     const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}/api/auth/signin`,
+      `${process.env.REACT_APP_API_BASE_URL}/auth/signin`,
       userData
     );
 
@@ -130,7 +130,7 @@ export const getAllCustomers = (jwt) => {
   return async (dispatch) => {
     dispatch({ type: GET_ALL_CUSTOMERS_REQUEST });
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
+      const response = await axios.get(`${API_BASE_URL}/admin/users`, {
         headers: {
           "Authorization": `Bearer ${jwt}`
         }
