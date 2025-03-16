@@ -6,7 +6,7 @@ import axios from 'axios';
 
 // export const API_BASE_URL = "http://15.206.164.0:8082";
 // Use HTTP instead of HTTPS
-export const API_BASE_URL =  "http://13.126.181.47:8082"   
+export const API_BASE_URL =  "http://3.109.30.200:8082"   
 
 
 
