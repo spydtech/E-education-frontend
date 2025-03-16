@@ -38,7 +38,7 @@ export const emailExists = () => ({ type: EMAIL_EXISTS });
 export const register = (userData) => async (dispatch) => {
   dispatch(registerRequest());
   try {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/register`, userData);
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
     dispatch(registerSuccess());
     alert('OTP sent successfully. Please check your email to verify.');
   } catch (error) {
