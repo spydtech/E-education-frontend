@@ -471,7 +471,7 @@ const Navbar = () => {
                     </>
                   ) : (
                     <>
-                      <Link to="/trainee" className="text-black text-lg pl-4 ">
+                      <Link to="/trainelogin" className="text-black text-lg pl-4 ">
                         Trainee
                       </Link>
                       <Link to="/login" className="text-black text-lg ">
