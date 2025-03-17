@@ -141,6 +141,11 @@ const sections = [
         Link: "https://www.youtube.com/@EEducationOnline",
       },
     ],
+    contactDetails: {
+      phone: "+91 9494307579",
+      email: "support@e-education.in",
+      address: "Ramalayam St,HMT Hills,Kukatpally,Hyderabad,Telangana-500085",
+    },
   },
 ];
 
@@ -207,6 +212,15 @@ function FooterPart() {
                         {social.icon}
                       </a>
                     ))}
+                  </div>
+                )}
+               {/* Contact Details Below Social Media */}
+               {section.contactDetails && (
+                  <div className="mt-4 text-gray-200 text-lg">
+                    <h1 className="font-bold">Contact-Us</h1>
+                    <p><strong></strong> {section.contactDetails.phone}</p>
+                    <p><strong></strong> <a href={`mailto:${section.contactDetails.email}`} className="underline">{section.contactDetails.email}</a></p>
+                    <p><strong></strong> {section.contactDetails.address}</p>
                   </div>
                 )}
               </div>

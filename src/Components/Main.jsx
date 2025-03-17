@@ -37,14 +37,11 @@ function Main() {
                   </span>
                 </span>
               </h1>
-              <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl">
+              <p className="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl">
 
-                Kickstart, switch, or elevate your career with over 6,900
-
-                Kickstart, switch, or elevate your career with Our
-
-                courses, professional certificates, and degrees from leading
-                universities and top companies.
+              Unlock endless opportunities with expert-led courses, 
+              industry-recognized certifications, and real-world projects.
+               Learn at your own pace and build the skills that drive success in today’s digital world.
               </p>
               <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row gap-3">
                 <Link
