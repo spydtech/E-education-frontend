@@ -130,7 +130,7 @@ export const getAllCustomers = (jwt) => {
   return async (dispatch) => {
     dispatch({ type: GET_ALL_CUSTOMERS_REQUEST });
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
+      const response = await axios.get(`${API_BASE_URL}/admin/users`, {
         headers: {
           "Authorization": `Bearer ${jwt}`
         }
