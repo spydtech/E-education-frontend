@@ -6,7 +6,7 @@ import axios from 'axios';
 
 // export const API_BASE_URL = "https://3.109.30.200:8082";
 // Use HTTP instead of HTTPS
-export const API_BASE_URL = "http://3.6.36.172:8082";
+export const API_BASE_URL = "https://api.e-education.in";
 
 
 
