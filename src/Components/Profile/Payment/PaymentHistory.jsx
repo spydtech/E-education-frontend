@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaChevronDown } from "react-icons/fa";
 import { API_BASE_URL } from "../../../Config/api";
 
 const statusColors = {
@@ -10,7 +9,7 @@ const statusColors = {
 };
 
 const PaymentHistory = () => {
-  const [transactions, setTransactions] = useState([]); // Initialize transactions state
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,7 +18,7 @@ const PaymentHistory = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const token = localStorage.getItem("jwt"); // Get JWT token from localStorage
+        const token = localStorage.getItem("jwt");
         if (!token) {
           setError("Unauthorized. Please log in.");
           setLoading(false);
@@ -32,13 +31,18 @@ const PaymentHistory = () => {
           },
         });
 
-        // ✅ Convert `courseDetails` from string to object
-        const formattedTransactions = response.data.map((txn) => ({
-          ...txn,
-          courseDetails: txn.courseDetails ? JSON.parse(txn.courseDetails) : { courseNames: [], coursePrices: [] },
-        }));
+        const formattedTransactions = response.data.map((txn) => {
+          try {
+            const parsed = JSON.parse(txn.courseDetails);
+            // Extract course names from the nested structure
+            const courseNames = parsed.courseDetails?.map(course => course.courseName) || [];
+            return { ...txn, courseNames };
+          } catch {
+            return { ...txn, courseNames: [] };
+          }
+        });
 
-        setTransactions(formattedTransactions); // Store parsed transactions in state
+        setTransactions(formattedTransactions);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching transactions:", err);
@@ -50,7 +54,6 @@ const PaymentHistory = () => {
     fetchTransactions();
   }, []);
 
-  // Pagination Logic
   const totalPages = Math.ceil(transactions.length / transactionsPerPage);
   const currentTransactions = transactions.slice(
     (currentPage - 1) * transactionsPerPage,
@@ -66,7 +69,6 @@ const PaymentHistory = () => {
     <div className="p-6 bg-white font-poppins">
       <h2 className="text-lg font-semibold mb-4">Payment History</h2>
 
-      {/* Transactions Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
@@ -85,7 +87,9 @@ const PaymentHistory = () => {
                   <td className="px-4 py-2">{txn.razorpayPaymentId}</td>
                   <td className="px-4 py-2">{new Date(txn.createdAt).toLocaleDateString()}</td>
                   <td className="px-4 py-2">{txn.userName}</td>
-                  <td className="px-4 py-2">{txn.courseDetails.courseNames.join(", ")}</td>
+                  <td className="px-4 py-2">
+                    {txn.courseNames?.join(", ") || "N/A"}
+                  </td>
                   <td className="px-4 py-2">{txn.totalAmount.toFixed(2)} INR</td>
                   <td className="px-4 py-2">{txn.paymentMethod}</td>
                   <td className="px-4 py-2">

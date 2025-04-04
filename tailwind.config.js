@@ -4,10 +4,23 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        anton: ["Anton", "sans-serif"], // Example font family
-        lora: ["Lora", "serif"], // Example font family
-        'poppins': ['Poppins']
+        anton: ["Anton", "sans-serif"],
+        lora: ["Lora", "serif"],
+        poppins: ["Poppins"],
+        'poppins-bold': ["Poppins-Bold"],
+        'poppins-medium': ["Poppins-Medium"],
+        'poppins-semibold': ["Poppins-SemiBold"],
+        'poppins-light': ["Poppins-Light"],
+        'poppins-thin': ["Poppins-Thin"],
+        Lusitana: ["Lusitana"],
+        'Lusitana-bold': ["Lusitana-Bold"],
+        // ✅ Add Lucida Calligraphy
+        'lucida-calligraphy': ["Lucida Calligraphy", "cursive"],
+      
+        // ✅ Add this line
+        lucida: ["Lucida Sans", "sans-serif"],
       },
+      
       animation: {
         "spin-slow": "spin 5s linear infinite", // Adjust the duration (5s) to control the speed
       },

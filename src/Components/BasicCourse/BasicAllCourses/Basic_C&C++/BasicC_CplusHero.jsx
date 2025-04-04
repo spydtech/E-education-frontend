@@ -4,7 +4,7 @@ import backgroundImage from "../../../../assetss/Basic_Courses/BasicC++/bgimagec
 
 const BasicC_CplusHero = () => {
   const [courseName] = useState("Basic C & C++");
-   const [coursePrice] = useState(4999);
+   const [coursePrice] = useState(1);
     const [courseDuration] = useState("2 months");
   const navigate = useNavigate();
 

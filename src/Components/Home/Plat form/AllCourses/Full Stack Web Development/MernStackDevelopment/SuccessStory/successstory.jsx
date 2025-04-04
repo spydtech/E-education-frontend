@@ -18,7 +18,7 @@ function SuccessStory() {
   }, []);
 
   return (
-    <div className="relative  flex flex-col justify-center items-center bg-white m-3 md:m-5">
+    <div className="relative  flex flex-col justify-center items-center bg-white m-3 md:m-5 italic">
       {/* Background Image */}
 
       {/* Content */}

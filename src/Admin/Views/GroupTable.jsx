@@ -254,9 +254,13 @@ function GroupTable({ groupName, users, onRemoveUser, onAddUser, trainees, group
       <div className="bg-white p-6 ">
         <div className="flex items-center justify-center space-x-4">
           <div className="relative w-16 h-16">
-          <div className="bg-red-400 w-16 h-16 rounded-full flex items-center justify-center">
-              <FaPencilAlt className="text-white text-xl cursor-pointer" />
-            </div>
+          <div
+  className="bg-red-400 w-16 h-16 rounded-full flex items-center justify-center cursor-pointer"
+  onClick={() => setIsEditing(true)}
+>
+  <FaPencilAlt className="text-white text-xl" />
+</div>
+
           </div>
           {isEditing ? (
             <input
@@ -272,7 +276,7 @@ function GroupTable({ groupName, users, onRemoveUser, onAddUser, trainees, group
 
         {isEditing && (
           <div className="mt-4 flex justify-end space-x-2">
-            <button className="bg-green-500 text-white px-4 py-2 rounded-lg" onClick={handleSaveGroup}>
+            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg" onClick={handleSaveGroup}>
               Save
             </button>
             <button className="bg-gray-500 text-white px-4 py-2 rounded-lg" onClick={() => setIsEditing(false)}>

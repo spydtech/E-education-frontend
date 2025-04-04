@@ -18,7 +18,7 @@ const AddTask = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const jwt = localStorage.getItem("jwt");
+  const jwt = localStorage.getItem("jwt"); 
 
   // Fetch Groups & Users from API
   useEffect(() => {
@@ -29,17 +29,20 @@ const AddTask = () => {
         });
   
         if (Array.isArray(response.data)) {
-          // Remove duplicate chat groups
-          const uniqueGroups = response.data.reduce((acc, group) => {
-            if (!acc.some(g => g.chatGroupName === group.chatGroupName)) {
-              acc.push(group);
-            }
-            return acc;
-          }, []);
+          // Get unique groups and associate users
+          const uniqueGroups = response.data.map(group => ({
+            groupName: group.groupName,
+            users: group.users.map(user => ({
+              userEmail: user.email,  // Correcting key names
+              userName: user.fullName, 
+              status: user.userstatus,
+              joiningDate: new Date(user.createdAt).toLocaleDateString("en-GB"),
+              expiryDate: new Date(group.courseEndDate).toLocaleDateString("en-GB"),
+            })),
+          }));
   
           setGroups(uniqueGroups);
-          setGroupUsers(response.data);
-          setFilteredUsers(response.data);
+          setFilteredUsers([]); // Ensure filtered users reset
         } else {
           throw new Error("Unexpected API response format");
         }
@@ -53,18 +56,24 @@ const AddTask = () => {
     fetchGroups();
   }, [jwt]);
   
+  
+  
 
-  // Handle Input Change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTask({ ...task, [name]: value });
-
+  
     if (name === "chatGroup") {
-      const selectedGroupUsers = groupUsers.filter(user => user.chatGroupName === value);
-      setFilteredUsers(selectedGroupUsers);
-      setTask(prev => ({ ...prev, users: [] }));
+      const selectedGroup = groups.find(group => group.groupName === value);
+      if (selectedGroup) {
+        setFilteredUsers(selectedGroup.users || []);
+        setTask(prev => ({ ...prev, users: [] })); // Reset selected users
+      } else {
+        setFilteredUsers([]);
+      }
     }
   };
+  
 
   // Handle User Selection
   const handleUserSelection = (userEmail) => {
@@ -189,72 +198,93 @@ const AddTask = () => {
 
         {/* Select Group */}
        {/* Select Group */}
+{/* Select Group */}
 <div>
   <label className="block text-sm font-medium">Select Group</label>
   {loading ? (
     <p>Loading groups...</p>
   ) : (
     groups.map((group) => (
-      <label key={group.chatGroupName} className="block">
+      <label key={group.groupName} className="block p-2 ">
         <input 
           type="radio" 
           name="chatGroup" 
-          value={group.chatGroupName} 
-          checked={task.chatGroup === group.chatGroupName} 
+          value={group.groupName} 
+          checked={task.chatGroup === group.groupName} 
           onChange={handleChange} 
+          className="h-4 w-4 border border-gray-400 rounded-md p-2 space-x-4"
         />
-        {group.chatGroupName}
+        {group.groupName}
       </label>
     ))
   )}
 </div>
 
 
+
         {/* User Selection Table */}
         {task.chatGroup  && (
-          <div className="mt-4 p-4 font-poppins">
-            <div className="grid grid-cols-6 font-medium text-gray-700 border-b pb-2 text-center border-2 border-gray-400 rounded-md">
-              <span className="space-x-2">
-                <input type="checkbox" onChange={handleSelectAll} checked={task.users.length === filteredUsers.length} />
-                <span>Select All</span>
-              </span>
-              <span>User Name</span>
-              <span>Email</span>
-              <span>Status</span>
-              <span>Joining Date</span>
-
-              <span>Expiry Date</span>
-            </div>
-            {filteredUsers.map((user) => (
-              <div key={user.userEmail} className="grid grid-cols-6 items-center py-2 border-b-gray-400 text-center">
-                <input
-                  type="checkbox"
-                  checked={task.users.includes(user.userEmail)}
-                  onChange={() => handleUserSelection(user.userEmail)}
-                />
-                
-                <span className="flex items-center space-x-2">
-  {/* Circle with Initials */}
-  <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white text-lg font-semibold">
-    {user.userName
-      ?.split(" ")
-      .map((name) => name.charAt(0))
-      .join("") || ""}
-  </span>
-
-  {/* Full Name */}
-  <span className="text-gray-800 font-medium">{user.userName || "Unknown User"}</span>
-</span>
-
-
-
-                <span>{user.userEmail}</span>
-                <span className={`p-2 w-auto rounded-full text-white ${user.status === "ACTIVE" ? "bg-green-500 object-cover" : "bg-yellow-300"}`}>
-                  {user.status}
-                </span>
-                <span>{user.joiningDate}</span>
-                <span>{user.expiryDate}</span>
-              </div>
+           <div className="mt-6 p-4 bg-white  overflow-hidden font-poppins">
+           {/* Table Header */}
+           <div className="grid grid-cols-6 font-semibold text-gray-800 bg-gray-100 p-3 rounded-md text-center border border-gray-300">
+             <span className="flex items-center space-x-2">
+               <input
+                 type="checkbox"
+                 onChange={handleSelectAll}
+                 checked={task.users.length === filteredUsers.length}
+                 className="w-4 h-4"
+               />
+               <span>Select All</span>
+             </span>
+             <span>User Name</span>
+             <span>Email</span>
+             <span>Status</span>
+             <span>Joining Date</span>
+             <span>Expiry Date</span>
+           </div>
+   
+           {/* Table Body */}
+           {filteredUsers.map((user) => (
+             <div
+               key={user.userEmail}
+               className="grid grid-cols-6 items-center py-3 px-2 border-b border-gray-300 text-center hover:bg-gray-50 transition-all"
+             >
+               {/* Checkbox */}
+               <input
+                 type="checkbox"
+                 checked={task.users.includes(user.userEmail)}
+                 onChange={() => handleUserSelection(user.userEmail)}
+                 className="w-4 h-4 mx-auto"
+               />
+   
+               {/* User Name with Avatar */}
+               <div className="flex items-center space-x-2">
+                 <span className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 text-white text-sm ">
+                   {user.userName
+                     ?.split(" ")
+                     .map((name) => name.charAt(0))
+                     .join("") || "U"}
+                 </span>
+                 <span className="text-gray-800 font-medium">{user.userName || "Unknown User"}</span>
+               </div>
+   
+               {/* Email */}
+               <span className="text-gray-600 text-sm">{user.userEmail}</span>
+   
+               {/* Status Badge */}
+               <span
+                 className={`py-1 px-1 rounded-full text-white text-sm  
+                   ${user.status === "ACTIVE" ? "bg-green-500 bg-cover" : "bg-yellow-400 bg-cover"}`}
+               >
+                 {user.status}
+               </span>
+   
+               {/* Joining Date */}
+               <span className="text-gray-600">{new Date(user.joiningDate).toLocaleDateString("en-GB")}</span>
+   
+               {/* Expiry Date */}
+               <span className="text-gray-600">{user.expiryDate}</span>
+             </div>
             ))}
           </div>
         )}

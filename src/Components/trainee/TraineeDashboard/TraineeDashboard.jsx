@@ -672,11 +672,11 @@ const TraineeDashboard = () => {
   };
 
   
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem("jwt");
-    navigate("/trainelogin"); // Redirect to the login page
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   localStorage.removeItem("jwt");
+  //   navigate("/trainelogin"); // Redirect to the login page
+  // };
 
   const getCurrentPageName = () => {
     const currentPath = location.pathname;
@@ -697,7 +697,7 @@ const TraineeDashboard = () => {
       }}
       className={`${
         themesBackGroundColor.find((t) => t.value === theme)?.colorClass || ""
-      } max-w-46 lg:block bg-[#494949] text-white justify-center items-center font-poppins`}
+      } max-w-46 lg:block bg-[#006666] text-white justify-center items-center font-poppins`}
     >
       <div className="py-4 flex relative">
         <div className="pl-2">
@@ -738,7 +738,7 @@ const TraineeDashboard = () => {
                     navigate(item.path);
                   }
                 }}
-                className="flex items-center  py-3 hover:bg-[#FF9B26] hover:text-white rounded hover:bg-opacity-80 w-[200px] border-transparent transition-all duration-300"
+                className="flex items-center  py-3 px-2 hover:bg-[#FF9B26] hover:text-white rounded hover:bg-opacity-80 w-[200px] border-transparent transition-all duration-300"
               >
                 <span className="text-base">{item.icon}</span>
                 <span className="text-sm">{item.name}</span>
@@ -767,14 +767,14 @@ const TraineeDashboard = () => {
         </ul>
       </div>
 
-      <div className="px-4 py-4">
+      {/* <div className="px-4 py-4">
         <button
           onClick={handleLogout}
           className="px-4 py-2 w-full bg-blue-500 transition-all duration-300 rounded-md"
         >
           Logout
         </button>
-      </div>
+      </div> */}
     </Box>
   );
 
@@ -794,7 +794,7 @@ const TraineeDashboard = () => {
       <div className="flex-grow h-screen overflow-auto">
         <Box
           component="header"
-          className={`p-2 flex items-center justify-center bg-[#494949] text-white space-x-[60%]`}
+          className={`p-2 flex items-center justify-center bg-[#006666] text-white space-x-[60%]`}
         >
           <h1 className="">{getCurrentPageName()}</h1>
 

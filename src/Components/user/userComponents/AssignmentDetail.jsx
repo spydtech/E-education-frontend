@@ -22,6 +22,36 @@ const AssignmentDetails = () => {
     setFile(event.target.files[0]);
   };
 
+
+
+  // Handle File Download
+  const handleDownload = async () => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/api/task/download/${assignment.id}`,
+        {
+          responseType: "blob", // Ensures the response is treated as a file
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          },
+        }
+      );
+
+      // Create a blob from the response
+      const blob = new Blob([response.data], { type: response.headers["content-type"] });
+
+      // Create a link element and trigger download
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = assignment.name || "assignment.pdf"; // Default name if not provided
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      setMessage("Failed to download the file.");
+    }
+  };
   // Handle assignment submission
   const handleSubmit = async () => {
     if (!answer.trim() && !file) {
@@ -123,14 +153,13 @@ const AssignmentDetails = () => {
           <label className="block font-medium">Attached Documents</label>
           <div className="flex items-center gap-3 p-3 border rounded-lg bg-gray-100">
             <FaFilePdf className="text-red-500 text-2xl" />
-            <span className="flex-1 text-sm">{assignment.file}</span>
-            <a
-              href={`${API_BASE_URL}/api/task/download/${assignment.id}`}
-              download
+            <span className="flex-1 text-sm">{assignment.name}</span>
+            <button
+              onClick={handleDownload}
               className="text-gray-500 hover:text-black cursor-pointer"
             >
               <FaDownload />
-            </a>
+            </button>
           </div>
         </div>
       )}

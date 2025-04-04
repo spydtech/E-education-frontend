@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 function Main() {
   return (
     <div
-      className="bg-contain sm:bg-cover "
+      className="bg-contain sm:bg-cover  "
       style={{ backgroundImage: `url(${home})` }}
     >
     
@@ -23,7 +23,7 @@ function Main() {
           </div>
 
           {/* Text Section Below the Image */}
-          <div className="flex flex-col  w-full h-auto  p-6">
+          <div className="flex flex-col  w-full h-auto  p-6  ">
             <div className="w-full flex flex-col justify-center ">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-gray-800">
                 <span className="block xl:inline">
@@ -37,7 +37,7 @@ function Main() {
                   </span>
                 </span>
               </h1>
-              <p className="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl">
+              <p className="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl font-lucida-calligraphy">
 
               Unlock endless opportunities with expert-led courses, 
               industry-recognized certifications, and real-world projects.

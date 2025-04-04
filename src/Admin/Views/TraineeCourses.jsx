@@ -175,7 +175,7 @@ function Tab() {
   const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
   return (
-    <div className="p-6 font-poppins relative">
+    <div className="p-2 font-poppins relative">
       {loading ? (
         <p className="text-center text-[#001510]">Loading groups...</p>
       ) : error ? (
@@ -188,10 +188,16 @@ function Tab() {
                 // onClick={() => handleTabClick(group.id)}
                 className=" bg-white p-4 shadow-lg rounded-xl border-2  relative w-full" 
               >
+                <div className="absolute top-4 right-8 flex space-x-2 gap-4 p-0">
+                 <FaTrashAlt
+    className="absolute top-4 -right-4 text-red-500 cursor-pointer"
+    onClick={() => handleDeleteGroup(group.id)}
+  />
                <FaPencilAlt
   className="absolute top-4 right-4 text-gray-500 cursor-pointer"
   onClick={() => handleOpenModel(group)}
 />
+</div>
 
                 <div className="flex items-center space-x-4">
                   <div

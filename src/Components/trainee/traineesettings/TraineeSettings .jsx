@@ -3,26 +3,44 @@ import { motion, AnimatePresence } from "framer-motion";
 import PasswordSettings from "./PasswordSettings";
 import ProfileSettings from "./ProfileSettings";
 import ThemeSettings from "./ThemeSettings";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { logout } from "../../../State/Auth/Action";
 import Skills from "./Skills";
 import { Link } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const TraineeSettings = () => {
   const [activeTab, setActiveTab] = useState("password");
   const jwt = localStorage.getItem("jwt");
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
+   const auth = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+  
   const handleLogout = () => {
-    // console.log("Logging out...");
-    // localStorage.removeItem("user");
-    // window.location.href = "/login";
-    setShowSuccessPopup(true); // Show success popup after logging out
+    dispatch(logout()); // Dispatch logout action
+    localStorage.removeItem("jwt"); // Remove JWT
+
+    // Show success popup
+    setShowSuccessPopup(true);
+
+    // Wait for animation to complete before navigating
     setTimeout(() => {
-      setShowSuccessPopup(false); // Hide the success popup after animation
-    }, 1500);
-    // Wait for animation duration before hiding
-    setShowPopup(false);
+      setShowSuccessPopup(false);
+      navigate("/trainelogin");
+    }, 1500); // Match animation duration
   };
+  // const handleLogout = () => {
+  //     dispatch(logout());
+  //     localStorage.removeItem("jwt");
+  //     navigate("/trainelogin"); // Redirect to the login page
+  //   };
+  
   const tabVariants = {
     initial: { opacity: 0, x: -20 },
     animate: { opacity: 1, x: 0, transition: { duration: 0.3 } },

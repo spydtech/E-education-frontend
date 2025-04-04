@@ -18,35 +18,51 @@ const CourseGroup = () => {
           headers: { Authorization: `Bearer ${jwt}` },
         });
 
-        const fetchedCourses = response.data.map((task) => ({
-          name: task.chatGroup,
-          trainer: task.trainerName,
-          createdOn: task.assignmentDate,
-          endsOn: task.dueDate,
-          team: `Team ${task.chatGroup}`,
-          assignments: [
-            {
-              id: task.id,
-              description: task.assignmentDescription,
-              assignedDate: task.assignmentDate,
-              dueDate: task.dueDate,
-              status: task.taskStatus,
-            },
-          ],
-        }));
+        const groupedCourses = {};
+        const allMembers = [];
 
-        const fetchedMembers = response.data.flatMap((task) =>
-          task.users.map((user) => ({
-            id: user.id || user.userId,
-            name: user.name || user.fullName,
-            email: user.email,
-            group: `Team ${task.chatGroup}`,
-          }))
-        );
+        response.data.forEach((task) => {
+          const courseName = task.chatGroup;
 
-        setCourses(fetchedCourses);
-        setTeamMembers(fetchedMembers);
-        if (fetchedCourses.length > 0) setSelectedCourse(fetchedCourses[0]);
+          // Group assignments by course
+          if (!groupedCourses[courseName]) {
+            groupedCourses[courseName] = {
+              name: courseName,
+              trainer: task.trainerName,
+              createdOn: task.assignmentDate,
+              endsOn: task.dueDate,
+              team: `Team ${courseName}`,
+              assignments: [],
+            };
+          }
+
+          groupedCourses[courseName].assignments.push({
+            id: task.id,
+            description: task.assignmentDescription,
+            assignedDate: task.assignmentDate,
+            dueDate: task.dueDate,
+            status: task.taskStatus,
+          });
+
+          // Collect team members
+          task.users.forEach((user) => {
+            const exists = allMembers.some((m) => m.email === user.email && m.group === `Team ${courseName}`);
+            if (!exists) {
+              allMembers.push({
+                id: user.userId,
+                name: user.fullName,
+                email: user.email,
+                group: `Team ${courseName}`,
+              });
+            }
+          });
+        });
+
+        setCourses(Object.values(groupedCourses));
+        setTeamMembers(allMembers);
+        if (Object.values(groupedCourses).length > 0) {
+          setSelectedCourse(Object.values(groupedCourses)[0]);
+        }
       } catch (err) {
         console.error("Error fetching assignments:", err);
         setError("Failed to load assignments.");
@@ -71,6 +87,14 @@ const CourseGroup = () => {
   const completedAssignments =
     selectedCourse?.assignments?.filter((ass) => ass.status === "Completed").length || 0;
   const progress = totalAssignments > 0 ? (completedAssignments / totalAssignments) * 100 : 0;
+
+  if (loading) {
+    return <div className="p-4 text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="p-4 text-red-500 text-center">{error}</div>;
+  }
 
   return (
     <div className="p-4 sm:p-6 font-poppins bg-white min-h-screen">

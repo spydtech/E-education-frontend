@@ -70,6 +70,11 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
+    if (!auth?.user || !jwt) {
+      toast.error("Please log in to continue with payment.");
+      navigate("/login"); // or show modal instead of redirecting
+      return;
+    }
     try {
       const response = await axios.post(
         `${API_BASE_URL}/create-order`,

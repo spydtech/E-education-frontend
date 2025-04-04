@@ -38,26 +38,26 @@ const Assignment = () => {
   const [error, setError] = useState("");
   const jwt = localStorage.getItem("jwt");
   
- // Fetch assignments from API
- useEffect(() => {
-  const fetchAssignments = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/api/task/getAllTasks/by-user`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`, // Include JWT token if needed
-        },
-      });
-      setAssignments(response.data); // Assuming API returns an array of assignments
-    } catch (err) {
-      console.error("Error fetching assignments:", err);
-      setError("Failed to load assignments.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchAssignments();
-}, []);
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/task/getAllTasks/by-user`, {
+          headers: {
+            Authorization: `Bearer ${jwt}`, // Include JWT token if needed
+          },
+        });
+        setAssignments(response.data); // Assuming API returns an array of assignments
+      } catch (err) {
+        console.error("Error fetching assignments:", err);
+        setError("Failed to load assignments.");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchAssignments();
+  }, []);
+  
 
 
   return (

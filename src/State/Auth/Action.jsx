@@ -82,7 +82,11 @@ export const login = (userData) => async (dispatch) => {
     // API call
     const response = await axios.post(
       `${API_BASE_URL}/auth/signin`,
-      userData
+      userData,
+      {
+        headers: { "Content-Type": "application/json" }, // Ensure JSON request
+        withCredentials: true,
+      }
     );
 
     const { jwt, role, status } = response.data;
@@ -190,9 +194,10 @@ export const getTrainee = (jwt) => async (dispatch) => {
   }
 };
 
-export const logout = (jwt) => {
+export const logout = () => {
   return async (dispatch) => {
     dispatch({ type: LOGOUT });
-    localStorage.clear();
+    localStorage.clear();  // ✅ Correct usage
   };
 };
+

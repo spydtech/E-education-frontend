@@ -21,10 +21,23 @@ const Tab = () => {
           `${API_BASE_URL}/api/groups/get/users/email`,
           { headers: { Authorization: `Bearer ${jwt}` } }
         );
-
+  
         if (Array.isArray(response.data)) {
-          setGroupUsers(response.data);
-          setFilteredUsers(response.data);
+          // Flatten users from each group
+          const formattedData = response.data.flatMap((group) =>
+            group.users.map((user) => ({
+              userID: user.userId,
+              userName: user.fullName,
+              userEmail: user.email,
+              chatGroupName: group.groupName, // Corrected field name
+              joiningDate: group.courseStartDate,
+              expiryDate: group.courseEndDate,
+              status: user.userstatus, // Corrected field name
+            }))
+          );
+  
+          setGroupUsers(formattedData);
+          setFilteredUsers(formattedData);
         } else {
           throw new Error("Unexpected API response format");
         }
@@ -34,9 +47,10 @@ const Tab = () => {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, [jwt]);
+  
 
   // Extract unique group names
   const groupNames = ["All", ...new Set(groupUsers.map((user) => user.chatGroupName))];
@@ -70,7 +84,7 @@ const Tab = () => {
   return (
     <div className="p-6 bg-[#f7fafc] min-h-screen font-poppins">
       {/* Group Selection Dropdown */}
-      <div className="mb-6">
+      <div className="mb-6 w-1/2">
         <label className="block text-lg font-semibold text-gray-700 mb-2">
           Select Group:
         </label>
@@ -88,7 +102,7 @@ const Tab = () => {
       </div>
 
       {/* Search Bar */}
-      <div className="relative w-full max-w-lg mx-auto mb-6">
+      <div className="relative w-full max-w-lg mx-auto mb-6 justify-start">
         <input
           type="text"
           placeholder="Search by name, email, or ID..."

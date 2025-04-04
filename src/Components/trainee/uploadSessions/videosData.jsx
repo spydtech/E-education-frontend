@@ -18,29 +18,62 @@ export default function VideoUploadForm() {
   
     const jwt = localStorage.getItem("jwt");
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${API_BASE_URL}/api/groups/get/users/email`,
-          { headers: { Authorization: `Bearer ${jwt}` } }
-        );
 
-        if (Array.isArray(response.data)) {
-          setGroupUsers(response.data);
-        
-        } else {
-          throw new Error("Unexpected API response format");
+  
+  useEffect(() => {
+    if (!jwt) {
+        console.error("JWT token is missing.");
+        return;
+    }
+
+    const fetchData = async () => {
+        try {
+            console.log("Fetching groups with JWT:", jwt);
+
+            const response = await axios.get(
+                `${API_BASE_URL}/api/groups/get/users/email`,
+                { headers: { Authorization: `Bearer ${jwt}` } }
+            );
+
+            console.log("API Response:", response);
+
+            if (!response.data || !Array.isArray(response.data)) {
+                throw new Error("Unexpected API response format");
+            }
+
+            // Ensure unique groups and include other necessary data
+            const uniqueGroups = response.data.map(group => ({
+                groupId: group.id,
+                groupName: group.groupName,
+                users: group.users || [],  // Ensures no undefined errors
+                trainees: group.trainees || {}, // Handles missing trainees object
+                courseStartDate: group.courseStartDate,
+                courseEndDate: group.courseEndDate
+            }));
+
+            setGroupUsers(uniqueGroups);
+        } catch (err) {
+            console.error("Fetch Error:", err);
+
+            if (err.response) {
+                console.error("Server responded with:", err.response.status, err.response.data);
+            } else if (err.request) {
+                console.error("Request was made but no response received:", err.request);
+            } else {
+                console.error("Error setting up the request:", err.message);
+            }
+
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
     };
 
     fetchData();
-  }, [jwt]);
+}, [jwt]); 
+
+
+  
 
   const handleFileUpload = (event) => {
     setVideoFile(event.target.files[0]);
@@ -131,16 +164,17 @@ export default function VideoUploadForm() {
 
       <select
   value={group}
-  onChange={(e) => setGroup(e.target.value)}
+  onChange={(e) => setGroup(e.target.value.trim())}
   className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
 >
   <option value="">Select Group</option>
-  {[...new Set(groupUsers.map((group) => group.chatGroupName))].map((chatGroupName, index) => (
-    <option key={index} value={chatGroupName}>
-      {chatGroupName}
+  {[...new Set(groupUsers.map((group) => group.groupName))].map((groupName, index) => (
+    <option key={index} value={groupName}>
+      {groupName}
     </option>
   ))}
 </select>
+
 
 
 
