@@ -5,7 +5,7 @@ function AdvancephpIntroduction() {
 
   const Slide = ({ heading, items }) => {
     return (
-      <div className="w-full flex-shrink-0 px-4 py-8">
+      <div className="w-full flex-shrink-0 px-4 py-8 font-poppins">
         <div className="h-[400px] flex justify-center">
           <div>
             <h2 className="text-3xl font-medium mb-4 text-[#f9ac13] font">
@@ -76,7 +76,7 @@ function AdvancephpIntroduction() {
     <>
       <div
         id="subdiv"
-        className="grid grid-cols-1 w-fit md:lg:grid-cols-2 h-full bg-[#d90429] mb-12"
+        className="grid grid-cols-1 w-fit md:lg:grid-cols-2 h-full bg-[#d90429] mb-12 font-poppins"
       >
         <div
           id="div1"

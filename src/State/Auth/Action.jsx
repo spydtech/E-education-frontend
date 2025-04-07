@@ -154,20 +154,28 @@ const getUserRequest = () => ({ type: GET_USER_REQUEST });
 const getUserSuccess = (user) => ({ type: GET_USER_SUCCESS, payload: user });
 const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error });
 
-export const getUser = (jwt, role) => async (dispatch) => {
-  dispatch(getUserRequest());
-
+// In your Action.js
+export const getUser = () => async (dispatch) => {
   try {
+    const jwt = localStorage.getItem('jwt');
+    
+    if (!jwt) {
+      throw new Error('No JWT token found');
+    }
+
     const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
       headers: {
-        Authorization: `Bearer ${jwt}`,
+        Authorization: `Bearer ${jwt}`
       },
-      params: { role },
+      withCredentials: true
     });
-    const user = response.data;
-    localStorage.setItem('user', JSON.stringify(user));
-    dispatch(getUserSuccess(user));
+
+    dispatch(getUserSuccess(response.data));
   } catch (error) {
+    console.error('Profile fetch error:', error);
+    if (error.response?.status === 403) {
+      localStorage.removeItem('jwt');
+    }
     dispatch(getUserFailure(error.message));
   }
 };
@@ -196,8 +204,22 @@ export const getTrainee = (jwt) => async (dispatch) => {
 
 export const logout = () => {
   return async (dispatch) => {
-    dispatch({ type: LOGOUT });
-    localStorage.clear();  // ✅ Correct usage
+    try {
+      // Optional: Make API call to invalidate token on server
+      await axios.post(`${API_BASE_URL}/auth/logout/email`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`
+        }
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear only auth-related items
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('user');
+      localStorage.removeItem('UserRole');
+      dispatch({ type: LOGOUT });
+    }
   };
 };
 

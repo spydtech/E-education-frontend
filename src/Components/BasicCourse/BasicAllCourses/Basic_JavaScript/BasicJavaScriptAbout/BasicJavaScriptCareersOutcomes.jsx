@@ -29,7 +29,7 @@ function BasicJavaScriptCareersOutcomes() {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-around md:my-9 px-3 mb-4 md:px-10">
+    <div className="flex flex-col md:flex-row items-center justify-around md:my-9 px-3 mb-4 md:px-10 font-poppins">
       {/* Left Content */}
       <div className="mb-8 ">
         <p className="md:text-2xl font-bold text-[#0098F1]">

@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 
 function Main() {
   return (
+    <>
     <div
-      className="bg-contain sm:bg-cover  "
+      className="bg-contain sm:bg-cover  pb-10"
       style={{ backgroundImage: `url(${home})` }}
     >
     
-      <section className="  sm:mt-6 mx-auto px-0 sm:px-6 lg:px-8 ">
+      <section className="  sm:mt-6 mx-auto px-0 sm:px-6 lg:px-8 font-poppins">
         <div className="mx-auto max-w-7xl px-4 sm:mt-12  lg:px-8 flex flex-col lg:flex-row-reverse items-center gap-4">
           {/* Image Section at the Top */}
           <div className="relative w-full flex justify-center items-center mt-6 lg:mt-0">
@@ -23,7 +24,7 @@ function Main() {
           </div>
 
           {/* Text Section Below the Image */}
-          <div className="flex flex-col  w-full h-auto  p-6  ">
+          <div className="flex flex-col  w-full h-auto  p-6 font-poppins ">
             <div className="w-full flex flex-col justify-center ">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight font-extrabold text-gray-800">
                 <span className="block xl:inline">
@@ -37,7 +38,7 @@ function Main() {
                   </span>
                 </span>
               </h1>
-              <p className="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl font-lucida-calligraphy">
+              <p className="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl md:mt-5 md:text-xl ">
 
               Unlock endless opportunities with expert-led courses, 
               industry-recognized certifications, and real-world projects.
@@ -61,7 +62,55 @@ function Main() {
           </div>
         </div>
       </section>
+     
     </div>
+    <section className="w-full bg-gradient-to-br from-[#0098F1] via-[#0098F1] to-[#0098F1] text-white py-20 px-6 font-poppins pt-10">
+      <div className="max-w-6xl mx-auto text-center">
+        {/* Heading */}
+        <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+          Generative AI & Agentic AI Development
+        </h1>
+
+        {/* Description */}
+        <p className="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8">
+          Master the future of AI with hands-on training in building intelligent,
+          autonomous, and multi-modal Agentic AI systems using Generative AI LLMs, RAG, planning agents,
+          tool use, and orchestration frameworks.
+        </p>
+
+        {/* Course Benefits */}
+        <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
+          <div className="bg-indigo-800/30 p-4 rounded-xl border border-[#ff9b26] w-full max-w-xs">
+            <h3 className="text-xl font-semibold mb-1">Real-World Projects</h3>
+            <p className="text-sm text-gray-300">From single agents to multi-agent ecosystems.</p>
+          </div>
+          <div className="bg-indigo-800/30 p-4 rounded-xl border border-[#ff9b26] w-full max-w-xs">
+            <h3 className="text-xl font-semibold mb-1">Tooling & Orchestration</h3>
+            <p className="text-sm text-gray-300">Use LLMs, RAG, agents, and advanced frameworks.</p>
+          </div>
+          <div className="bg-indigo-800/30 p-4 rounded-xl border border-[#ff9b26] w-full max-w-xs">
+            <h3 className="text-xl font-semibold mb-1">Multi-Modal Systems</h3>
+            <p className="text-sm text-gray-300">Build intelligent apps that think, plan, and act.</p>
+          </div>
+        </div>
+
+        {/* Badge + Ratings */}
+        <div className="mb-10">
+          <span className="inline-block bg-white text-indigo-900 font-bold px-4 py-2 rounded-full text-sm shadow-md">
+            ⭐ 4.9 Star Rated | #1 E-education institute (E-education®)
+          </span>
+          {/* <p className="text-sm tex-white mt-2">
+            As featured in British Columbia Times, Business World, Avalon Global
+          </p> */}
+        </div>
+
+        {/* Call to Action */}
+        <button className="bg-[#ff9b26] hover:bg-orange-600 transition duration-300 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md">
+          Enroll Now
+        </button>
+      </div>
+    </section>
+    </>
   );
 }
 

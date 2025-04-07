@@ -41,7 +41,7 @@ const AdvancephpCard = () => {
   ];
 
   return (
-    <section id="portfolio" className="portfolio-section py-10 px-4">
+    <section id="portfolio" className="portfolio-section py-10 px-4 font-poppins" >
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl pb-2 md:text-4xl lg:text-5xl font-medium">
@@ -53,7 +53,7 @@ const AdvancephpCard = () => {
             <span className="text-[#0098f1]"> Elevate Your Development Skills</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 font-poppins">
           {courseData.map((course, index) => (
             <div
               key={index}

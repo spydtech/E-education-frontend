@@ -20,7 +20,7 @@ function Ui_UxKeyHighlights() {
     switch (selectedItem) {
       case 0:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Introduction to UI/UX design principles</li>
@@ -33,7 +33,7 @@ function Ui_UxKeyHighlights() {
         );
       case 1:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Basics of C and C++ syntax</li>
@@ -46,7 +46,7 @@ function Ui_UxKeyHighlights() {
         );
       case 2:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>User Experience (UX) design fundamentals</li>
@@ -59,7 +59,7 @@ function Ui_UxKeyHighlights() {
         );
       case 3:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Skills Developed
             </p>
@@ -75,7 +75,7 @@ function Ui_UxKeyHighlights() {
         );
       case 4:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Target Audience
             </p>
@@ -94,7 +94,7 @@ function Ui_UxKeyHighlights() {
   };
 
   return (
-    <div className="px-3 md:mb-4">
+    <div className="px-3 md:mb-4 font-poppins">
     <div className="md:flex justify-around  ">
       <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
         {renderContent()}

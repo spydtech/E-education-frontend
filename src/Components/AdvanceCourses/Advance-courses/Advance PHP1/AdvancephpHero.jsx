@@ -16,7 +16,7 @@ const AdvancephpHero = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-2 items-center w-10/12 mx-auto overflow-x-hidden md:py-14 lg:py-24 xl:py-14 lg:mt-3 xl:mt-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-center w-10/12 mx-auto overflow-x-hidden md:py-14 lg:py-24 xl:py-14 lg:mt-3 xl:mt-5 font-poppins">
         <div className="order-2 lg:order-1 w-auto h-auto pr-10 md:mb-14 py- font md:py-0 mx-auto">
           <h1 className="text-[18px] md:text-[26px] lg:text-[28px] xl:text-[28px] font-semibold text-[#f6ac14] leading-tight text-start">
             Master Advanced PHP Techniques to Elevate Your Development Skills!

@@ -47,7 +47,7 @@ const Ui_UxCard = () => {
   ];
 
   return (
-    <section id="portfolio" className="portfolio-section py-10 px-4">
+    <section id="portfolio" className="portfolio-section py-10 px-4 font-poppins">
     <div className="container mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-2xl pb-2 md:text-3xl lg:text-4xl font-medium">

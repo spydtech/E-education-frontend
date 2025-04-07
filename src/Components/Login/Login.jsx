@@ -333,6 +333,8 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -361,7 +363,7 @@ function Login() {
       if (response.data.status) {
         localStorage.setItem('jwt', response.data.jwt);
         dispatch(login(userData));
-        navigate('/user/dashboard');
+        navigate('/');
       } else {
         setError(response.data.message || 'Invalid credentials.');
       }
@@ -373,7 +375,7 @@ function Login() {
   
 
   return (
-    <div className="relative flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="relative flex justify-center items-center min-h-screen bg-gray-100 font-poppins">
       <div className="w-full max-w-6xl bg-white shadow-md rounded-lg flex flex-col lg:flex-row">
         {/* Login Section */}
         <div className="w-full lg:w-1/2 p-8 lg:px-16 flex flex-col justify-center relative">
@@ -417,19 +419,53 @@ function Login() {
                 placeholder="Enter your email"
               />
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-bold text-[#f6ac14]">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400"
-                placeholder="Enter your password"
-              />
-            </div>
+            <div className="mb-4 relative">
+  <label className="block text-sm font-bold text-[#f6ac14]">Password</label>
+  <input
+    id="password"
+    name="password"
+    type={showPassword ? "text" : "password"}
+    required
+    className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-md focus:outline-none focus:border-gray-400 pr-10"
+    placeholder="Enter your password"
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    className="absolute right-3 top-9 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+  >
+    {showPassword ? (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-5.52 0-10-4.48-10-10 0-1.61.38-3.13 1.06-4.44" />
+        <path d="M1 1l22 22" />
+      </svg>
+    ) : (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    )}
+  </button>
+</div>
+
             <div className="flex items-center justify-between mb-6">
               <label className="flex items-center font-bold">
                 <input type="checkbox" className="form-checkbox" />
@@ -448,6 +484,11 @@ function Login() {
             >
               Login
             </button>
+            {error && (
+  <div className="mt-4 text-red-600 text-sm font-medium">
+    {error}
+  </div>
+)}
           </form>
 
           {/* Google Login Button */}

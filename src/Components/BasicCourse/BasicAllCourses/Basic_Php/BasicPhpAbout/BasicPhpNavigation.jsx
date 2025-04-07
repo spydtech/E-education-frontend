@@ -41,7 +41,7 @@ const BasicPhpNavigation = () => {
 
   return (
     <>
-       <nav className="flex justify-between items-center p-2 bg-[#0098f1] shadow-xl rounded-t-2xl mb-5 lg:px-28 lg:py-3 mx-5">
+       <nav className="flex justify-between items-center p-2 bg-[#0098f1] shadow-xl rounded-t-2xl mb-5 lg:px-28 lg:py-3 mx-5 font-poppins">
         {/* Left button */}
         <button
           className={`text-white ${currentSection === 0 ? "invisible" : ""}`}
@@ -84,7 +84,7 @@ const BasicPhpNavigation = () => {
 
           {/* Show all sections on large screens */}
           {sections.map((section, index) => (
-            <li key={index} className="hidden lg:block">
+            <li key={index} className="hidden lg:block font-poppins">
               <button
                 className={`transition duration-300 text-white ${
                   currentSection === index ? "underline underline-offset-8" : ""
@@ -109,7 +109,7 @@ const BasicPhpNavigation = () => {
       </nav>
 
       {/* Section Content */}
-      <div className="mx-5">
+      <div className="mx-5 font-poppins">
         {currentSection === 0 && <BasicPhpIntroduction />}
         {currentSection === 1 && <BasicPhpKeyHighights />}
         {currentSection === 2 && <BasicPhpCareersOutcomes />}

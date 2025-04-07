@@ -5,7 +5,7 @@ function  WordpressIntroduction() {
 
   const Slide = ({ heading, items }) => {
     return (
-      <div className="w-full flex-shrink-0 px-4 py-8">
+      <div className="w-full flex-shrink-0 px-4 py-8 font-poppins">
         <div className="h-auto flex justify-center">
           <div>
             <h2 className="text-lg md:text-2xl lg:text-3xl font-medium mb-4 text-white font-sans">
@@ -71,7 +71,7 @@ function  WordpressIntroduction() {
   };
 
   return (
-    <div className="flex flex-col space-y-3 md:flex-row md:justify-around md:items-center lg:h-[450px] px-3 md:mb-9 mb-5 ">
+    <div className="flex flex-col space-y-3 md:flex-row md:justify-around md:items-center lg:h-[450px] px-3 md:mb-9 mb-5 font-poppins">
       {/* Text Section */}
       <div className="">
         <div>

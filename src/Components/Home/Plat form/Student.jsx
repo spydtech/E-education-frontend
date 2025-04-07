@@ -110,7 +110,7 @@ const Student = () => {
       <Navbar />
       <div
         id="main"
-        className="flex justify-center items-center bg-cover bg-center h-[582px] w-full"
+        className="flex justify-center items-center bg-cover bg-center h-[582px] w-full font-poppins "
         style={{ backgroundImage: `url(${hero})` }}
       >
         <div className="flex flex-col justify-center items-center h-auto space-y-4 p-4 md:p-8 lg:p-12">

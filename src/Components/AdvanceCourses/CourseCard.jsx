@@ -78,7 +78,7 @@ const CourseCard = () => {
   ];
   return (
     <>
-      <div className="my-10 mb-16">
+      <div className="my-10 mb-16 font-poppins">
         <div className="text-center text-black text-3xl font-bold m-4 my-10">
           <span className="text-[#f6ac14]">Explore </span>
           <span className="bg-gradient-to-r  from-[#f6ac14] to-[#0098f1] bg-clip-text text-transparent">

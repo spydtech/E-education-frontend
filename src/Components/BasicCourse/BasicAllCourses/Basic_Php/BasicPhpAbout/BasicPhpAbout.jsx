@@ -20,7 +20,7 @@ const BasicPhpAbout = () => {
   ];
 
   return (
-    <div className="px-3 text-center">
+    <div className="px-3 text-center font-poppins">
       <div className="">
         <p className="md:text-2xl font-bold text-[#0098F1]">
         Discover the PHP Program

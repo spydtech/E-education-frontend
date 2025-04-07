@@ -19,7 +19,7 @@ function BasicPhpKeyHighlights() {
     switch (selectedItem) {
       case 0:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins ">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Introduction to PHP programming</li>
@@ -32,7 +32,7 @@ function BasicPhpKeyHighlights() {
         );
       case 1:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2  font-poppins">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>PHP Syntax and Operators</li>
@@ -46,7 +46,7 @@ function BasicPhpKeyHighlights() {
         );
       case 2:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Web Application Development</li>
@@ -59,7 +59,7 @@ function BasicPhpKeyHighlights() {
         );
       case 3:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2  font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Skills Developed
             </p>
@@ -74,7 +74,7 @@ function BasicPhpKeyHighlights() {
         );
       case 4:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2  font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Target Audience
             </p>
@@ -91,7 +91,7 @@ function BasicPhpKeyHighlights() {
   };
 
   return (
-    <div className="px-3 md:mb-4">
+    <div className="px-3 md:mb-4 font-poppins">
     <div className="md:flex justify-around  ">
       <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
         {renderContent()}

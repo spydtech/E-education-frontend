@@ -134,16 +134,17 @@ import ScrollToTop from "./ScrollToTop ";
 import UserRouter from "./Routers/UserRouter";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import BasicWebdevlopment from "./Components/BasicCourse/BasicAllCourses/Basic_webdevlopment/Web_devlopment";
 
 // import ReportsAndMasters from "./Components/Meeting/hospita/reports";
 // import Sarvices from "./Components/Meeting/hospita/sarvices";
 function App() {
-  const theme = useSelector((state) => state.theme.theme);
+  // const theme = useSelector((state) => state.theme.theme);
 
-  useEffect(() => {
-    // Apply the theme to the document
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, [theme]);
+  // useEffect(() => {
+  //   // Apply the theme to the document
+  //   document.documentElement.classList.toggle("dark", theme === "dark");
+  // }, [theme]);
   return (
     <>
       <div>
@@ -392,6 +393,7 @@ function App() {
               path="/fullStack_WebDevelopment/mean-Stack-Developer"
               element={<MeanStackDeveloper />}
             />
+           
             <Route
               path="/fullStack_WebDevelopment"
               element={<FullStackWebDevelopmentArray />}
@@ -434,6 +436,7 @@ function App() {
 
             {/* Basic Advance Preminum Cousrses here */}
             {/* Basic Courses */}
+            <Route path="/webdevelopment" element={<BasicWebdevlopment />} />
             <Route path="/basic-courses" element={<BasicCourses />} />
             <Route path="/java" element={<Java />} />
             <Route path="/wordpress" element={<Wordpress />} />

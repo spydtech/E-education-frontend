@@ -77,7 +77,7 @@ import { Link } from "react-router-dom";
 const Aurora = () => {
   return (
     <>
-      <div className="bg-[#ff9b26] bg-opacity-30 md:h-[476px]">
+      <div className="bg-[#ff9b26] bg-opacity-30 md:h-[476px] font-poppins">
         <div className="bg-gradient-to-r from-[#ff9b26] to-[#0098F1] flex items-center justify-center md:h-[80px] md:w-[458px] p-4 rounded-r-xl">
           <p className="text-center text-white md:text-2xl text-lg">
             Start Learning!

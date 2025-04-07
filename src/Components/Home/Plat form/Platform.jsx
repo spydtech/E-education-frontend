@@ -25,7 +25,7 @@ function Platform() {
     <>
       <Certified />
       <EducationCarousel />
-      <div className="bg-[#ff9b26] bg-opacity-30 font-sans h-auto md:h-[625px] flex justify-center items-center py-4 md:py-0">
+      <div className="bg-[#ff9b26] bg-opacity-30 font-sans h-auto md:h-[625px] flex justify-center items-center py-4 md:py-0 font-poppins">
         <div>
           <h1 className=" text-xl md:text-3xl px-2 lg:text-4xl font-bold text-center pt-4 lg:pt-10">
             The perfect Platform{" "}
@@ -129,7 +129,7 @@ function Platform() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .bar {
           position: relative;
           left: -16px;

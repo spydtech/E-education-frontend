@@ -16,7 +16,7 @@ const Ui_UxHero = () => {
   return (
     <>
       <div
-        className="relative w-full h-[370px] bg-cover bg-center"
+        className="relative w-full h-[370px] bg-cover bg-center font-poppins"
         style={{
           backgroundImage:`url(${backgroundImage})`,
         }}

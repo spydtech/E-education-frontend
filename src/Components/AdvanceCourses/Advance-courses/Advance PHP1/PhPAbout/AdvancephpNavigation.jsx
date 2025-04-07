@@ -49,7 +49,7 @@ const AdvancephpNavigation = () => {
 
   return (
     <>
-      <nav className="flex  items-center px-4 sm:px-6 py-4">
+      <nav className="flex  items-center px-4 sm:px-6 py-4 font-poppins">
         <button className="text-black text-2xl sm:hidden" onClick={toggleMenu}>
           {menuOpen ? <FaTimes className="mb-56" /> : <FaBars />}{" "}
           {/* Toggle between menu and close icon */}
@@ -83,7 +83,7 @@ const AdvancephpNavigation = () => {
           </li>
         </ul>
       </nav>
-      <div className=" ">
+      <div className=" font-poppins">
         {currentSection === 0 && <AdvancephpIntroduction />}
         {currentSection === 1 && <AdvancephpKeyHighlights />}
         {currentSection === 2 && <AdvancephpCareersOutcomes />}

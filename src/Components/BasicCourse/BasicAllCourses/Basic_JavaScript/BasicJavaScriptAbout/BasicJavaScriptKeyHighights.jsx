@@ -19,7 +19,7 @@ function BasicJavaScriptKeyHighlights() {
     switch (selectedItem) {
       case 0:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2  font-poppins">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Advanced modules with Generative AI fusion</li>
@@ -39,7 +39,7 @@ function BasicJavaScriptKeyHighlights() {
         );
       case 1:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Generative AI in digital marketing</li>
@@ -54,7 +54,7 @@ function BasicJavaScriptKeyHighlights() {
         );
       case 2:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
             <li>Digital Marketing Manager</li>
@@ -70,7 +70,7 @@ function BasicJavaScriptKeyHighlights() {
         );
       case 3:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Skills Developed
             </p>
@@ -94,7 +94,7 @@ function BasicJavaScriptKeyHighlights() {
         );
       case 4:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Target Audience
             </p>
@@ -116,7 +116,7 @@ function BasicJavaScriptKeyHighlights() {
   };
 
   return (
-    <div className="px-3 md:mb-4">
+    <div className="px-3 md:mb-4 font-poppins">
     <div className="md:flex justify-around  ">
       <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
         {renderContent()}

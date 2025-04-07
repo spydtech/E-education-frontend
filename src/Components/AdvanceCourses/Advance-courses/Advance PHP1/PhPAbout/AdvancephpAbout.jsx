@@ -21,7 +21,7 @@ const AdvancephpAbout = () => {
   ];
 
   return (
-    <div className="mx-auto h-auto w-full mb-20 px-4 md:px-10 bg-white">
+    <div className="mx-auto h-auto w-full mb-20 px-4 md:px-10 bg-white font-poppins">
       <div className="py-2 my-10">
         <p className="text-2xl text-center font-bold text-[#f6ac14]">
           Discover the Advanced PHP Program

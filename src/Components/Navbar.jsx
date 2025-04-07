@@ -112,10 +112,11 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    if (auth.user && auth.user.role === "customer") {
-      getUser(auth.user.id);
+    if (jwt && !auth.user) {
+      // If we have a token but no user data, fetch it
+      dispatch(getUser()); // You might need to modify getUser to work without explicit userId
     }
-  }, [auth.user]);
+  }, [jwt, auth.user, dispatch]);
 
   useEffect(() => {
     const handleResize = () => {

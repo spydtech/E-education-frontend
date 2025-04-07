@@ -16,7 +16,7 @@ const CourseCard = () => {
       image: fullstack,
       description:
         "Build and maintain websites using various programming languages and frameworks.",
-      link: "/fullStack_WebDevelopment/fullStack-Web-Development",
+      link: "/webdevelopment",
     },
     {
       title: "Software Testing",

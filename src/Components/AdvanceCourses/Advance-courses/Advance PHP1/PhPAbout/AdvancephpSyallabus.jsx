@@ -30,7 +30,7 @@ function AdvancephpSyllabus() {
     <>
       <div
         id="subdiv"
-        className="grid grid-cols-1 md:lg:grid-cols-2 gap-x-6 bg-[#d90429] mb-12"
+        className="grid grid-cols-1 md:lg:grid-cols-2 gap-x-6 bg-[#d90429] mb-12 font-poppins"
       >
         <div
           id="div1"

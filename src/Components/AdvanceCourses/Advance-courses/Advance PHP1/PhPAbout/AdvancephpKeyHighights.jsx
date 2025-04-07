@@ -20,7 +20,7 @@ function AdvancephpKeyHighlights() {
       case 0:
         return (
           <>
-            <ul className="space-y-2 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl mb-12">
+            <ul className="space-y-2 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl mb-12 font-poppins">
               <p className="text-2xl font-medium text-orange-600 py-4">
                 Overview
               </p>
@@ -38,7 +38,7 @@ function AdvancephpKeyHighlights() {
       case 1:
         return (
           <>
-            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl">
+            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl font-poppins">
               <p className="text-2xl font-medium text-orange-600 py-4">
                 Key Concepts
               </p>
@@ -55,7 +55,7 @@ function AdvancephpKeyHighlights() {
       case 2:
         return (
           <>
-            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl">
+            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl font-poppins">
               <p className="text-2xl font-medium text-orange-600">
                 Applications
               </p>
@@ -73,7 +73,7 @@ function AdvancephpKeyHighlights() {
       case 3:
         return (
           <>
-            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl">
+            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl font-poppins">
               <p className="text-2xl font-medium text-orange-600">
                 Skills Developed
               </p>
@@ -91,7 +91,7 @@ function AdvancephpKeyHighlights() {
       case 4:
         return (
           <>
-            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl">
+            <ul className="space-y-3 pt-4 font-normal text-[16px] list-disc pl-16 bg-gray-200 shadow-2xl font-poppins">
               <p className="text-2xl font-medium text-orange-600">
                 Target Audience
               </p>
@@ -115,7 +115,7 @@ function AdvancephpKeyHighlights() {
 
   return (
     <>
-      <div id="main" className="md:lg:xl:px-20 bg-[#d90429] mb-12">
+      <div id="main" className="md:lg:xl:px-20 bg-[#d90429] mb-12 font-poppins">
         <div id="subdiv1" className="pt-4">
           <div id="h1" className="">
             <p className="md:lg:w-auto w-96 font-semibold text-xl p-2 text-[#f9ac13]">

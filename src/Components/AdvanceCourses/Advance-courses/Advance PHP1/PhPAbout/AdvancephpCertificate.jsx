@@ -6,7 +6,7 @@ function AdvancephpCertificate() {
     <>
       <div
         id="main"
-        className="grid  grid-cols-1 md:lg:grid-cols-2 pb-16 bg-[#d90429] mb-12"
+        className="grid  grid-cols-1 md:lg:grid-cols-2 pb-16 bg-[#d90429] mb-12 font-poppins"
       >
         <div id="content" className="flex justify-center items-center">
           <div className="p-5 space-y-5 w-[450px] h-96">

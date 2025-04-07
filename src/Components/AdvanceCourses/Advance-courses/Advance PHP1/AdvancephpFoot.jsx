@@ -13,7 +13,7 @@ function AdvancephpFoot() {
 
   return (
     <>
-      <div className="flex mb-20 flex-1 font w-full flex-col items-center justify-center text-center px-4 py-20 bg-[#0098f1] dark:from-gray-800 dark:via-gray-700 dark:to-gray-800">
+      <div className="flex mb-20 flex-1 font w-full flex-col items-center justify-center text-center px-4 py-20 bg-[#0098f1] dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 font-poppins">
         <h1 className="mx-auto max-w-4xl font-display text-2xl font-bold tracking-normal text-white-300 dark:text-gray-300 md:text-6xl">
           Building Dynamic Websites with &nbsp;
           <span className="relative text-white-600 dark:text-gray-300">

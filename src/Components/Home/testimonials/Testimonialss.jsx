@@ -76,7 +76,7 @@ export default function Testimonialss() {
       type: "carousel",
       focusAt: "center",
       perView: 2.2, // Show 2.2 cards to display partial cards on the sides
-      autoplay: 3000,
+      autoplay: 1000,
       animationDuration: 700,
       gap: 0, // Adjust gap to control space between cards
       breakpoints: {
@@ -116,7 +116,7 @@ export default function Testimonialss() {
           }
         `}
       </style>
-      <div className="pt-5">
+      <div className="pt-5 font-poppins">
         <div className="text-xl text-black lg:text-5xl font-semibold pb-4 items-center text-center font-sans">
           {/* <span>What our users say</span> */}
         </div>
