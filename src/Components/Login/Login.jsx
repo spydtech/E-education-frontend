@@ -41,33 +41,37 @@ function Login() {
     }
   };
 
-  const handleGoogleLoginSuccess = async (credentialResponse) => {
-    try {
-      const decoded = jwtDecode(credentialResponse.credential);
-      const userData = {
-        email: decoded.email,
-        name: decoded.name,
-        googleId: decoded.sub,
-      };
+ // In your Login component
+const handleGoogleLoginSuccess = async (credentialResponse) => {
+  try {
+    const decoded = jwtDecode(credentialResponse.credential);
+    console.log("Google Auth Response:", decoded);
 
-      // Send Google auth data to your backend
-      const response = await axios.post(`${API_BASE_URL}/auth/google`, userData);
-      
-      if (response.data.status) {
-        localStorage.setItem('jwt', response.data.jwt);
-        dispatch(login({
-          email: decoded.email,
-          name: decoded.name
-        }));
-        navigate('/');
-      } else {
-        setError('Google login failed. Please try again.');
-      }
-    } catch (error) {
-      console.error('Google login error:', error);
-      setError('Failed to login with Google.');
+    const response = await axios.post(`${API_BASE_URL}/auth/google`, {
+      token: credentialResponse.credential // Send the full JWT token
+    }, {
+      headers: { "Content-Type": "application/json" }
+    });
+
+    if (response.data.jwt) {
+      localStorage.setItem('jwt', response.data.jwt);
+      dispatch(login({
+        email: decoded.email,
+        name: decoded.name
+      }));
+      navigate('/');
+    } else {
+      setError(response.data.message || 'Google login failed');
     }
-  };
+  } catch (error) {
+    console.error('Full Google login error:', {
+      message: error.message,
+      response: error.response?.data,
+      stack: error.stack
+    });
+    setError(error.response?.data?.message || 'Failed to login with Google');
+  }
+};
 
   const handleGoogleLoginFailure = () => {
     setError('Google login failed. Please try again.');

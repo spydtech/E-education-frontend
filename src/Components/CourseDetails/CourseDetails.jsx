@@ -99,7 +99,7 @@ export default function CourseDetails({ course }) {
                 data-purpose="money-back-guarantee"
                 className="text-black text-lg font-semibold pt-5 pb-2 "
               >
-                <span class="money-back">30-Day Money-Back Guarantee</span>
+                {/* <span class="money-back">30-Day Money-Back Guarantee</span> */}
               </div>
               <div
                 data-purpose="full-lifetime-access"

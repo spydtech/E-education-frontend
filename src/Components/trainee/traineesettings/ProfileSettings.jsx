@@ -17,6 +17,7 @@ const ProfileSettings = ({ jwt }) => {
   });
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const themesBackGroundColor = [
     { value: "light", colorClass: "bg-light-theme" },
@@ -46,15 +47,17 @@ const ProfileSettings = ({ jwt }) => {
 
   const fileInputRef = useRef(null);
 
-  // Fetch Trainee Profile
   const fetchTraineeProfile = async () => {
     if (!jwt) {
-      console.error("JWT token is missing or invalid.");
+      setError("Authentication required");
       setLoading(false);
       return;
     }
 
     try {
+      setLoading(true);
+      setError(null);
+      
       const response = await axios.get(`${API_BASE_URL}/trainee/profile`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
@@ -68,22 +71,21 @@ const ProfileSettings = ({ jwt }) => {
         userId: data.userId || "",
         firstName: data.firstName || "",
         lastName: data.lastName || "",
-        email: data.email || "example@mail.com",
-        phoneNumber: data.phoneNumber || "1234567890",
+        email: data.email || "",
+        phoneNumber: data.phoneNumber || "",
         profilePhoto: data.profilePhoto || "https://via.placeholder.com/150",
       });
-
-      setLoading(false);
     } catch (error) {
-      setLoading(false);
       console.error("Error fetching profile:", error);
-      alert(`Error fetching profile: ${error.response?.data?.message || "Something went wrong"}`);
+      setError(error.response?.data?.message || "Failed to fetch profile");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchTraineeProfile();
-  }, []);
+  }, [jwt]);
 
   // Handle Profile Update
   const handleProfileUpdate = async () => {

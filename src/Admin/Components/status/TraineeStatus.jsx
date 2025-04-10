@@ -11,10 +11,30 @@ const TraineeStatus = () => {
 
   const fetchAttendance = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/trainee/attendance/getAll`);
-      setTableData(response.data.data);
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        throw new Error("No JWT token found");
+      }
+  
+      const response = await axios.get(`${API_BASE_URL}/api/trainee/attendance/getAll`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.data.data) {
+        setTableData(response.data.data);
+      } else {
+        console.error("No data received:", response.data);
+      }
     } catch (error) {
       console.error("Error fetching attendance:", error);
+      if (error.response?.status === 401) {
+        alert("Please log in again.");
+        window.location.href = "/login";
+      } else {
+        alert("Failed to load attendance data.");
+      }
     }
   };
 
