@@ -22,100 +22,80 @@ function AdvancewordpressKeyHighlights() {
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>
-                Access to live training sessions by Meta Blueprint trainers
-              </li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Eduction Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
-
+              <li>Comprehensive modules on WordPress site building</li>
+              <li>Hands-on projects for real-world website development</li>
+              <li>Training on popular page builders like Elementor</li>
+              <li>Custom themes and plugin development</li>
+              <li>SEO optimization for WordPress sites</li>
+              <li>Responsive design implementation</li>
+              <li>Security best practices and backup solutions</li>
+              <li>WordPress site migration and hosting essentials</li>
+              <li>Live mentor sessions and career guidance</li>
+              <li>Course certification and alumni status</li>
             </ul>
           </div>
         );
       case 1:
         return (
-
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
-
+              <li>WordPress architecture and file structure</li>
+              <li>Theme customization and child themes</li>
+              <li>Plugin development and integration</li>
+              <li>WooCommerce for eCommerce</li>
+              <li>Database management with phpMyAdmin</li>
+              <li>Using REST API in WordPress</li>
+              <li>Performance optimization techniques</li>
             </ul>
           </div>
         );
       case 2:
         return (
-
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.)Associate-Digital Marketing</li>
-
+              <li>Freelance WordPress Developer</li>
+              <li>Front-End Developer</li>
+              <li>Web Designer</li>
+              <li>Theme/Plugin Developer</li>
+              <li>Website Maintenance Specialist</li>
+              <li>WordPress Consultant</li>
+              <li>Content Manager</li>
+              <li>Technical SEO Specialist</li>
             </ul>
           </div>
         );
       case 3:
         return (
-
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">
               Skills Developed
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>List of target audience goes here...</li>
-              <li>
-                Explore 2 tracks & 5 specializations for diverse learning.
-              </li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>
-                Attain E-education Executive Alumni Status for exclusive
-                benefits.
-              </li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>
-                A voucher worth $50 for Meta's "Digital Marketing Associate"
-                certificate exam, free of cost.
-              </li>
-
+              <li>Proficiency in WordPress theme and plugin development</li>
+              <li>Ability to create responsive and SEO-friendly websites</li>
+              <li>Mastery of WordPress dashboard and page builders</li>
+              <li>Understanding of PHP, HTML, CSS, and JavaScript</li>
+              <li>Managing WordPress hosting and migrations</li>
+              <li>Website performance and security tuning</li>
+              <li>Basic knowledge of MySQL and database operations</li>
             </ul>
           </div>
         );
       case 4:
         return (
-
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">
               Target Audience
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>
-                Utilise ChatGPT to assist in creative unique content,plan
-                strategies,build,calenders,and more
-              </li>
-              <li>Generative SEO-optimised content with chatGPT</li>
-              <li>
-                Gain insights into your social media analytics by using chatGPT
-              </li>
-
+              <li>Students and freshers aiming to enter web development</li>
+              <li>Freelancers wanting to offer WordPress services</li>
+              <li>Marketing professionals building personal portfolios</li>
+              <li>Entrepreneurs setting up eCommerce sites</li>
+              <li>Designers interested in custom WordPress themes</li>
+              <li>Bloggers and content creators</li>
             </ul>
           </div>
         );
@@ -125,46 +105,20 @@ function AdvancewordpressKeyHighlights() {
   };
 
   return (
-
     <div className="px-3 md:mb-4">
-    <div className="md:flex justify-around  ">
-      <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
-        {renderContent()}
-      </div>
-      <div className="my-3">
-        <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
-          E-Education Course Highlights
-        </p>
-        {data.map((item, index) => (
-          <ul className="">
-            <li
-              key={index}
-              onClick={() => handleClick(index)}
-              className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center  ${
-                selectedItem === index
-                  ? "bg-[#0098f1] text-white border-none"
-                  : ""
-              }`}
-            >
-              {item.label}
-            </li>
-          </ul>
-        ))}
-
-    {/* <div className="px-4 md:mb-4">
-      <div className="md:flex justify-around">
-        <div className="bg-[#0098F1] text-white md:w-[380px] lg:w-[520px] p-2">
+      <div className="md:flex justify-around  ">
+        <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
           {renderContent()}
         </div>
         <div className="my-3">
-          <p className="font-bold underline-offset-2 text-wrap underline text-xl text-[#0098F1]">
-            Advanced Wordpress Key Highlights
+          <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
+            Advanced WordPress Key Highlights
           </p>
           {data.map((item, index) => (
             <ul key={index}>
               <li
                 onClick={() => handleClick(index)}
-                className={`p-5 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md ${
+                className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center  ${
                   selectedItem === index
                     ? "bg-[#0098f1] text-white border-none"
                     : ""
@@ -175,12 +129,8 @@ function AdvancewordpressKeyHighlights() {
             </ul>
           ))}
         </div>
-
       </div>
-    </div> */}
-  </div>
-  </div>
-  </div>
+    </div>
   );
 }
 

@@ -7,14 +7,14 @@ const AdvancePhpAbout = () => {
     {
       title: "Student Support",
       description:
-        "Learn about the latest mobile app development techniques and tools to build robust and scalable applications.",
+        "Learn about the latest Advanced Php techniques and tools to build robust and scalable applications.",
       imgSrc: programmer,
       imgAlt: "student-support",
     },
     {
       title: "Career Assistance",
       description:
-        "Gain expertise in mobile app development and receive support to advance your career in this growing field.",
+        "Gain expertise in Advanced Php and receive support to advance your career in this growing field.",
       imgSrc: assistance,
       imgAlt: "career-assistance",
     },
@@ -24,7 +24,7 @@ const AdvancePhpAbout = () => {
     <div className="px-3 text-center">
       <div>
         <p className="md:text-2xl font-bold text-[#0098F1]">
-          Discover the Mobile App Development Programs
+          Discover the Advanced Php Programs
         </p>
       </div>
 

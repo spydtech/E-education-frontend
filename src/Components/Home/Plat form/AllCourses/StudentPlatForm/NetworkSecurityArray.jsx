@@ -156,9 +156,9 @@ const NetworkSecurityArray = () => {
                         </p>
                       </div>
                     </div>
-                    <span className="text-gray-900 font-bold">
+                    {/* <span className="text-gray-900 font-bold">
                       {course.price}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </Link>

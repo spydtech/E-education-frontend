@@ -4,21 +4,21 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        anton: ["Anton", "sans-serif"],
-        lora: ["Lora", "serif"],
+        // anton: ["Anton", "sans-serif"],
+        // lora: ["Lora", "serif"],
         poppins: ["Poppins"],
         'poppins-bold': ["Poppins-Bold"],
         'poppins-medium': ["Poppins-Medium"],
         'poppins-semibold': ["Poppins-SemiBold"],
         'poppins-light': ["Poppins-Light"],
         'poppins-thin': ["Poppins-Thin"],
-        Lusitana: ["Lusitana"],
-        'Lusitana-bold': ["Lusitana-Bold"],
+        // Lusitana: ["Lusitana"],
+        // 'Lusitana-bold': ["Lusitana-Bold"],
         // ✅ Add Lucida Calligraphy
-        'lucida-calligraphy': ["Lucida Calligraphy", "cursive"],
+        // 'lucida-calligraphy': ["Lucida Calligraphy", "cursive"],
       
         // ✅ Add this line
-        lucida: ["Lucida Sans", "sans-serif"],
+        // lucida: ["Lucida Sans", "sans-serif"],
       },
       
       animation: {

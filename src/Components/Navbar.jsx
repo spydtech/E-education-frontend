@@ -55,61 +55,67 @@ const Navbar = () => {
     );
   }
 
-  const courses = {
-    Basic: [
-      { name: "PHP", link: "/php" },
-      { name: "Java", link: "/java" },
-      { name: "C/C++", link: "/c_c++" },
-      { name: "WordPress", link: "/wordpress" },
-      { name: "JavaScript", link: "/javascript" },
-      { name: "UI/UX Design", link: "/ui_ux_design" },
-      {
-        name: "Web Development",
-        link: "/fullStack_WebDevelopment/fullStack-Web-Development",
-      },
-    ],
-    Premium: [
-      { name: "Cyber Security", link: "/cyber_security" },
-      { name: "Ethical Hacking", link: "/ethical_hacking" },
-      { name: "Cloud with AWS", link: "/cloud-computing" },
-      {
-        name: "DevOps Mastery",
-        link: "/fullStack_WebDevelopment/fullStack-Devops",
-      },
-      { name: "ReactJs Mastery", link: "/reactjs" },
-      { name: "Software Testing", link: "/software_testing" },
-      {
-        name: "Full Stack Development",
-        link: "/fullStack_WebDevelopment/fullStack-Web-Development",
-      },
-      { name: "Blockchain Development", link: "/blockchain" },
-      {
-        name: "Machine Learning with AI",
-        link: "/data_Science/machine-Learning",
-      },
-    ],
-    Advance: [
-      { name: "Power BI", link: "/power-bi" },
-      { name: "Data Science", link: "/data_Science" },
-      {
-        name: "MEAN Stack",
-        link: "/fullStack_WebDevelopment/mean-Stack-Developer",
-      },
-      {
-        name: "Java Mastery",
-        link: "/fullStack_WebDevelopment/fullStack-Java-Development",
-      },
-      { name: "ERP Software", link: "/erp" },
-      { name: "Advance PHP", link: "/advancedPhpProgramming" },
-      { name: "Network Security", link: "/network_security" },
-      {
-        name: "Advance JavaScript",
-        link: "/fullStack_WebDevelopment/full-stack-javascript",
-      },
-      { name: "Mastering WordPress", link: "/masteringWordPressDevelopment" },
-      { name: "Full Stack Mobile App", link: "/fullStackMobileAppDevelopment" },
-    ],
-  };
+   const courses = {
+      Basic: [
+        { name: "PHP", link: "/php" },
+        { name: "Java", link: "/java" },
+        { name: "C/C++", link: "/c_c++" },
+        { name: "WordPress", link: "/wordpress" },
+        { name: "JavaScript", link: "/javascript" },
+        { name: "UI/UX Design", link: "/ui_ux_design" },
+        { name: "Software Testing", link: "/basic_software_Testing" },
+        {
+          name: "Web Development",
+          link: "/webdevelopment",
+        },
+      ],
+      Premium: [
+        { name: "Cyber Security", link: "/cyber_security" },
+        { name: "Ethical Hacking", link: "/ethical_hacking" },
+        { name: "Cloud with AWS", link: "/cloud-computing" },
+        {
+          name: "DevOps Mastery",
+          link: "/fullStack_WebDevelopment/fullStack-Devops",
+        },
+        { name: "ReactJs Mastery", link: "/reactjs" },
+        { name: "Software Testing", link: "/software_testing" },
+        {
+          name: "Full Stack Development",
+          link: "/fullStack_WebDevelopment/fullStack-Web-Development",
+        },
+        { name: "Blockchain Development", link: "/blockchain" },
+        {
+          name: "Machine Learning with AI",
+          link: "/data_Science/machine-Learning",
+        },
+      ],
+      Advance: [
+        { name: "Power BI", link: "/power-bi" },
+        { name: "Data Science", link: "/data_Science" },
+        {
+          name: "MEAN Stack",
+          link: "/fullStack_WebDevelopment/mean-Stack-Developer",
+        },
+        {
+          name: "MERN Stack",
+          link: "/fullStack_WebDevelopment/mern-Stack-Developer",
+        },
+  
+        {
+          name: "Java Mastery",
+          link: "/fullStack_WebDevelopment/fullStack-Java-Development",
+        },
+        { name: "ERP Software", link: "/erp" },
+        { name: "Advance PHP", link: "/advancedPhpProgramming" },
+        { name: "Network Security", link: "/network_security" },
+        {
+          name: "Advance JavaScript",
+          link: "/fullStack_WebDevelopment/full-stack-javascript",
+        },
+        { name: "Mastering WordPress", link: "/masteringWordPressDevelopment" },
+        { name: "Full Stack Mobile App", link: "/fullStackMobileAppDevelopment" },
+      ],
+    };
 
   useEffect(() => {
     if (jwt && !auth.user) {

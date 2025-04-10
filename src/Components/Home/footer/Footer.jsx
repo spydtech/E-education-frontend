@@ -144,7 +144,9 @@ const sections = [
     contactDetails: {
       phone: "+91 9494307579",
       email: "support@e-education.in",
-      address: "Ramalayam St,HMT Hills,Kukatpally,Hyderabad,Telangana-500085",
+      address: "Ramalayam St,HMT Hills,",
+      address2:"Kukatpally,Hyderabad",
+      pin: ",Telangana-500085"
     },
   },
 ];
@@ -216,11 +218,13 @@ function FooterPart() {
                 )}
                {/* Contact Details Below Social Media */}
                {section.contactDetails && (
-                  <div className="mt-4 text-gray-200 text-lg">
+                  <div className="mt-4 text-gray-200 text-lg ">
                     <h1 className="font-bold">Contact-Us</h1>
                     <p><strong></strong> {section.contactDetails.phone}</p>
                     <p><strong></strong> <a href={`mailto:${section.contactDetails.email}`} className="underline">{section.contactDetails.email}</a></p>
-                    <p><strong></strong> {section.contactDetails.address}</p>
+                    <p className="md:w-[50px] flex flex-col md:flex-row-4"><strong></strong> {section.contactDetails.address}</p>
+                    <p className="md:w-[50px] flex flex-col md:flex-row-4"><strong></strong> {section.contactDetails.address2}</p>
+                    <p className="md:w-[50px] flex flex-col md:flex-row-4"><strong></strong> {section.contactDetails.pin}</p>
                   </div>
                 )}
               </div>

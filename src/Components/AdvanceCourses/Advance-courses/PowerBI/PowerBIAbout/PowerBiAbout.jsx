@@ -24,7 +24,7 @@ const PowerBiAbout = () => {
     <div className="px-3 text-center">
       <div>
         <p className="md:text-2xl font-bold text-[#0098F1]">
-          Discover the Machine Learning Program
+          Discover the Power BI Program
         </p>
       </div>
 

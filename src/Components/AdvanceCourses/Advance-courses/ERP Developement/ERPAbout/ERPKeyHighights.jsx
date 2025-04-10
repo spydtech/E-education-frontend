@@ -22,16 +22,19 @@ function ERPKeyHighlights() {
           <div className="p-3 space-y-2">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-              <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>Access to live training sessions by Meta Blueprint trainers</li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Education Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
+              <li>Comprehensive ERP training with real-time case studies</li>
+              <li>Integration of core business processes using ERP tools</li>
+              <li>
+                Hands-on with popular ERP platforms like SAP, Oracle, and
+                Microsoft Dynamics
+              </li>
+              <li>Live sessions with industry professionals</li>
+              <li>Project-based learning with real-life business scenarios</li>
+              <li>Access to ERP simulations and sandbox environments</li>
+              <li>End-to-end understanding of ERP lifecycle implementation</li>
+              <li>Support for ERP certification preparation</li>
+              <li>Mock interviews and career guidance</li>
+              <li>Alumni network and lifetime access to materials</li>
             </ul>
           </div>
         );
@@ -40,13 +43,14 @@ function ERPKeyHighlights() {
           <div className="p-3 space-y-2">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-              <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
+              <li>ERP Architecture and Modules</li>
+              <li>Business Process Mapping</li>
+              <li>Master Data Management</li>
+              <li>ERP Implementation Lifecycle</li>
+              <li>Change Management in ERP</li>
+              <li>Integration with other IT systems</li>
+              <li>Customization and Configuration</li>
+              <li>Security and Compliance in ERP</li>
             </ul>
           </div>
         );
@@ -55,39 +59,52 @@ function ERPKeyHighlights() {
           <div className="p-3 space-y-2">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-              <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.) Associate-Digital Marketing</li>
+              <li>ERP Consultant</li>
+              <li>Functional Analyst</li>
+              <li>ERP Project Manager</li>
+              <li>Business Systems Analyst</li>
+              <li>SAP/Oracle Functional Consultant</li>
+              <li>ERP Developer or Technical Analyst</li>
+              <li>Supply Chain or Finance Process Owner</li>
+              <li>IT Manager overseeing ERP operations</li>
             </ul>
           </div>
         );
       case 3:
         return (
           <div className="p-3 space-y-2">
-            <p className="text-xl font-medium text-white pl-2">Skills Developed</p>
+            <p className="text-xl font-medium text-white pl-2">
+              Skills Developed
+            </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-              <li>List of target audience goes here...</li>
-              <li>Explore 2 tracks & 5 specializations for diverse learning.</li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>Attain E-Education Executive Alumni Status for exclusive benefits.</li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>A voucher worth $50 for Meta's "Digital Marketing Associate" certificate exam, free of cost.</li>
+              <li>ERP configuration and customization</li>
+              <li>End-to-end business process analysis</li>
+              <li>
+                Functional knowledge of ERP modules (Finance, SCM, HR, etc.)
+              </li>
+              <li>Database management and data migration</li>
+              <li>Analytical and problem-solving skills</li>
+              <li>Understanding of ERP implementation methodologies</li>
+              <li>Hands-on with ERP reporting tools</li>
+              <li>Stakeholder and change management</li>
             </ul>
           </div>
         );
       case 4:
         return (
           <div className="p-3 space-y-2">
-            <p className="text-xl font-medium text-white pl-2">Target Audience</p>
+            <p className="text-xl font-medium text-white pl-2">
+              Target Audience
+            </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-              <li>Utilize ChatGPT to assist in creative unique content, plan strategies, build calendars, and more</li>
-              <li>Generative SEO-optimized content with ChatGPT</li>
-              <li>Gain insights into your social media analytics by using ChatGPT</li>
+              <li>Graduates and postgraduates looking to enter ERP roles</li>
+              <li>Working professionals aiming to switch to ERP consulting</li>
+              <li>Finance, HR, and Supply Chain professionals</li>
+              <li>IT professionals seeking ERP technical knowledge</li>
+              <li>Managers involved in digital transformation initiatives</li>
+              <li>
+                Entrepreneurs and business owners seeking process optimization
+              </li>
             </ul>
           </div>
         );
@@ -104,7 +121,7 @@ function ERPKeyHighlights() {
         </div>
         <div className="my-3">
           <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
-            E-Education Course Highlights
+            ERP Course Highlights
           </p>
           {data.map((item, index) => (
             <ul key={index}>

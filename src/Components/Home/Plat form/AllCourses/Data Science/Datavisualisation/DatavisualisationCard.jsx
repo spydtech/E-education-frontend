@@ -26,13 +26,13 @@ const DatavisualisationCard = () => {
                 imgSrc: img1,
                 title: "Explore Course Catalog",
                 description:
-                  "Browse our extensive catalog of Data visulisation courses Discover beginner-friendly to advanced-level programs designed to accommodate learners of all backgrounds.",
+                  "Browse our extensive catalog of Data visulization courses Discover beginner-friendly to advanced-level programs designed to accommodate learners of all backgrounds.",
               },
               {
                 imgSrc: img2,
                 title: "Enroll in Foundational Courses",
                 description:
-                  "Start with foundational courses covering basic concepts algorithms, and programming languages essential for Data visulisation.",
+                  "Start with foundational courses covering basic concepts algorithms, and programming languages essential for Data visulization.",
               },
               {
                 imgSrc: img3,
@@ -44,13 +44,13 @@ const DatavisualisationCard = () => {
                 imgSrc: img4,
                 title: "Track Your Progress",
                 description:
-                  "Monitor your progress with intuitive dashboards and tracking tools. Set goals, track milestones, and measure your proficiency in various Data visulisation concepts as you advance through the courses.",
+                  "Monitor your progress with intuitive dashboards and tracking tools. Set goals, track milestones, and measure your proficiency in various Data visulization concepts as you advance through the courses.",
               },
               {
                 imgSrc: img5,
                 title: "Specialize and Advance",
                 description:
-                  "Choose specialized tracks or advanced courses to delve deeper into specific areas of Data visulisation, such as deep learning, natural language processing, or computer vision. Customize your learning path to align with your interests and career goals.",
+                  "Choose specialized tracks or advanced courses to delve deeper into specific areas of Data visulization, such as deep learning, natural language processing, or computer vision. Customize your learning path to align with your interests and career goals.",
               },
               {
                 imgSrc: img6,

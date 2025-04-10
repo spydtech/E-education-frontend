@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import About from "./About";
 import Outcomes from "./Outcomes";
-import MeanStackDevFQACourses from "./MeanStackDevFQACourses";
-import MeanStackDevelopmentTestimonioals from "./MeanStackDevelopmentTestimonioals";
+import MeanStackDevFQACourses from "./MernStackDevFQACourses";
+import MeanStackDevelopmentTestimonioals from "./MernStackDevelopmentTestimonioals";
 import { IoMenu } from "react-icons/io5";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 

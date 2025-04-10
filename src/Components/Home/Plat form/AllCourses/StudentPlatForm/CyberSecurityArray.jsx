@@ -136,7 +136,7 @@ const CyberSecurityArray = () => {
                 index >= 3 ? "mt-6" : "" // Add top margin for the second row
               }`}
             >
-              <Link  to={course.link} rel="noopener noreferrer">
+              <Link to={course.link} rel="noopener noreferrer">
                 <div className="relative">
                   <img
                     src={course.image}
@@ -174,9 +174,9 @@ const CyberSecurityArray = () => {
                         </p>
                       </div>
                     </div>
-                    <span className="text-gray-900 font-bold">
+                    {/* <span className="text-gray-900 font-bold">
                       {course.price}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               </Link>

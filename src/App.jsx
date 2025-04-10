@@ -51,7 +51,8 @@ import Cart from "./Components/Cart/Cart";
 import EthicalHackingStudentArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/EthicalHackingStudentArray";
 import CyberSecurityArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/CyberSecurityArray";
 import NetworkSecurityArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/NetworkSecurityArray";
-import MeanStackDeveloper from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/MernStackDevelopment/Main/MeanStackDevelopment";
+import MeanStackDeveloper from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/MeanStackDevelopment/Main/MeanStackDevelopment";
+import MernStackDeveloper from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/MernStackDevelopment/Main/MernStackDevelopment";
 import FullStackWebDevelopment from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/FullStackWebDevelopmentPage/FullStackWebDevelopment";
 import FullStackDevops from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/FullStackDevops_Development/FullStackDevopsDevelopment";
 import FullStackPythonDevelopment from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/fullStackPython/Main/FullStackPythonDevelopment";
@@ -84,6 +85,7 @@ import RegressionTesting from "./Components/Home/Plat form/AllCourses/Software T
 
 // import Java from "./Components/BasicCourse/BasicAllCourses/Basic_Java/BasicJava";
 import Wordpress from "./Components/BasicCourse/BasicAllCourses/Wordpress/Wordpress";
+import BasicSoftwareTesting from "./Components/BasicCourse/BasicAllCourses/Basic_SoftwareTesting/BasicSoftwareTesting";
 import Php from "./Components/BasicCourse/BasicAllCourses/Basic_Php/BasicPhp";
 import JavaScript from "./Components/BasicCourse/BasicAllCourses/Basic_JavaScript/BasicJavaScript";
 import C_Cplus from "./Components/BasicCourse/BasicAllCourses/Basic_C&C++/BasicC_Cplus";
@@ -393,7 +395,11 @@ function App() {
               path="/fullStack_WebDevelopment/mean-Stack-Developer"
               element={<MeanStackDeveloper />}
             />
-           
+            <Route
+              path="/fullStack_WebDevelopment/mern-Stack-Developer"
+              element={<MernStackDeveloper />}
+            />
+
             <Route
               path="/fullStack_WebDevelopment"
               element={<FullStackWebDevelopmentArray />}
@@ -447,6 +453,10 @@ function App() {
             <Route path="/ui_ux_design" element={<UiUx />} />
             <Route path="/javaScript" element={<JavaScript />} />
             <Route path="/c_c++" element={<C_Cplus />} />
+            <Route
+              path="/basic_software_Testing"
+              element={<BasicSoftwareTesting />}
+            />
             {/* Advance courses */}
 
             <Route path="/premium-courses" element={<PremiumCourses />} />

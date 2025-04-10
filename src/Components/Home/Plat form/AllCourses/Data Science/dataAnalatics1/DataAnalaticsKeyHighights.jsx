@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function DataAnalaticsKeyHighights() {
+function DataAnalyticsKeyHighlights() {
   const [selectedItem, setSelectedItem] = useState(0);
 
   const data = [
@@ -22,16 +22,16 @@ function DataAnalaticsKeyHighights() {
           <div className="p-4 space-y-2 md:p-6 lg:p-8">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6 text-white">
-              <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>Access to live training sessions by Meta Blueprint trainers</li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Education Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
+              <li>Industry-aligned Data Analytics curriculum</li>
+              <li>Live sessions with data science experts</li>
+              <li>Hands-on projects using Python, SQL & Power BI</li>
+              <li>Real-time business case studies</li>
+              <li>
+                Career support including resume building & mock interviews
+              </li>
+              <li>Certification from top education partners</li>
+              <li>Flexible EMI options available</li>
+              <li>Interactive doubt clearing sessions</li>
             </ul>
           </div>
         );
@@ -40,13 +40,13 @@ function DataAnalaticsKeyHighights() {
           <div className="p-4 space-y-2 md:p-6 lg:p-8">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6 text-white">
-              <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
+              <li>Data Wrangling & Cleaning</li>
+              <li>Exploratory Data Analysis (EDA)</li>
+              <li>Statistical Analysis</li>
+              <li>Data Visualization (Power BI/Tableau)</li>
+              <li>SQL for Data Queries</li>
+              <li>Excel for Data Reporting</li>
+              <li>Basic Predictive Modeling</li>
             </ul>
           </div>
         );
@@ -55,38 +55,48 @@ function DataAnalaticsKeyHighights() {
           <div className="p-4 space-y-2 md:p-6 lg:p-8">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6 text-white">
-              <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.) Associate-Digital Marketing</li>
+              <li>Business Intelligence Analyst</li>
+              <li>Data Analyst</li>
+              <li>Marketing Analyst</li>
+              <li>Operations Analyst</li>
+              <li>Financial Analyst</li>
+              <li>Product Analyst</li>
+              <li>Customer Insights Analyst</li>
             </ul>
           </div>
         );
       case 3:
         return (
           <div className="p-4 space-y-2 md:p-6 lg:p-8">
-            <p className="text-xl font-medium text-white pl-2">Skills Developed</p>
+            <p className="text-xl font-medium text-white pl-2">
+              Skills Developed
+            </p>
             <ul className="space-y-2 font-normal list-disc pl-6 text-white">
-              <li>Explore 2 tracks & 5 specializations for diverse learning.</li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>Attain E-education Executive Alumni Status for exclusive benefits.</li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>A voucher worth $50 for Meta's "Digital Marketing Associate" certificate exam, free of cost.</li>
+              <li>Data interpretation and storytelling</li>
+              <li>Proficiency in Excel, SQL, Python & Power BI</li>
+              <li>Problem solving using data</li>
+              <li>Report automation</li>
+              <li>Stakeholder communication with data-driven insights</li>
+              <li>Dashboards and performance tracking</li>
             </ul>
           </div>
         );
       case 4:
         return (
           <div className="p-4 space-y-2 md:p-6 lg:p-8">
-            <p className="text-xl font-medium text-white pl-2">Target Audience</p>
+            <p className="text-xl font-medium text-white pl-2">
+              Target Audience
+            </p>
             <ul className="space-y-2 font-normal list-disc pl-6 text-white">
-              <li>Utilise ChatGPT to assist in creating unique content, planning strategies, building calendars, and more.</li>
-              <li>Generative SEO-optimized content with ChatGPT</li>
-              <li>Gain insights into your social media analytics by using ChatGPT</li>
+              <li>Freshers aspiring for data roles</li>
+              <li>
+                Working professionals looking to transition into analytics
+              </li>
+              <li>Entrepreneurs and business owners</li>
+              <li>Managers looking to leverage data in decision making</li>
+              <li>
+                Non-tech professionals seeking upskilling in data analytics
+              </li>
             </ul>
           </div>
         );
@@ -97,10 +107,12 @@ function DataAnalaticsKeyHighights() {
 
   return (
     <div className="px-3 md:mb-4">
-    <div className="md:flex justify-around">
-      <div className="bg-[#0098F1] text-white md:w-[460px] lg:w-[520px]">{renderContent()}</div>
-      <div className="my-3">
-       <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
+      <div className="md:flex justify-around">
+        <div className="bg-[#0098F1] text-white md:w-[460px] lg:w-[520px]">
+          {renderContent()}
+        </div>
+        <div className="my-3">
+          <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
             E-Education Course Highlights
           </p>
           {data.map((item, index) => (
@@ -123,4 +135,4 @@ function DataAnalaticsKeyHighights() {
   );
 }
 
-export default DataAnalaticsKeyHighights;
+export default DataAnalyticsKeyHighlights;

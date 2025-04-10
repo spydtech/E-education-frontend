@@ -1,4 +1,4 @@
-import React, { useState, } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AdvancephpHero = () => {
@@ -6,9 +6,9 @@ const AdvancephpHero = () => {
   const [coursePrice] = useState(14999);
   const navigate = useNavigate();
 
-   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleEnroll = () => {
     navigate("/course-details", { state: { courseName, coursePrice } });
@@ -22,7 +22,9 @@ const AdvancephpHero = () => {
             Master Advanced PHP Techniques to Elevate Your Development Skills!
           </h1>
           <p className="text-lg text-gray-500 md:py-6 leading-8">
-            Dive deep into advanced PHP concepts including OOP, design patterns, and performance optimization. Enhance your backend development expertise with cutting-edge PHP practices.
+            Dive deep into advanced PHP concepts including OOP, design patterns,
+            and performance optimization. Enhance your backend development
+            expertise with cutting-edge PHP practices.
           </p>
           <div className="mt-6 md:w-[250px] md:h-[70px] w-auto h-auto flex justify-center items-center">
             <button
