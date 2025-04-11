@@ -17,106 +17,13 @@ import { DiDatabase } from "react-icons/di";
 import { GiGraduateCap } from "react-icons/gi";
 import { MdOutlineNetworkCheck } from "react-icons/md";
 import { FaMixcloud } from "react-icons/fa";
-import image1 from "../../../../assetss/Home/FeaturesAssets/Professionalimage1.png";
+import image1 from "../../../../assetss/student/professionalCourses.jpg";
 import ProfessionalsCourses from "./ProfessionalsCourses";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 
 const Professionals = () => {
-  // const courses = [
-  //   {
-  //     title: "Full Stack Web Development",
-  //     description: "Master full-stack web development with a comprehensive bootcamp course on E-education.",
-  //     link: "/fullStack_WebDevelopment",
-  //     icon: <SiSemanticweb className="text-[#f6ac14] w-[40px] h-[40px]" />,
-
-  //   },
-  //   {
-  //     title: "Mobile App Development",
-  //     description: "Start your journey in iOS app development with expert guidance.",
-  //     link: "/fullStackMobileAppDevelopment",
-  //     icon: <FaMobile className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Python Programming",
-  //     description: "Unlock the power of Python programming with E-education.",
-  //     link: "/fullStack_WebDevelopment/fullStack-Python-Development",
-  //     icon: <FaPython className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Java Programming",
-  //     description: "Build a solid foundation in Java programming with an engaging course on E-education.",
-  //     link: "/fullStack_WebDevelopment/fullStack-Java-Development",
-  //     icon: <FaJava className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Data Science and Analytics",
-  //     description: "Dive deep into data science and analytics with a specialized course.",
-  //     link: "/data_Science/data-Analatics",
-  //     icon: <SiAlwaysdata className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Machine Learning",
-  //     description: "Explore machine learning with hands-on Python & R training.",
-  //     link: "/data_Science/machine-Learning",
-  //     icon: <GrVirtualMachine className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Data Visualization",
-  //     description: "Master the art of data visualization with Python and Matplotlib in a course.",
-  //     link: "/data_Science/data-visualization",
-  //     icon: <AiFillDatabase className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Big Data",
-  //     description: "Conquer big data challenges with specialized training on E-education.",
-  //     link: "/data_Science/big-data-analysis",
-  //     icon: <DiDatabase className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Cybersecurity",
-  //     description: "Embark on a journey into cybersecurity fundamentals on E-education.",
-  //     link: "/cyber_security",
-  //     icon: <SiCyberdefenders className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Ethical Hacking",
-  //     description: "Learn the art of ethical hacking through comprehensive training on E-education.",
-  //     link: "/ethical_Hacking",
-  //     icon: <GiGraduateCap className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Network Security",
-  //     description: "Master network security essentials with a comprehensive course on Pluralsight.",
-  //     link: "/network_security",
-  //     icon: <MdOutlineNetworkCheck className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Cloud Computing",
-  //     description: "Embark on a journey into cloud computing with E-education.",
-  //     link: "/cloud-testing",
-  //     icon: <FaMixcloud className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "IT and Networking",
-  //     description: "Master IT and networking essentials with courses on E-education.",
-  //     link: "/network_security/advance-network-secuity",
-  //     icon: <SiNintendonetwork className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "Database Management",
-  //     description: "Unlock the potential of database management with E-education.",
-  //     link: "/database",
-  //     icon: <FaDatabase className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  //   {
-  //     title: "UI/UX Design",
-  //     description: "Master the principles of UI/UX design with courses on E-education.",
-  //     link: "/ui_ux_design",
-  //     icon: <FaComputer className="text-[#f6ac14] w-[40px] h-[40px]" />,
-  //   },
-  // ];
-
+  
   const courses = [
     {
       title: "Full Stack Web ",
@@ -242,37 +149,42 @@ const Professionals = () => {
     <>
       <Navbar />
       <div className=" px-4 py-4">
-        <div className="flex lg:px-10  flex-col-reverse lg:flex-row lg:justify-between">
-          <div className="text-center lg:text-left my-4 lg:w-1/2">
-            <div className=" lg:pt-10 sm:mx-10 lg:mx-0  pb-4">
-              <p className=" md:lg:xl:text-lg text-sm text-left">
-                Elevate your career with our curated professional courses
-                designed to sharpen your skills and propel you towards success.
-                Embrace the flexibility of online learning and seize the
-                opportunity to grow, no matter where you are located.
-              </p>
-              <p className=" md:lg:xl:text-lg text-sm text-left">
-                In today's dynamic job market, staying ahead requires continuous
-                learning. Our professional courses provide targeted skills and
-                knowledge to propel your career forward.
-              </p>
-            </div>
-
-            <div className="my-4  ">
-              <button className="bg-[#0098f1] text-white text-lg    p-4  rounded-lg hover:shadow-lg  font-medium ">
-                Explore Course
-              </button>
-            </div>
-          </div>
-
-          <div className="flex justify-center  mb-4 lg:mb-6">
-            <img
-              src={image1}
-              alt="People learning"
-              className="md:w-[400px] w-auto h-96   shadow-md"
-            />
-          </div>
-        </div>
+        <div
+                id="main"
+                className="relative flex justify-center items-center bg-cover bg-center md:h-[582px] h-[300px] w-full font-poppins "
+                style={{ backgroundImage: `url(${image1})` }}
+              >
+                 <div
+        
+               
+        className="absolute inset-0 bg-black md:h-[582px] h-[300px] w-full  items-center bg-cover opacity-70"
+        
+              
+             ></div>
+                <div className=" absolute flex flex-col justify-center items-center h-auto space-y-4 p-4 md:p-8 lg:p-12">
+                  <div className="w-full max-w-xl md:max-w-2xl lg:max-w-3xl h-[58px] flex justify-center items-center">
+                    <span className="text-center text-white text-3xl md:text-4xl lg:text-5xl">
+                      Master <span className="text-[#f6ac14]">Tech</span> Fundamentals
+                    </span>
+                  </div>
+                  <div className="w-full max-w-2xl lg:max-w-3xl h-auto flex justify-center items-center">
+                    <p className="text-center text-white text-base md:text-lg lg:text-xl">
+                      Accelerate your tech skills with hands-on courses designed for
+                      Professionals. Gain expertise in programming, data analysis,
+                      cybersecurity, and more. Prepare yourself for success in the
+                      digital world.
+                    </p>
+                  </div>
+                  <div className="flex justify-center items-center rounded-lg top-0 relative">
+                    <motion.button className="rounded-lg w-[200px] md:w-[265px] h-[50px] md:h-[70px] md:px-4 text-lg md:text-2xl group flex justify-center items-center gap-1.5 bg-[#0098f1] py-2 text-white transition-colors">
+                      <Link to="" className="flex items-center gap-1.5">
+                        Find the Courses
+                        <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
+                      </Link>
+                    </motion.button>
+                  </div>
+                </div>
+              </div>
         {/* <div className="text-center pb-2 p-6 mb-6">
           <h2 className="text-4xl pb-6 font-bold">
             <span className="text-[#f6ac14]">Explore</span>
@@ -297,7 +209,7 @@ const Professionals = () => {
         </div> */}
 
         <div className="text-center my-8">
-          <h2 className=" text:lg md:text-3xl pt-4 font-bold">
+          <h2 className=" text-2xl md:text-3xl pt-4 font-bold">
             <span className="text-[#f6ac14]">Highly</span>
             <span className="bg-gradient-to-r bg-clip-text from-[#f6ac14] to-[#0098f1] text-transparent">
               {" "}
@@ -344,10 +256,10 @@ const Professionals = () => {
           >
             {courses.map((course, index) => (
               <div
-                key={index}
-                id="card"
-                className="w-full sm:w-[317px] lg:w-[340px] mx-2 h-[360px] lg:h-[360px] rounded-lx p-4 group  duration-600 ease-out transform bg-[#0098f1] text-white relative rounded-2xl shadow-md  flex flex-col justify-between transition-transform duration-500 hover:scale-105 before:absolute before:w-1/5 before:h-1/5 before:bg-[#f6ac14] before:transition-all before:duration-500 before:top-0 before:right-0 before:rounded-tr-[15px] before:rounded-bl-[100%] hover:before:w-full hover:before:h-full hover:before:rounded-[15px] after:absolute after:w-1/5 after:h-1/5 after:bg-[#f6ac14] after:bg-opacity-0 after:transition-all after:duration-500 after:bottom-0 after:left-0 after:rounded-tl-[100%] after:rounded-br-[15px] hover:after:w-full hover:after:h-full hover:after:rounded-[15px] "
-              >
+              key={index}
+              id="card"
+              className="w-[300px] sm:w-[300px] md:w-[317px] lg:w-[340px] mx-2 h-[340px] lg:h-[360px] rounded-lx p-4 group duration-600 ease-out transform bg-[#0098f1] text-white relative rounded-2xl shadow-md flex flex-col justify-between transition-transform duration-500 hover:scale-105 before:absolute before:w-1/5 before:h-1/5 before:bg-[#f6ac14] before:transition-all before:duration-500 before:top-0 before:right-0 before:rounded-tr-[15px] before:rounded-bl-[100%] hover:before:w-full hover:before:h-full hover:before:rounded-[15px] after:absolute after:w-1/5 after:h-1/5 after:bg-[#f6ac14] after:bg-opacity-0 after:transition-all after:duration-500 after:bottom-0 after:left-0 after:rounded-tl-[100%] after:rounded-br-[15px] hover:after:w-full hover:after:h-full hover:after:rounded-[15px]"
+              >
                 <div>
                   <div className="rounded-full w-[80px] h-[80px] bg-[#d2efff]  relative flex justify-center items-center mb-4">
                     {/* <div alt={course.title} className="w-[48px] h-[48px]">
@@ -363,10 +275,11 @@ const Professionals = () => {
                   </div>
                   <div className="flex justify-center items-center mt-10 relative z-10 rounded-lg">
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="rounded-lg w-[265px] bg-[#d2efff] group-hover:bg-[#fed19c] h-[70px] px-4 text-2xl group flex justify-center items-center gap-1.5 text-[#0098f1] py-2 transition-colors"
-                    >
+                       whileHover={{ scale: 1.05 }}
+                       whileTap={{ scale: 0.95 }}
+                       className="rounded-lg md:w-[265px] bg-[#d2efff] group-hover:bg-[#fed19c] md:h-[70px] px-4  sm:text-lg md:text-2xl text-lg group flex justify-center items-center gap-1.5 text-[#0098f1] py-2 transition-colors"
+                     >
+   
                       <Link
                         to={course.link}
                         className="flex items-center gap-1.5 group-hover:text-white"

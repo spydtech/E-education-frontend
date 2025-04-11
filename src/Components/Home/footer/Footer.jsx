@@ -6,7 +6,7 @@ import { FiTwitter } from "react-icons/fi";
 import { BsInstagram } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
 import IMG from "../../../assets/E- education logo .png";
-import footerImg from "../../../assetss/footer_img.jpg";
+import footerImg from "../../../assetss/E-education image.jpg";
 import footerPic from "../../../assetss/footer_pic.jpg";
 
 const sections = [
@@ -164,7 +164,7 @@ function FooterPart() {
       <div
 
        
- className="absolute inset-0 bg-[#0098F1]  opacity-70 font-poppins"
+ className="absolute inset-0 bg-black  opacity-70 font-poppins"
 
         aria-hidden="true"
       ></div>

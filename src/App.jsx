@@ -49,6 +49,7 @@ import WishLists from "./Components/Home/Plat form/AddtoCart/WishLists";
 import TryADemo from "./Components/tryAdemo/TryADemo";
 import Cart from "./Components/Cart/Cart";
 import EthicalHackingStudentArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/EthicalHackingStudentArray";
+import ArtificialIntelligenceArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/ArtificialIntelligenceArray";
 import CyberSecurityArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/CyberSecurityArray";
 import NetworkSecurityArray from "./Components/Home/Plat form/AllCourses/StudentPlatForm/NetworkSecurityArray";
 import MeanStackDeveloper from "./Components/Home/Plat form/AllCourses/Full Stack Web Development/MeanStackDevelopment/Main/MeanStackDevelopment";
@@ -99,6 +100,8 @@ import BlockChain from "./Components/AdvanceCourses/Advance-courses/BlockChain/B
 import CloudComputing from "./Components/AdvanceCourses/Advance-courses/CloudComputing/CloudComputing";
 import UiUx from "./Components/BasicCourse/BasicAllCourses/UI_UX/Ui_Ux";
 import FullStackMobileApp from "./Components/PremiumCourses/Premium-Courses/Fullstackmobileapp/mobileappFundamentals";
+import GenerativeAi from "./Components/PremiumCourses/Premium-Courses/GenerativeAI.jsx/GenerativeAI";
+import AgenticAi from "./Components/PremiumCourses/Premium-Courses/AgenticAI.jsx/AgenticAI";
 import PreAdvancePhp from "./Components/PremiumCourses/Premium-Courses/pre-AdvancePhp/AdvancePhp";
 import PreWordPress from "./Components/PremiumCourses/Premium-Courses/pre-Wordpress/AdvancewordpressFundamentals";
 import Pricing2 from "./Components/Home/Pricing/Pricing2";
@@ -378,6 +381,10 @@ function App() {
               element={<EthicalHackingStudentArray />}
             />
             <Route
+              path="/artificial_Intelligence"
+              element={<ArtificialIntelligenceArray />}
+            />
+            <Route
               path="/Ethical_Hacking/basic_ethical_Hacking"
               element={<EthicalHacking />}
             />
@@ -473,6 +480,8 @@ function App() {
               path="/fullStackMobileAppDevelopment"
               element={<FullStackMobileApp />}
             />
+            <Route path="/generativeAi" element={<GenerativeAi />} />
+            <Route path="/agenticAi" element={<AgenticAi />} />
             <Route path="/advancedPhpProgramming" element={<PreAdvancePhp />} />
             <Route
               path="/masteringWordPressDevelopment"

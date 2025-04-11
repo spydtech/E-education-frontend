@@ -19,6 +19,7 @@ import SingupHome from "../Home/SingUpHome/SignUpHome";
 import LoginForm from "./loginForm/LoginForm";
 import StartNewCarrer from "./StartNewCarrer/Carrer";
 import { useSelector } from "react-redux";
+import AICarousel from "./AICarousel";
 function Home() {
   // const [activeTab, setActiveTab] = useState("tab1");
 
@@ -40,6 +41,7 @@ function Home() {
     <>
       <Navbar />
       <Main />
+      <AICarousel />
       <StartNewCarrer />
       
       <Platform />
