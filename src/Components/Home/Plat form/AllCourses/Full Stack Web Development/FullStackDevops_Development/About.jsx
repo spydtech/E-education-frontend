@@ -4,11 +4,11 @@ import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 const About = () => {
   return (
     <>
-      <div className="px-2 md:px-5 italic">
+      <div className="px-2 md:px-5">
         <h1 className="font-bold text-2xl text-[#0098F1] ">
           About this Course
         </h1>
-        <p className="pt-2 leading-1 text-gray-700 md:text-lg italic">
+        <p className="pt-2 leading-1 text-[#0098F1] md:text-lg">
           Mastering Full Stack DevOps Development involves becoming proficient
           in continuous integration, deployment, and infrastructure management
           using a variety of tools and technologies. Here's a breakdown of what

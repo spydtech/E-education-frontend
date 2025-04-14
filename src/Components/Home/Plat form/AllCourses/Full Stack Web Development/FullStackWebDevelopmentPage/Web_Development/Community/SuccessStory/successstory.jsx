@@ -23,7 +23,7 @@ function SuccessStory() {
       {/* Background Image */}
 
       {/* Content */}
-      <div className=" bg-white rounded-lg shadow-lg border border-gray-200 p-2 md:p-5 flex flex-col italic">
+      <div className=" bg-white rounded-lg shadow-lg border border-gray-200 p-2 md:p-5 flex flex-col">
         <h1 className="md:text-4xl text-xl text-[#F6AC14] italic text-center my-2 ">
           The Success Story of <span className="text-[#0098F1] ">Vishnu</span>
         </h1>

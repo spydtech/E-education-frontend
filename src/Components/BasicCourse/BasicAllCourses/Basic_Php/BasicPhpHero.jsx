@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import backgroundImage from "../../../../assetss/Basic_Courses/BasicPHP/bgimagephp.jpg";
+import backgroundImage from "../../../../assetss/Basic_Courses/BasicPHP/2BasicPHP.jpg";
 const WordPhpHero = () => {
   const [courseName] = useState("Basic PHP"); // Placeholder for course name
    const [coursePrice] = useState(4999);
@@ -21,9 +21,16 @@ const WordPhpHero = () => {
       backgroundImage:`url(${backgroundImage})`,
     }}
   >
-    <div className="absolute inset-0 flex items-center justify-center">
+    <div
+
+       
+className="absolute inset-0 bg-black  md:h-[370px] w-full  items-center bg-cover opacity-65"
+
+      
+     ></div>
+    <div className="absolute inset-0 flex items-center justify-center md:pb-0 lg:pb-0 pb-4">
       <p className="text-center text-white max-md:text-[16px] text-[20px] font-medium px-4">
-      Empower yourself with the skills to create dynamic and interactive websites using PHP. 
+      Empower yourself with the skills to create dynamic and interactive websites using PHP.<br/> 
       Our comprehensive course will guide you from the basics to advanced concepts
       ensuring you're ready to build robust web applications.
       </p>

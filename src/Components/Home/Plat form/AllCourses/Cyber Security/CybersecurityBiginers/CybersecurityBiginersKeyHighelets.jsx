@@ -19,94 +19,77 @@ function CybersecurityBiginersKeyHighlights() {
     switch (selectedItem) {
       case 0:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>
-                Access to live training sessions by Meta Blueprint trainers
-              </li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Eduction Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
+              <li>Comprehensive Cybersecurity curriculum for beginners to advanced learners</li>
+              <li>Official certification in collaboration with upGrad</li>
+              <li>Live sessions with certified cybersecurity professionals</li>
+              <li>20+ real-world labs and simulation projects</li>
+              <li>Alumni access to exclusive cybersecurity communities</li>
+              <li>Toolkits covering Wireshark, Metasploit, Nmap, and more</li>
+              <li>One-on-one mentoring sessions from industry experts</li>
+              <li>Personalized career support including resume reviews</li>
+              <li>Mock interviews tailored for cybersecurity job roles</li>
+              <li>Explore Generative AI use in threat detection</li>
             </ul>
           </div>
         );
       case 1:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
+              <li>Cybersecurity fundamentals and architecture</li>
+              <li>Ethical hacking and penetration testing</li>
+              <li>Network security and firewalls</li>
+              <li>Cryptography and data protection</li>
+              <li>Threat intelligence and malware analysis</li>
+              <li>Incident response and digital forensics</li>
+              <li>Cloud and application security</li>
             </ul>
           </div>
         );
       case 2:
         return (
-          <div className="p-3 space-y-2 ">
+          <div className="p-3 space-y-2">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.)Associate-Digital Marketing</li>
+              <li>Cybersecurity Analyst</li>
+              <li>Penetration Tester</li>
+              <li>Security Operations Center (SOC) Engineer</li>
+              <li>Incident Responder</li>
+              <li>Threat Intelligence Analyst</li>
+              <li>Security Consultant</li>
+              <li>Governance, Risk, and Compliance (GRC) Specialist</li>
             </ul>
           </div>
         );
       case 3:
         return (
-          <div className="p-3 space-y-2 ">
-            <p className="text-xl font-medium text-white pl-2">
-              Skills Developed
-            </p>
+          <div className="p-3 space-y-2">
+            <p className="text-xl font-medium text-white pl-2">Skills Developed</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>List of target audience goes here...</li>
-              <li>
-                Explore 2 tracks & 5 specializations for diverse learning.
-              </li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>
-                Attain E-education Executive Alumni Status for exclusive
-                benefits.
-              </li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>
-                A voucher worth $50 for Meta's "Digital Marketing Associate"
-                certificate exam, free of cost.
-              </li>
+              <li>Network scanning and vulnerability assessment</li>
+              <li>Using tools like Kali Linux, Burp Suite, and Nessus</li>
+              <li>Secure coding practices and patch management</li>
+              <li>Real-time threat monitoring and log analysis</li>
+              <li>Incident response planning and reporting</li>
+              <li>Critical thinking and problem-solving under pressure</li>
+              <li>Hands-on lab experience in simulated environments</li>
             </ul>
           </div>
         );
       case 4:
         return (
-          <div className="p-3 space-y-2 ">
-            <p className="text-xl font-medium text-white pl-2">
-              Target Audience
-            </p>
+          <div className="p-3 space-y-2">
+            <p className="text-xl font-medium text-white pl-2">Target Audience</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>
-                Utilise ChatGPT to assist in creative unique content,plan
-                strategies,build,calenders,and more
-              </li>
-              <li>Generative SEO-optimised content with chatGPT</li>
-              <li>
-                Gain insights into your social media analytics by using chatGPT
-              </li>
+              <li>Students and freshers aiming to enter cybersecurity</li>
+              <li>IT professionals looking to transition into security roles</li>
+              <li>Network administrators and support engineers</li>
+              <li>Ethical hacking and bug bounty enthusiasts</li>
+              <li>Professionals preparing for certifications like CEH, CompTIA Security+, CISSP</li>
             </ul>
           </div>
         );
@@ -114,6 +97,7 @@ function CybersecurityBiginersKeyHighlights() {
         return null;
     }
   };
+  
 
   return (
     <div className="px-3 md:mb-4">

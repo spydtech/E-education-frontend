@@ -22,18 +22,16 @@ function CybersecurityKeyHighlights() {
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>
-                Access to live training sessions by Meta Blueprint trainers
-              </li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Eduction Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
+              <li>Comprehensive curriculum covering foundational to advanced topics</li>
+              <li>Certification provided through E-Education and industry partners</li>
+              <li>Interactive live sessions with experienced cybersecurity professionals</li>
+              <li>20+ real-world projects and threat simulations</li>
+              <li>Exclusive access to global cybersecurity forums and communities</li>
+              <li>Video tutorials on 50+ cybersecurity tools and practices</li>
+              <li>Bi-weekly mentorship from cybersecurity experts</li>
+              <li>Personalized resume building and career coaching</li>
+              <li>Mock interviews with real-time feedback from hiring managers</li>
+              <li>Introductory training on AI tools in cyber threat detection</li>
             </ul>
           </div>
         );
@@ -42,13 +40,13 @@ function CybersecurityKeyHighlights() {
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
+              <li>Network Security and Firewalls</li>
+              <li>Cryptography and Data Encryption</li>
+              <li>Threat Intelligence and Risk Management</li>
+              <li>Incident Response and Digital Forensics</li>
+              <li>Vulnerability Assessment and Penetration Testing</li>
+              <li>Security Operations and SIEM</li>
+              <li>Cloud Security Essentials</li>
             </ul>
           </div>
         );
@@ -57,14 +55,13 @@ function CybersecurityKeyHighlights() {
           <div className="p-3 space-y-2 ">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.)Associate-Digital Marketing</li>
+              <li>Cybersecurity Analyst</li>
+              <li>Penetration Tester</li>
+              <li>Security Consultant</li>
+              <li>Network Security Engineer</li>
+              <li>Incident Responder</li>
+              <li>Security Auditor</li>
+              <li>Threat Intelligence Specialist</li>
             </ul>
           </div>
         );
@@ -75,20 +72,12 @@ function CybersecurityKeyHighlights() {
               Skills Developed
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>List of target audience goes here...</li>
-              <li>
-                Explore 2 tracks & 5 specializations for diverse learning.
-              </li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>
-                Attain E-education Executive Alumni Status for exclusive
-                benefits.
-              </li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>
-                A voucher worth $50 for Meta's "Digital Marketing Associate"
-                certificate exam, free of cost.
-              </li>
+              <li>Hands-on skills with Wireshark, Metasploit, and Burp Suite</li>
+              <li>Ability to analyze, detect, and mitigate cyber threats</li>
+              <li>Proficiency in using SIEM tools like Splunk and QRadar</li>
+              <li>Understanding of compliance frameworks (GDPR, ISO 27001, etc.)</li>
+              <li>Communication skills for effective security reporting</li>
+              <li>Security architecture and design knowledge</li>
             </ul>
           </div>
         );
@@ -99,14 +88,12 @@ function CybersecurityKeyHighlights() {
               Target Audience
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>
-                Utilise ChatGPT to assist in creative unique content,plan
-                strategies,build,calenders,and more
-              </li>
-              <li>Generative SEO-optimised content with chatGPT</li>
-              <li>
-                Gain insights into your social media analytics by using chatGPT
-              </li>
+              <li>Beginners aspiring to enter the cybersecurity field</li>
+              <li>IT professionals looking to upskill</li>
+              <li>Network and system administrators</li>
+              <li>Security analysts and enthusiasts</li>
+              <li>Students from engineering or computer science backgrounds</li>
+              <li>Anyone interested in securing digital assets and systems</li>
             </ul>
           </div>
         );
@@ -114,6 +101,7 @@ function CybersecurityKeyHighlights() {
         return null;
     }
   };
+  
 
   return (
     <div className="px-3 md:mb-4">

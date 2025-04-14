@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "../../../../assetss/Basic_Courses/BasicC++/bgimagec_c++.jpg";
+import backgroundImage from "../../../../assetss/Basic_Courses/BasicC++/BasicC++.png";
 
 const BasicC_CplusHero = () => {
   const [courseName] = useState("Basic C & C++");
-   const [coursePrice] = useState(1);
-    const [courseDuration] = useState("2 months");
+  const [coursePrice] = useState("4999");
+  const [courseDuration] = useState("2 months");
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
+    navigate("/course-details", { 
+      state: { courseName, coursePrice, courseDuration } 
+    });
   };
 
   return (
@@ -20,11 +22,12 @@ const BasicC_CplusHero = () => {
           backgroundImage:`url(${backgroundImage})`,
         }}
       >
+        <div className="absolute inset-0 bg-black md:h-[370px] w-full items-center bg-cover opacity-65"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-center text-white max-md:text-[16px] text-[20px] font-medium px-4">
-          Gain the skills to develop high-performance applications using C and C++. Our comprehensive course will 
-          <br/> guide you from basic programming concepts to advanced techniques,ensuring you're prepared to   <br/>
-          tacklecomplex software challenges.
+            Gain the skills to develop high-performance applications using C and C++. <br/> Our comprehensive course will 
+            guide you from basic programming concepts to advanced techniques, ensuring you're prepared to   
+            tacklecomplex software challenges.
           </p>
         </div>
         <div className="absolute inset-0 flex items-end justify-center pb-10">
@@ -39,6 +42,5 @@ const BasicC_CplusHero = () => {
     </>
   );
 };
-
 
 export default BasicC_CplusHero;

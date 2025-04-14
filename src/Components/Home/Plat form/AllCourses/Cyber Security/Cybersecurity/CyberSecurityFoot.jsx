@@ -33,7 +33,7 @@ function CyberSecurityFoot() {
           </span>
         </h1>
         <h2 className="mt-5 md:mt-10 max-w-xl text-lg lg:text-xl text-white-500 leading-7">
-          Dive into the world of Cyber Security. Learn essential skills, tools,
+        Dive into the world of Cyber Security. Learn essential skills, tools,
           and techniques to analyze and interpret complex data. Empower your
           decision-making with data-driven insights.
         </h2>

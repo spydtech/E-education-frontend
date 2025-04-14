@@ -24,41 +24,42 @@ function CybersecurityEssentialsIntroduction() {
 
   const slidesData = [
     {
-      heading: "Understanding Cybersecurity",
+      heading: "Introduction to Cybersecurity",
       items: [
-        "Cybersecurity is the practice of protecting systems, networks, and programs from digital attacks.",
-        "Importance: Learn why cybersecurity is crucial in today's digital world.",
+        "Cybersecurity involves safeguarding digital systems, networks, and data from malicious attacks.",
+        "Understand the evolving nature of cyber threats in our interconnected world.",
       ],
     },
     {
-      heading: "Cyber Threats Overview",
+      heading: "Types of Cyber Threats",
       items: [
-        "Types of Threats: Malware, phishing, ransomware, and other common threats.",
-        "Impact: Explore the potential consequences of cybersecurity breaches.",
+        "Explore common threats: viruses, phishing scams, ransomware, insider threats, and DDoS attacks.",
+        "Understand how these threats affect individuals, businesses, and national security.",
       ],
     },
     {
-      heading: "Cybersecurity Strategies",
+      heading: "Defense Strategies & Best Practices",
       items: [
-        "Prevention: Best practices to prevent cyber attacks.",
-        "Detection and Response: How to identify and respond to security incidents.",
+        "Implement proactive defense: strong passwords, multi-factor authentication, and regular updates.",
+        "Incident management: learn how organizations detect, respond, and recover from attacks.",
       ],
     },
     {
-      heading: "Key Cybersecurity Technologies",
+      heading: "Core Cybersecurity Tools & Technologies",
       items: [
-        "Firewalls: Understanding how firewalls protect your network.",
-        "Encryption: Learn about encryption techniques to protect data.",
+        "Firewalls, antivirus software, intrusion detection systems (IDS), and VPNs explained.",
+        "Data protection through encryption, access control, and secure communications.",
       ],
     },
     {
-      heading: "Building a Career in Cybersecurity",
+      heading: "Launch Your Cybersecurity Career",
       items: [
-        "Career Paths: Different roles in the cybersecurity field.",
-        "Skills and Certifications: Key skills and certifications needed to succeed.",
+        "Explore roles like Security Analyst, Penetration Tester, SOC Analyst, and more.",
+        "Get certified: Start with CompTIA Security+, CEH, or CISSP to boost your credibility.",
       ],
     },
   ];
+  
 
   const goToPreviousSlide = () => {
     setCurrentSlide((prevSlide) =>

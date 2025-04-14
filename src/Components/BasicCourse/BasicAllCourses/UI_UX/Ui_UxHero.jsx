@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import backgroundImage from "../../../../assetss/Basic_Courses/BasicUIUX/bgimageUIUX.jpg";
+import backgroundImage from "../../../../assetss/Basic_Courses/BasicUIUX/2BasicUi-UX.jpg";
 
 const Ui_UxHero = () => {
   const [courseName] = useState("Basics UI/UX"); // Placeholder for course name
@@ -21,6 +21,13 @@ const Ui_UxHero = () => {
           backgroundImage:`url(${backgroundImage})`,
         }}
       >
+        <div
+
+       
+className="absolute inset-0 bg-black  md:h-[370px] w-full  items-center bg-cover opacity-65"
+
+      
+     ></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-center text-white max-md:text-[16px] text-[20px] font-medium px-4">
           Dive into the world of UI/UX design. Learn the principles of user-centered design, enhance your skills 

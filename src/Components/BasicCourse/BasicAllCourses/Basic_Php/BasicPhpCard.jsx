@@ -51,7 +51,7 @@ const BasicPhpCard = () => {
     <div className="container mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-2xl pb-2 md:text-3xl lg:text-4xl font-medium">
-          <span className="text-[#f6ac14]">Mastering</span>
+          <span className="text-[#f6ac14]">Basics of</span>
           <span className="bg-gradient-to-r bg-clip-text from-[#f6ac14] to-[#0098f1] text-transparent">
             {" "}
             PHP{" "}

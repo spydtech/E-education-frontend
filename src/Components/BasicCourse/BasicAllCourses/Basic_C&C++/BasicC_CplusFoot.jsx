@@ -30,7 +30,7 @@ const BasicC_CplusFoot = () => {
           </span>
         </span>
       </h1>
-      <h2 className="mt-5 md:mt-10 max-w-xl text-lg lg:text-xl text-white-500 dark:text-gray-300 leading-7">
+      <h2 className="mt-5 md:mt-10 max-w-xl text-sm lg:text-xl text-white-500 dark:text-gray-300 leading-7">
       Master the fundamentals of C and C++ to create efficient and powerful
         software. Our courses offer comprehensive training in C and C++
         development, from basic syntax to advanced concepts. Enhance your

@@ -18,12 +18,12 @@ function SuccessStory() {
   }, []);
 
   return (
-    <div className="relative  flex flex-col justify-center items-center bg-white m-3 md:m-5 ">
-      <div className=" bg-white rounded-lg shadow-lg border border-gray-200 p-2 md:p-5 flex flex-col italic">
+    <div className="relative  flex flex-col justify-center items-center bg-white m-3 md:m-5">
+      <div className=" bg-white rounded-lg shadow-lg border border-gray-200 p-2 md:p-5 flex flex-col">
         <h1 className="md:text-4xl text-xl text-[#F6AC14] italic text-center my-2 ">
           The Success Story of <span className="text-[#0098F1] ">Vishnu</span>
         </h1>
-        <p className="text-[#0098F1] italic">
+        <p className="text-[#0098F1]">
           Vishnu embarked on their path with a vision and resolve.
           <br /> They encountered obstacles but remained steadfast.
           <br /> Through diligence and resilience, they reached their goals.

@@ -7,24 +7,25 @@ const CybersecurityAbout = () => {
     {
       title: "Career Assistance",
       description:
-        "Stay ahead with access to one-on-one career counseling sessions and mock interviews with industry professionals.",
+        "Get personalized career guidance through one-on-one counseling and mock interviews led by experienced industry experts.",
       imgSrc: programmer,
       imgAlt: "career-assistance",
     },
     {
       title: "Student Support",
       description:
-        'Access student support via support@E_education.com or through the "ask us?" option on our learning platform for urgent queries.',
+        'Reach out to our dedicated support team anytime via support@E_education.com or use the "Ask Us?" feature on our platform for quick assistance.',
       imgSrc: assistance,
       imgAlt: "student-support",
-    },
+    }
+    
   ];
 
   return (
     <div className="px-3 text-center">
       <div className="">
         <p className="md:text-2xl font-bold text-[#0098F1]">
-          Discover the cyber security Program
+          Discover the Cyber Security Program
         </p>
       </div>
 

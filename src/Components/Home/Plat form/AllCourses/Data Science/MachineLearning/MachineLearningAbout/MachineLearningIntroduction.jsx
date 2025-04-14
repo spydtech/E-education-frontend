@@ -5,19 +5,19 @@ function MachineLearningIntroduction() {
 
   const Slide = ({ heading, items }) => (
     <div className="w-full flex-shrink-0 px-4 py-8">
-      <div className="h-auto flex justify-center">
-        <div>
-          <h2 className="text-lg md:text-2xl lg:text-3xl font-medium mb-4 text-white font-sans">
-            {heading}
-          </h2>
-          <ul className="list-disc list-outside pl-5 text-md lg:text-xl text-white">
-            {items.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+        <div className="h-auto flex justify-center">
+          <div>
+            <h2 className="text-lg md:text-2xl lg:text-3xl font-medium mb-4 text-white font-sans">
+              {heading}
+            </h2>
+            <ul className="list-disc list-outside pl-5 text-md lg:text-xl text-white">
+              {items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
   );
 
   const slidesData = [
@@ -40,6 +40,7 @@ function MachineLearningIntroduction() {
       items: [
         "Regression Algorithms: Introduce linear regression, logistic regression, and other regression techniques for predictive modeling.",
         "Classification Algorithms: Explore decision trees, support vector machines, and other classification algorithms for pattern recognition.",
+        "Clustering Algorithms: Discuss k-means clustering, hierarchical clustering, and other techniques for grouping data points.",
       ],
     },
     {

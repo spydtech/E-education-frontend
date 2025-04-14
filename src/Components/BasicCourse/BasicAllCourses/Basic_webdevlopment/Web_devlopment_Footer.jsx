@@ -29,7 +29,7 @@ const WebDevelopmentFoot = () => {
           </span>
         </span>
       </h1>
-      <h2 className="mt-5 md:mt-10 max-w-xl text-lg lg:text-xl text-white-500 dark:text-gray-300 leading-7">
+      <h2 className="mt-5 md:mt-10 max-w-xl text-sm lg:text-xl text-white-500 dark:text-gray-300 leading-7">
         Build responsive, interactive websites and applications using the latest web technologies. 
         Our comprehensive curriculum covers front-end development with React, back-end with Node.js, 
         database integration, and deployment strategies. Gain the skills to create fast, secure, 

@@ -16,7 +16,7 @@ const WebDevlopmentCard = () => {
     },
     {
       imgSrc: Img2,
-      title: "Master Core Technologies",
+      title: "Basics of Core Technologies",
       description:
         "Start with foundational courses in HTML5, CSS3, and modern JavaScript to build responsive and interactive websites.",
     },
@@ -51,7 +51,7 @@ const WebDevlopmentCard = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-2xl pb-2 md:text-3xl lg:text-4xl font-medium">
-            <span className="text-[#f6ac14]">Mastering</span>
+            <span className="text-[#f6ac14]">Basic</span>
             <span className="bg-gradient-to-r bg-clip-text from-[#f6ac14] to-[#0098f1] text-transparent">
               {" "}
               Web Development{" "}

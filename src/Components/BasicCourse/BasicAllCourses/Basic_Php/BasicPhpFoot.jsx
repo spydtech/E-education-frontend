@@ -13,7 +13,7 @@ const BasicPhpFoot = () => {
   };
 
   return (
-    <div className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 py-10 bg-[#0098f1] dark:bg-gray-800 mb-10 font-poppins">
+    <div className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 py-10 bg-[#0098f1] dark:bg-gray-800 mb-10 font-poppins mt-10 md:mt-0 lg:mt-0">
       <h1 className="mx-auto max-w-4xl font-display text-2xl font-md tracking-normal text-white-300 dark:text-gray-300 md:text-4xl lg:text-5xl">
       Building Dynamic Websites with {" "}
         <span className="relative whitespace-nowrap text-white top-1">
@@ -30,7 +30,7 @@ const BasicPhpFoot = () => {
           </span>
         </span>
       </h1>
-      <h2 className="mt-5 md:mt-10 max-w-xl text-lg lg:text-xl text-white-500 dark:text-gray-300 leading-7">
+      <h2 className="mt-5 md:mt-10 max-w-xl text-sm lg:text-xl text-white-500 dark:text-gray-300 leading-7">
       Learn the fundamentals of PHP to create dynamic and interactive websites. Our courses offer comprehensive
        training in PHP development, from basic syntax to advanced concepts. Enhance your web development skills
         and build robust web applications.

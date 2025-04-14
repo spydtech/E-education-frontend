@@ -9,41 +9,42 @@ const CyberSecurityEssentialsCard = () => {
   const courseData = [
     {
       imgSrc: img1,
-      title: "Explore Course Catalog",
+      title: "Discover the Cybersecurity Path",
       description:
-        "Browse our extensive catalog of CyberSecurity Essentials courses Discover beginner-friendly to advanced-level programs designed to accommodate learners of all backgrounds.",
+        "Explore a structured journey through cybersecurity fundamentals, tools, and techniques. Our catalog guides you from basic principles to advanced defense strategies.",
     },
     {
       imgSrc: img2,
-      title: "Enroll in Foundational Courses",
+      title: "Build a Strong Foundation",
       description:
-        "Start with foundational courses covering basic concepts algorithms, and programming languages essential for CyberSecurity Essentials.",
+        "Begin with essential topics like network security, cryptography, and system vulnerabilities. Perfect for beginners aiming to enter the cybersecurity domain with confidence.",
     },
     {
       imgSrc: img3,
-      title: "Practice with Real-world Projects",
+      title: "Hands-on Labs & Simulations",
       description:
-        "Apply your knowledge by working on hands-on projects tailored to real-world scenarios. Gain practical experience in data analysis, model building, and evaluation under the guidance of industry experts.",
+        "Work on practical, real-world cybersecurity scenarios including penetration testing, threat detection, and incident response. Gain the skills employers look for.",
     },
     {
       imgSrc: img4,
-      title: "Track Your Progress",
+      title: "Progress with Clarity",
       description:
-        "Monitor your progress with intuitive dashboards and tracking tools. Set goals, track milestones, and measure your proficiency in various CyberSecurity Essentials concepts as you advance through the courses.",
+        "Track your learning journey with progress bars, achievements, and personalized feedback. Stay motivated as you advance through each cybersecurity milestone.",
     },
     {
       imgSrc: img5,
-      title: "Specialize and Advance",
+      title: "Choose Your Cybersecurity Specialization",
       description:
-        "Choose specialized tracks or advanced courses to delve deeper into specific areas of CyberSecurity Essentials, such as deep learning, natural language processing, or computer vision. Customize your learning path to align with your interests and career goals.",
+        "Dive into focused tracks like Malware Analysis, Cloud Security, or Ethical Hacking. Tailor your learning experience to align with your career aspirations.",
     },
     {
       imgSrc: img6,
-      title: "Earn Recognized Certifications",
+      title: "Get Certified, Get Ahead",
       description:
-        "Upon successful completion of courses and projects, earn industry-recognized certifications to showcase your expertise to employers and enhance your career prospects.",
+        "Complete your training and earn globally recognized cybersecurity certifications. Boost your resume and stand out in today’s competitive job market.",
     },
   ];
+  
 
   return (
     <section id="portfolio" className="portfolio-section py-10 px-4">

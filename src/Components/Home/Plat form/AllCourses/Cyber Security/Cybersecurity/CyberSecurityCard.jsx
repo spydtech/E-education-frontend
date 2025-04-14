@@ -9,41 +9,43 @@ const CyberSecurityCard = () => {
   const courseData = [
     {
       imgSrc: img1,
-      title: "Explore Course Catalog",
+      title: "Discover Cyber Security Courses",
       description:
-        "Browse our extensive catalog of Cyber Security courses Discover beginner-friendly to advanced-level programs designed to accommodate learners of all backgrounds.",
+        "Explore a wide range of Cyber Security courses crafted for all levels. From fundamental principles to advanced topics, find the right course to start or grow your career.",
     },
     {
       imgSrc: img2,
-      title: "Enroll in Foundational Courses",
+      title: "Start with the Basics",
       description:
-        "Start with foundational courses covering basic concepts algorithms, and programming languages essential for Cyber Security.",
+        "Begin your journey with essential courses covering Cyber Security fundamentals, network security, encryption, and basic programming skills.",
     },
     {
       imgSrc: img3,
-      title: "Practice with Real-world Projects",
+      title: "Hands-on Learning Experience",
       description:
-        "Apply your knowledge by working on hands-on projects tailored to real-world scenarios. Gain practical experience in data analysis, model building, and evaluation under the guidance of industry experts.",
+        "Build real-world skills by working on interactive labs and practical projects. Tackle real-life security challenges with expert guidance and feedback.",
     },
     {
       imgSrc: img4,
-      title: "Track Your Progress",
+      title: "Progress and Performance Insights",
       description:
-        "Monitor your progress with intuitive dashboards and tracking tools. Set goals, track milestones, and measure your proficiency in various Cyber Security concepts as you advance through the courses.",
+        "Stay motivated with progress tracking tools. View your learning milestones, performance stats, and get personalized recommendations as you advance.",
     },
     {
       imgSrc: img5,
-      title: "Specialize and Advance",
+      title: "Advance with Specializations",
       description:
-        "Choose specialized tracks or advanced courses to delve deeper into specific areas of Cyber Security, such as deep learning, natural language processing, or computer vision. Customize your learning path to align with your interests and career goals.",
+        "Pursue in-depth knowledge in specialized areas like ethical hacking, cloud security, or malware analysis. Customize your learning to match your career ambitions.",
     },
     {
       imgSrc: img6,
-      title: "Earn Recognized Certifications",
+      title: "Get Certified and Recognized",
       description:
-        "Upon successful completion of courses and projects, earn industry-recognized certifications to showcase your expertise to employers and enhance your career prospects.",
+        "Complete your learning path and earn certifications that are respected by top employers in the industry. Show your skills and boost your resume.",
     },
   ];
+  
+  
 
   return (
     <section id="portfolio" className="portfolio-section py-10 px-4">

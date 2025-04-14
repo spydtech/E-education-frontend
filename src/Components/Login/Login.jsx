@@ -73,6 +73,7 @@ const handleGoogleLoginSuccess = async (credentialResponse) => {
   }
 };
 
+
   const handleGoogleLoginFailure = () => {
     setError('Google login failed. Please try again.');
   };
