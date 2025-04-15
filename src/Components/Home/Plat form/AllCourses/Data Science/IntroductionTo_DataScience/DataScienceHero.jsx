@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import student from "../../../../../../assetss/Home/intro_DataScience/student.jpg";
-import hero from "../../../../../../assetss/student/dataScience/Introduction_DS/hero.png";
+import hero from "../../../../../../assetss/student/dataScience/dswithpython/DataScience.jpg";
 const DataScienceHero = () => {
   const [courseName] = useState("Introduction to Data Science"); // Placeholder for course name
   const [coursePrice] = useState(14999);
@@ -54,7 +54,10 @@ const DataScienceHero = () => {
         style={{
           backgroundImage: `url(${hero})`,
         }}
-      ></div>
+      >
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+       
+      </div>
       <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
         <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
           {" "}

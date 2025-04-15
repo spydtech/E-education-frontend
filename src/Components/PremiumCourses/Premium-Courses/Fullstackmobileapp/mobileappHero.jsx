@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import img1 from '../../../../assetss/professionalimages/image1.png';
+import img1 from '../../../../assetss/premium/MobileAPP.jpg';
 
 const MobileappHero = () => {
   const [courseName] = useState("Full Stack Mobile App");
@@ -12,13 +12,16 @@ const MobileappHero = () => {
   };
 
   return (
-    <div className="relative w-full h-[500px] lg:h-[408px] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-[370px] lg:h-[408px] flex items-center justify-center overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${img1})`,
         }}
-      ></div>
+      >
+       
+      </div>
+      <div className="absolute inset-0 bg-black opacity-60 w-full h-[370px] lg:h-[408px]"></div>
       <div className="relative z-10 text-center text-white p-6 md:p-10">
         {/* <h1 className="text-[18px] md:text-[26px] lg:text-[28px] font-semibold text-[#f6ac14] leading-tight mb-4">
           Master Mobile App Development and Build Next-Gen Applications!

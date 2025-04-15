@@ -3,7 +3,6 @@ import React, { useState } from "react";
 function Ui_UxKeyHighlights() {
   const [selectedItem, setSelectedItem] = useState(0);
 
-  
   const data = [
     { label: "Overview" },
     { label: "Key Concepts" },
@@ -23,11 +22,13 @@ function Ui_UxKeyHighlights() {
           <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Introduction to UI/UX design principles</li>
+              <li>Comprehensive introduction to UI/UX design principles</li>
               <li>Focus on user-centered design and usability</li>
-              <li>Hands-on projects and real-world applications</li>
-              <li>Access to industry-leading design tools and resources</li>
-              <li>Expert-led workshops and training sessions</li>
+              <li>Hands-on projects with real-world applications</li>
+              <li>Access to industry-standard design tools (Figma, Adobe XD)</li>
+              <li>Expert-led workshops and design critiques</li>
+              <li>Portfolio-building exercises</li>
+              <li>Understanding of design thinking process</li>
             </ul>
           </div>
         );
@@ -36,11 +37,14 @@ function Ui_UxKeyHighlights() {
           <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Basics of C and C++ syntax</li>
-              <li>Object-oriented programming in C++</li>
-              <li>Memory management and pointers</li>
-              <li>Data structures and algorithms</li>
-              <li>File handling and error management</li>
+              <li>User research methods and personas</li>
+              <li>Information architecture and navigation</li>
+              <li>Wireframing and prototyping techniques</li>
+              <li>Visual design principles (color, typography, hierarchy)</li>
+              <li>Interaction design and micro-interactions</li>
+              <li>Usability testing and heuristic evaluation</li>
+              <li>Responsive and adaptive design</li>
+              <li>Design systems and component libraries</li>
             </ul>
           </div>
         );
@@ -49,11 +53,13 @@ function Ui_UxKeyHighlights() {
           <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>User Experience (UX) design fundamentals</li>
-              <li>User Interface (UI) design best practices</li>
-              <li>Wireframing and prototyping techniques</li>
-              <li>Usability testing and feedback integration</li>
-              <li>Design systems and component libraries</li>
+              <li>Website and mobile app design</li>
+              <li>Dashboard and data visualization interfaces</li>
+              <li>E-commerce and product design</li>
+              <li>Enterprise software interfaces</li>
+              <li>Interactive prototypes and proof-of-concepts</li>
+              <li>Design documentation and specifications</li>
+              <li>Accessibility-compliant designs</li>
             </ul>
           </div>
         );
@@ -64,12 +70,14 @@ function Ui_UxKeyHighlights() {
               Skills Developed
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>UI/UX Designer</li>
-              <li>Product Designer</li>
-              <li>Interaction Designer</li>
-              <li>Usability Analyst</li>
-              <li>UX Researcher</li>
-              <li>Visual Designer</li>
+              <li>Proficiency in design tools (Figma, Adobe XD, Sketch)</li>
+              <li>User research and persona development</li>
+              <li>Wireframing and prototyping skills</li>
+              <li>Visual design and interface styling</li>
+              <li>Usability testing and analysis</li>
+              <li>Information architecture organization</li>
+              <li>Design system creation</li>
+              <li>Collaboration with developers and stakeholders</li>
             </ul>
           </div>
         );
@@ -80,11 +88,14 @@ function Ui_UxKeyHighlights() {
               Target Audience
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Proficiency in design tools like Figma and Adobe XD</li>
-              <li>Strong understanding of UX research and testing methods</li>
-              <li>Ability to create user-friendly and visually appealing interfaces</li>
-              <li>Experience with wireframing and prototyping</li>
-              <li>Capability to design responsive and adaptive layouts</li>
+              <li>Aspiring UI/UX designers</li>
+              <li>Graphic designers transitioning to digital</li>
+              <li>Front-end developers wanting design skills</li>
+              <li>Product managers seeking design understanding</li>
+              <li>Marketing professionals involved in digital products</li>
+              <li>Entrepreneurs building their own products</li>
+              <li>Career changers entering tech design fields</li>
+              <li>Students exploring design careers</li>
             </ul>
           </div>
         );
@@ -95,34 +106,32 @@ function Ui_UxKeyHighlights() {
 
   return (
     <div className="px-3 md:mb-4 font-poppins">
-    <div className="md:flex justify-around  ">
-      <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
-        {renderContent()}
-      </div>
-      <div className="my-3">
-        <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
-          E-Education Course Highlights
-        </p>
-        {data.map((item, index) => (
-          <ul className="">
-            <li
-              key={index}
-              onClick={() => handleClick(index)}
-              className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center  ${
-                selectedItem === index
-                  ? "bg-[#0098f1] text-white border-none"
-                  : ""
-              }`}
-            >
-              {item.label}
-            </li>
-          </ul>
-        ))}
+      <div className="md:flex justify-around">
+        <div className="bg-[#0098F1] text-white pb-5 md:w-2/5">
+          {renderContent()}
+        </div>
+        <div className="my-3">
+          <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
+            UI/UX Design Course Highlights
+          </p>
+          {data.map((item, index) => (
+            <ul key={index}>
+              <li
+                onClick={() => handleClick(index)}
+                className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center ${
+                  selectedItem === index
+                    ? "bg-[#0098f1] text-white border-none"
+                    : ""
+                }`}
+              >
+                {item.label}
+              </li>
+            </ul>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
   );
 }
-
 
 export default Ui_UxKeyHighlights;

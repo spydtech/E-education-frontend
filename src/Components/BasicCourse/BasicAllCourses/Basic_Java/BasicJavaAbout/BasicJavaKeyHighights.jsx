@@ -19,21 +19,17 @@ function BasicJavaKeyHighlights() {
     switch (selectedItem) {
       case 0:
         return (
-          <div className="p-3 space-y-2  font-poppins">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>
-                Access to live training sessions by Meta Blueprint trainers
-              </li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Eduction Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
+              <li>Comprehensive introduction to Java programming</li>
+              <li>Object-Oriented Programming fundamentals</li>
+              <li>Hands-on coding exercises and projects</li>
+              <li>Java Development Kit (JDK) setup and configuration</li>
+              <li>Integrated Development Environment (IDE) usage</li>
+              <li>Java syntax and core libraries</li>
+              <li>Debugging and exception handling</li>
+              <li>Best practices and coding standards</li>
             </ul>
           </div>
         );
@@ -42,53 +38,48 @@ function BasicJavaKeyHighlights() {
           <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
+              <li>Variables, data types, and operators</li>
+              <li>Control structures (if-else, loops, switch)</li>
+              <li>Methods and functions</li>
+              <li>Classes and objects</li>
+              <li>Inheritance and polymorphism</li>
+              <li>Interfaces and abstract classes</li>
+              <li>Collections framework</li>
+              <li>Exception handling</li>
             </ul>
           </div>
         );
       case 2:
         return (
-          <div className="p-3 space-y-2  font-poppins">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.)Associate-Digital Marketing</li>
+              <li>Desktop application development</li>
+              <li>Android app development (with Android SDK)</li>
+              <li>Web application backends</li>
+              <li>Enterprise software development</li>
+              <li>Scientific computing applications</li>
+              <li>Banking and financial systems</li>
+              <li>Big data technologies (Hadoop, Spark)</li>
+              <li>Embedded systems programming</li>
             </ul>
           </div>
         );
       case 3:
         return (
-          <div className="p-3 space-y-2  font-poppins">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">
               Skills Developed
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>List of target audience goes here...</li>
-              <li>
-                Explore 2 tracks & 5 specializations for diverse learning.
-              </li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>
-                Attain E-education Executive Alumni Status for exclusive
-                benefits.
-              </li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>
-                A voucher worth $50 for Meta's "Digital Marketing Associate"
-                certificate exam, free of cost.
-              </li>
+              <li>Object-Oriented Programming principles</li>
+              <li>Algorithm design and implementation</li>
+              <li>Problem-solving with Java</li>
+              <li>Memory management understanding</li>
+              <li>Debugging and testing techniques</li>
+              <li>Code organization and documentation</li>
+              <li>Understanding of Java Virtual Machine (JVM)</li>
+              <li>Basic understanding of multithreading</li>
             </ul>
           </div>
         );
@@ -99,14 +90,14 @@ function BasicJavaKeyHighlights() {
               Target Audience
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>
-                Utilise ChatGPT to assist in creative unique content,plan
-                strategies,build,calenders,and more
-              </li>
-              <li>Generative SEO-optimised content with chatGPT</li>
-              <li>
-                Gain insights into your social media analytics by using chatGPT
-              </li>
+              <li>Beginner programmers starting with Java</li>
+              <li>Computer science students</li>
+              <li>Professionals transitioning to Java development</li>
+              <li>Android developers needing Java fundamentals</li>
+              <li>Self-taught programmers looking to formalize knowledge</li>
+              <li>IT professionals expanding their skill set</li>
+              <li>Hobbyists interested in programming</li>
+              <li>Anyone preparing for Java certification exams</li>
             </ul>
           </div>
         );
@@ -117,32 +108,31 @@ function BasicJavaKeyHighlights() {
 
   return (
     <div className="px-3 md:mb-4 font-poppins">
-    <div className="md:flex justify-around  ">
-      <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
-        {renderContent()}
-      </div>
-      <div className="my-3">
-        <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
-          E-Education Course Highlights
-        </p>
-        {data.map((item, index) => (
-          <ul className="">
-            <li
-              key={index}
-              onClick={() => handleClick(index)}
-              className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center  ${
-                selectedItem === index
-                  ? "bg-[#0098f1] text-white border-none"
-                  : ""
-              }`}
-            >
-              {item.label}
-            </li>
-          </ul>
-        ))}
+      <div className="md:flex justify-around">
+        <div className="bg-[#0098F1] text-white pb-5 md:w-2/5">
+          {renderContent()}
+        </div>
+        <div className="my-3">
+          <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
+            Java Programming Course Highlights
+          </p>
+          {data.map((item, index) => (
+            <ul key={index}>
+              <li
+                onClick={() => handleClick(index)}
+                className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center ${
+                  selectedItem === index
+                    ? "bg-[#0098f1] text-white border-none"
+                    : ""
+                }`}
+              >
+                {item.label}
+              </li>
+            </ul>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
   );
 }
 

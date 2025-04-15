@@ -19,7 +19,10 @@ const BigDataHero = () => {
         style={{
           backgroundImage: `url(${hero})`,
         }}
-      ></div>
+      >
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+
+      </div>
       <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
         <div className="text-white text-lg md:text-xl lg:text-2xl font-medium text-center">
           Unlock the potential of massive datasets with Big Data Analytics.

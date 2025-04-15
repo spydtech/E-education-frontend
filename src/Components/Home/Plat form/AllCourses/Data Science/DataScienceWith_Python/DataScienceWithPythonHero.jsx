@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import hero from "../../../../../../assetss/student/dataScience/dswithpython/hero.png";
+import hero from "../../../../../../assetss/student/dataScience/dswithpython/DataSciencePython.jpg";
 
 const DataScienceWithPythonHero = () => {
   const [courseName] = useState("Data Science With Python"); // Placeholder for course name
@@ -20,7 +20,9 @@ const DataScienceWithPythonHero = () => {
           style={{
             backgroundImage: `url(${hero})`,
           }}
-        ></div>
+        >
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+        </div>
         <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
           <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
             {" "}

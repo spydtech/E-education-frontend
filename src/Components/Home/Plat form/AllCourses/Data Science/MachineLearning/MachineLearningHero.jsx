@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import hero from "../../../../../../assetss/student/dataScience/machinelearning/hero.jpg";
+import hero from "../../../../../../assetss/student/dataScience/machinelearning/MachineLearning.jpg";
 const MachineLearningHero = () => {
   const [courseName] = useState("Machine Learning With AI"); // Placeholder for course name
   const [coursePrice] = useState(34999);
@@ -19,11 +19,14 @@ const MachineLearningHero = () => {
 
       <div className="relative">
         <div
-          className=" w-full h-[370px] bg-cover bg-center"
+          className=" w-full h-[370px]  md:h-[500px] bg-cover bg-center"
           style={{
             backgroundImage: `url(${hero})`,
           }}
-        ></div>
+        >
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+
+        </div>
         <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
           <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
             {" "}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import img8 from '../../../../assetss/professionalimages/image8.png';
+import img8 from '../../../../assetss/Professionals/AdvancedERP.jpg';
 
 const ERPHero = () => {
   const [courseName] = useState("Enterprise Resource Planning");
@@ -12,15 +12,17 @@ const ERPHero = () => {
   };
 
   return (
-    <div className="relative w-full h-[500px] lg:h-[408px] flex items-center justify-center overflow-hidden mb-20">
+    <div className="relative w-full h-[300px] lg:h-[408px] flex items-center justify-center overflow-hidden mb-20">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: `url(${img8})`,
         }}
-      ></div>
+      >
+        <div className="absolute inset-0 bg-black opacity-60 w-full h-[300px] lg:h-[408px]"></div>
+      </div>
       <div className="relative z-10 text-center text-white p-6 md:p-10">
-        <p className="text-center text-white text-[20px] font-medium px-4 mb-10 max-w-[800px]">
+        <p className="text-center text-white lg:text-[20px] md:text-[20px]  font-medium px-4 mb-10 max-w-[800px]">
           Learn how to optimize your business operations with our detailed ERP course. From implementation strategies to core modules, gain the skills needed to successfully manage and integrate various business processes using ERP systems.
         </p>
         <button

@@ -19,21 +19,17 @@ function BasicJavaScriptKeyHighlights() {
     switch (selectedItem) {
       case 0:
         return (
-          <div className="p-3 space-y-2  font-poppins">
+          <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Overview</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Advanced modules with Generative AI fusion</li>
-              <li>E-education certificate via upGrad collaboration</li>
-              <li>
-                Access to live training sessions by Meta Blueprint trainers
-              </li>
-              <li>15+ Case Studies, Live projects</li>
-              <li>Earn E-Eduction Executive Alumni Status</li>
-              <li>90+ Tool Video Library</li>
-              <li>Industry mentor-led fortnightly coaching</li>
-              <li>Tailored resume feedback</li>
-              <li>Mock Interview by managers</li>
-              <li>Explore ChatGPT in digital marketing tutorials</li>
+              <li>Comprehensive JavaScript fundamentals course</li>
+              <li>Hands-on coding exercises and projects</li>
+              <li>Modern ES6+ features included</li>
+              <li>Browser APIs and DOM manipulation</li>
+              <li>Asynchronous programming concepts</li>
+              <li>Error handling and debugging techniques</li>
+              <li>Best practices and coding standards</li>
+              <li>Real-world application examples</li>
             </ul>
           </div>
         );
@@ -42,13 +38,14 @@ function BasicJavaScriptKeyHighlights() {
           <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Key Concepts</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Generative AI in digital marketing</li>
-              <li>SEO</li>
-              <li>Search and Display advertising</li>
-              <li>Social and Display advertising</li>
-              <li>Content Marketing</li>
-              <li>Branding</li>
-              <li>Web Analytics</li>
+              <li>Variables, data types, and operators</li>
+              <li>Functions and scope</li>
+              <li>Objects and arrays</li>
+              <li>Control structures and loops</li>
+              <li>Event handling</li>
+              <li>Prototypes and classes</li>
+              <li>Promises and async/await</li>
+              <li>Modules and imports</li>
             </ul>
           </div>
         );
@@ -57,14 +54,14 @@ function BasicJavaScriptKeyHighlights() {
           <div className="p-3 space-y-2 font-poppins">
             <p className="text-xl font-medium text-white pl-2">Applications</p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>Digital Marketing Manager</li>
-              <li>SEM Manager</li>
-              <li>SEO Manager</li>
-              <li>Social Media and Content Manager</li>
-              <li>Associate</li>
-              <li>Consultant</li>
-              <li>Business Analyst</li>
-              <li>(Sr.)Associate-Digital Marketing</li>
+              <li>Web application development</li>
+              <li>Interactive website features</li>
+              <li>Front-end frameworks foundation</li>
+              <li>Browser extensions</li>
+              <li>Simple game development</li>
+              <li>Form validation</li>
+              <li>Dynamic content loading</li>
+              <li>API integration</li>
             </ul>
           </div>
         );
@@ -75,20 +72,14 @@ function BasicJavaScriptKeyHighlights() {
               Skills Developed
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>List of target audience goes here...</li>
-              <li>
-                Explore 2 tracks & 5 specializations for diverse learning.
-              </li>
-              <li>Experience seamless integration with Gen AI modules.</li>
-              <li>
-                Attain E-education Executive Alumni Status for exclusive
-                benefits.
-              </li>
-              <li>Access EMI at RS. 2,879/month for greater flexibility.</li>
-              <li>
-                A voucher worth $50 for Meta's "Digital Marketing Associate"
-                certificate exam, free of cost.
-              </li>
+              <li>Problem-solving with code</li>
+              <li>Algorithmic thinking</li>
+              <li>Debugging and troubleshooting</li>
+              <li>Code organization and structure</li>
+              <li>Browser developer tools proficiency</li>
+              <li>Understanding of web technologies</li>
+              <li>Version control basics</li>
+              <li>Code documentation</li>
             </ul>
           </div>
         );
@@ -99,14 +90,14 @@ function BasicJavaScriptKeyHighlights() {
               Target Audience
             </p>
             <ul className="space-y-2 font-normal list-disc pl-6">
-            <li>
-                Utilise ChatGPT to assist in creative unique content,plan
-                strategies,build,calenders,and more
-              </li>
-              <li>Generative SEO-optimised content with chatGPT</li>
-              <li>
-                Gain insights into your social media analytics by using chatGPT
-              </li>
+              <li>Beginner programmers</li>
+              <li>Web designers expanding to development</li>
+              <li>Career switchers to tech</li>
+              <li>Students studying computer science</li>
+              <li>Professionals needing web skills</li>
+              <li>Entrepreneurs building web products</li>
+              <li>Hobbyists interested in coding</li>
+              <li>Anyone curious about programming</li>
             </ul>
           </div>
         );
@@ -117,32 +108,32 @@ function BasicJavaScriptKeyHighlights() {
 
   return (
     <div className="px-3 md:mb-4 font-poppins">
-    <div className="md:flex justify-around  ">
-      <div className="bg-[#0098F1] text-white  pb-5 md:w-2/5">
-        {renderContent()}
-      </div>
-      <div className="my-3">
-        <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
-          E-Education Course Highlights
-        </p>
-        {data.map((item, index) => (
-          <ul className="">
-            <li
-              key={index}
-              onClick={() => handleClick(index)}
-              className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center  ${
-                selectedItem === index
-                  ? "bg-[#0098f1] text-white border-none"
-                  : ""
-              }`}
-            >
-              {item.label}
-            </li>
-          </ul>
-        ))}
+      <div className="md:flex justify-around">
+        <div className="bg-[#0098F1] text-white pb-5 md:w-2/5">
+          {renderContent()}
+        </div>
+        <div className="my-3">
+          <p className="font-bold underline-offset-2 underline text-xl text-[#0098F1]">
+            JavaScript Course Highlights
+          </p>
+          {data.map((item, index) => (
+            <ul key={index}>
+              <li
+                onClick={() => handleClick(index)}
+                className={`pt-4 hover:cursor-pointer text-xl my-2 md:h-16 md:w-[210px] border-2 rounded-md text-center ${
+                  selectedItem === index
+                    ? "bg-[#0098f1] text-white border-none"
+                    : ""
+                }`}
+              >
+                {item.label}
+              </li>
+            </ul>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
   );
 }
+
 export default BasicJavaScriptKeyHighlights;

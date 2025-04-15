@@ -1,7 +1,7 @@
 // import React from "react";
 import React, { useState } from "react";
 // import axios from "axios";
-import hero from "../../../../../../assetss/student/dataScience/visualization/hero.jpg";
+import hero from "../../../../../../assetss/student/dataScience/visualization/DataVisualization.png";
 import { useNavigate } from "react-router-dom";
 const DatavisualisationHero = () => {
   const [courseName] = useState("Data Visualization"); // Placeholder for course name
@@ -40,11 +40,15 @@ const DatavisualisationHero = () => {
 
       <div className="relative">
         <div
-          className=" w-full h-[370px] bg-cover bg-center"
+          className=" w-full h-[370px]  md:h-[470px] bg-cover bg-start"
           style={{
             backgroundImage: `url(${hero})`,
           }}
-        ></div>
+        >
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+          
+
+        </div>
         <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
           <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
             {" "}

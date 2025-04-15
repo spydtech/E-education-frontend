@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import student from "../../../../../../assetss/Home/intro_DataScience/student.jpg";
-import hero from "../../../../../../assetss/professionalimages/image2.png";
+import hero from "../../../../../../assetss/professionalimages/DataAnalytics.jpg";
 
 const DataHero = () => {
   const [courseName] = useState("Data Analytics");
@@ -19,7 +19,9 @@ const DataHero = () => {
         style={{
           backgroundImage: `url(${hero})`,
         }}
-      ></div>
+      >
+        <div className="absolute inset-0 bg-black opacity-60 w-full h-[370px]"></div>
+      </div>
       <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
         <div className="text-white text-lg md:text-xl lg:text-2xl font-medium text-center">
           Master the art of Data Analytics by transforming raw data into

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import hero from "../../../../../../assetss/professional/cloudComputing/hero.png";
+import hero from "../../../../../../assetss/premium/cloudcomputing/AWS.jpg";
 
 const CloudHero = () => {
   const [courseName] = useState("Cloud Computing");
@@ -56,6 +56,7 @@ const CloudHero = () => {
           backgroundImage: `url(${hero})`,
         }}
       >
+        <div className="absolute inset-0 bg-black opacity-60 w-full h-[370px]"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-center text-white max-md:text-[16px] text-[20px] font-medium px-4">
             Empowering you to leverage cutting-edge cloud technologies, ensuring

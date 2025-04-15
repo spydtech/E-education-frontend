@@ -53,7 +53,51 @@ const LeftSide = () => {
     const [replyText, setReplyText] = useState("");
 
 
-
+    const formatIndianTime = (dateString) => {
+      // Handle undefined/null/empty string cases
+      if (!dateString) {
+        console.warn("No date string provided, using current time");
+        dateString = new Date().toISOString();
+      }
+    
+      try {
+        const date = new Date(dateString);
+        
+        if (isNaN(date.getTime())) {
+          console.warn("Invalid date string, using current time:", dateString);
+          return new Date().toLocaleString('en-IN', {
+            timeZone: 'Asia/Kolkata',
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          });
+        }
+    
+        return date.toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+      } catch (error) {
+        console.error("Error formatting date, using current time:", error);
+        return new Date().toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+      }
+    };
 
 
      const jwt = localStorage.getItem("jwt");
@@ -240,6 +284,8 @@ const LeftSide = () => {
         // Fetch media files (images/videos) as blobs for each post
         const postsWithMedia = await Promise.all(
           response.data.map(async (post) => {
+             // Ensure we have a valid date
+        const postDate = post.dateTime || post.createdAt || new Date().toISOString();
             let imgBlobUrl = null;
             let videoBlobUrl = null;
             let profilePictureBlobUrl = null;
@@ -288,6 +334,7 @@ const LeftSide = () => {
               img: imgBlobUrl,
               video: videoBlobUrl,
               profilePicture: profilePictureBlobUrl || "/default-profile.png",
+              displayTime: formatIndianTime(postDate) // Add formatted time
             };
           })
         );
@@ -357,7 +404,9 @@ const LeftSide = () => {
         setTweets((prevTweets) =>
           prevTweets.map((tweet) =>
             tweet.id === editingPost.id
-              ? { ...tweet, content: editContent, image: response.data.image }
+              ? { ...tweet, content: editContent, image: response.data.image, video: response.data.video,
+                displayTime: formatIndianTime(new Date().toISOString()) // Update time
+               }
               : tweet
           )
         );
@@ -431,7 +480,7 @@ const LeftSide = () => {
                   <div className="ml-2">
                     <div className="font-semibold">{tweet.name || "Unknown User"}</div>
                     <div className="text-sm text-gray-500">
-                      {new Date(tweet.dateTime).toLocaleString()}
+                    {formatIndianTime(tweet.createdAt)}
                     </div>
                   </div>
                   <div className="ml-auto flex items-center gap-2">
