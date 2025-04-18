@@ -640,6 +640,48 @@ import { API_BASE_URL } from "../../../Config/api";
 import { likePost } from "../../../State/Post/Postmethod";
 import { createComment, fetchComments } from "../../../State/Post/Postmethod";
 
+
+
+// Maximum file sizes (in bytes)
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
+
+// Helper function to compress image
+const compressImage = async (file, maxWidth = 800, quality = 0.7) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const scale = Math.min(maxWidth / img.width, 1);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              resolve(file); // fallback to original if compression fails
+              return;
+            }
+            resolve(new File([blob], file.name, {
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            }));
+          },
+          'image/jpeg',
+          quality
+        );
+      };
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
 export default function Post() {
   const [tweetData, setTweetData] = useState({
     content: "",
@@ -665,6 +707,7 @@ export default function Post() {
   const [comments, setComments] = useState({});
   const [replyData, setReplyData] = useState(null);
   const [replyText, setReplyText] = useState("");
+  const [mediaFiles, setMediaFiles] = useState([]);
 
   const jwt = localStorage.getItem("jwt");
 
@@ -875,20 +918,30 @@ export default function Post() {
             }
           }
 
-          if (post.video) {
-            try {
-              const videoResponse = await axios.get(
-                `${API_BASE_URL}/api/posts/${post.id}/video`,
-                {
-                  responseType: "blob",
-                  headers: { Authorization: `Bearer ${jwt}` },
-                }
-              );
-              videoBlobUrl = URL.createObjectURL(videoResponse.data);
-            } catch (error) {
-              console.error(`Error fetching video for post ${post.id}:`, error);
-            }
-          }
+         if (post.video) {
+  try {
+    const videoResponse = await axios.get(
+      `${API_BASE_URL}/api/posts/${post.id}/video`,
+      {
+        responseType: 'blob',
+        headers: { Authorization: `Bearer ${jwt}` },
+        timeout: 30000, // Increase timeout to 30 seconds
+        onDownloadProgress: (progressEvent) => {
+          // Optional: Add progress tracking
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          console.log(`Download progress: ${percentCompleted}%`);
+        },
+      }
+    );
+    videoBlobUrl = URL.createObjectURL(videoResponse.data);
+  } catch (error) {
+    console.error(`Error fetching video for post ${post.id}:`, error);
+    // Fallback to a direct URL if available
+    videoBlobUrl = post.videoUrl || '/video-placeholder.mp4';
+  }
+}
 
           let isLiked = false;
           let likeCount = 0;
@@ -927,24 +980,71 @@ export default function Post() {
     setTweetData({ ...tweetData, content: e.target.value.trimStart() });
   };
 
-  const handleAddMedia = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onloadend = () => {
-        setFile(selectedFile);
-        if (selectedFile.type.startsWith("image/")) {
-          setTweetData({ ...tweetData, image: reader.result });
-        } else if (selectedFile.type.startsWith("video/")) {
-          setTweetData({ ...tweetData, video: reader.result });
-        }
-      };
+  const handleAddMedia = async (e) => {
+    const files = Array.from(e.target.files);
+    
+    if (files.length === 0) return;
+    
+    // Check total media count
+    if (mediaFiles.length + files.length > 10) {
+      toast.error("You can upload a maximum of 10 files");
+      return;
+    }
+    
+    try {
+      const processedFiles = await Promise.all(
+        files.map(async (file) => {
+          // Validate file type
+          if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+            toast.error(`Unsupported file type: ${file.name}`);
+            return null;
+          }
+          
+          // Validate file size
+          if (file.type.startsWith("image/") && file.size > MAX_IMAGE_SIZE) {
+            toast.error(`Image ${file.name} is too large (max 5MB)`);
+            return null;
+          }
+          
+          if (file.type.startsWith("video/") && file.size > MAX_VIDEO_SIZE) {
+            toast.error(`Video ${file.name} is too large (max 20MB)`);
+            return null;
+          }
+          
+          // Compress images
+          if (file.type.startsWith("image/")) {
+            try {
+              return await compressImage(file);
+            } catch (error) {
+              console.error("Error compressing image:", error);
+              return file; // fallback to original
+            }
+          }
+          
+          return file;
+        })
+      );
+      
+      // Filter out null values (invalid files)
+      const validFiles = processedFiles.filter(file => file !== null);
+      
+      if (validFiles.length > 0) {
+        setMediaFiles(prev => [...prev, ...validFiles]);
+      }
+    } catch (error) {
+      console.error("Error processing files:", error);
+      toast.error("Error processing files. Please try again.");
     }
   };
 
+  const removeMedia = (index) => {
+    setMediaFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+ 
+
   const handlePost = async () => {
-    if (!tweetData.content.trim() && !file) {
+    if (!tweetData.content.trim() && mediaFiles.length === 0) {
       toast.error("Please add content or media.");
       return;
     }
@@ -955,9 +1055,10 @@ export default function Post() {
     formDataToSend.append("postedBY", formData.fullName);
     formDataToSend.append("createdAt", new Date().toISOString());
 
-    if (file) {
-      formDataToSend.append("file", file, file.name);
-    }
+    // Add all media files
+    mediaFiles.forEach((file, index) => {
+      formDataToSend.append(`files`, file, file.name);
+    });
 
     try {
       const response = await axios.post(
@@ -968,8 +1069,7 @@ export default function Post() {
 
       if (response.status === 201 || response.status === 200) {
         const newPost = response.data;
-        const createdAt = newPost.createdAt || new Date().toISOString(); // Safe fallback
-
+        const createdAt = newPost.createdAt || new Date().toISOString();
 
         // Add the new post to the beginning of the tweets array
         setTweets((prevTweets) => [
@@ -985,8 +1085,8 @@ export default function Post() {
         ]);
 
         toast.success("Post created successfully!");
-        setTweetData({ content: "", image: "", video: "" });
-        setFile(null);
+        setTweetData({ content: "" });
+        setMediaFiles([]);
         setOpen(false);
       }
     } catch (error) {
@@ -994,7 +1094,6 @@ export default function Post() {
       toast.error(error.response?.data?.message || "Failed to create the post. Please try again.");
     }
   };
-
   const onEmojiClick = (emojiData) => {
     if (emojiData && emojiData.emoji) {
       setTweetData((prevData) => ({
@@ -1035,12 +1134,12 @@ export default function Post() {
         <div className="flex justify-between items-center mt-4">
           <label>
             <CiCamera className="w-[25px] h-[25px] cursor-pointer" />
-            <input
+            {/* <input
               type="file"
               accept="image/*,video/*"
               className="hidden"
               onChange={handleAddMedia}
-            />
+            /> */}
           </label>
           <AiOutlineVideoCamera className="w-5 h-5 cursor-pointer" />
           <AiOutlineCalendar className="w-5 h-5 cursor-pointer" />
@@ -1065,6 +1164,39 @@ export default function Post() {
               onChange={handleChange}
               value={tweetData.content}
             />
+            
+            {/* Media preview section */}
+            {mediaFiles.length > 0 && (
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {mediaFiles.map((file, index) => (
+                  <div key={index} className="relative">
+                    {file.type.startsWith("image/") ? (
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={`Preview ${index}`}
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                    ) : (
+                      <video
+                        src={URL.createObjectURL(file)}
+                        className="w-full h-32 object-cover rounded-lg"
+                        controls
+                      />
+                    )}
+                    <button
+                      onClick={() => removeMedia(index)}
+                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                    >
+                      <FaTrash className="w-3 h-3" />
+                    </button>
+                    <div className="text-xs text-gray-500 mt-1 truncate">
+                      {file.name} ({(file.size / 1024 / 1024).toFixed(2)}MB)
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
             <div className="mt-2 flex justify-between items-center">
               <label className="cursor-pointer">
                 <CiCamera className="w-[25px] h-[25px] text-black" />
@@ -1073,6 +1205,7 @@ export default function Post() {
                   accept="image/*,video/*"
                   className="hidden"
                   onChange={handleAddMedia}
+                  multiple
                 />
               </label>
               <button
@@ -1138,19 +1271,27 @@ export default function Post() {
               />
             )}
 
-            {tweet.video && (
-              <video 
-                controls 
-                className="mt-2 max-w-full h-auto rounded-lg"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/video-placeholder.png";
-                }}
-              >
-                <source src={tweet.video} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            )}
+{tweet.video && (
+  <div className="video-container">
+    <video
+      controls
+      className="mt-2 max-w-full h-auto rounded-lg"
+      onError={(e) => {
+        console.error('Video playback error:', e);
+        e.target.onerror = null;
+        e.target.poster = '/video-placeholder.png';
+        e.target.innerHTML = `
+          <source src="${tweet.video}" type="video/mp4">
+          Your browser does not support the video tag.
+          <p>Failed to load video. <a href="${tweet.video}" target="_blank">Try downloading instead</a></p>
+        `;
+      }}
+    >
+      <source src={tweet.video} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+)}
 
             <div className="mt-2 flex justify-between items-center border-t gap-8 py-4">
               <div

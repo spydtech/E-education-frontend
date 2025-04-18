@@ -64,7 +64,11 @@ function Main() {
       </section>
      
     </div>
-    <section className="w-full bg-gradient-to-br from-[#0098F1] via-[#0098F1] to-[#0098F1] text-white py-20 px-6 font-poppins pt-10">
+    
+    
+    
+    
+        <section className="w-full bg-gradient-to-br from-[#0098F1] via-[#0098F1] to-[#0098F1] text-white py-20 px-6 font-poppins pt-10">
       <div className="max-w-6xl mx-auto text-center">
         {/* Heading */}
         <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6">

@@ -32,7 +32,34 @@ const AICarousel = () => {
       ],
       bgColor: "bg-[#f19e22]",
     },
+    {
+      title: "Secure the Digital World",
+      subtitle: "Become a Cyber Security Expert!",
+      description:
+        "Cyber Security is more crucial than ever. Learn to defend systems, detect threats, and build secure networks to keep organizations safe.",
+      steps: [
+        "Understand network protocols & firewalls",
+        "Master ethical hacking & penetration testing",
+        "Implement secure authentication systems",
+        "Analyze real-world cyber threats",
+      ],
+      bgColor: "bg-[#1d3557]",
+    },
+    {
+      title: "Master Data Pipelines with ETL Tools",
+      subtitle: "Automate data workflows at scale!",
+      description:
+        "ETL tools help you move and transform data efficiently. Learn how to build scalable data pipelines and keep your analytics up-to-date.",
+      steps: [
+        "Extract data from diverse sources",
+        "Transform data with mapping & cleansing",
+        "Load into data warehouses",
+        "Use tools like Apache NiFi, Talend, or Airbyte",
+      ],
+      bgColor: "bg-[#2a9d8f]",
+    },
   ];
+  
 
   useEffect(() => {
     if (!isPaused) {
