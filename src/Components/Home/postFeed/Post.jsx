@@ -712,28 +712,19 @@ export default function Post() {
   const jwt = localStorage.getItem("jwt");
 
   const formatIndianTime = (dateString) => {
-    // Handle undefined/null/empty string cases
-    if (!dateString) {
-      console.warn("No date string provided, using current time");
-      dateString = new Date().toISOString();
-    }
-  
+    if (!dateString) return "Just now";
+    
     try {
       const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "Just now";
       
-      if (isNaN(date.getTime())) {
-        console.warn("Invalid date string, using current time:", dateString);
-        return new Date().toLocaleString('en-IN', {
-          timeZone: 'Asia/Kolkata',
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
-        });
-      }
-  
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+      
+      if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
+      if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+      
       return date.toLocaleString('en-IN', {
         timeZone: 'Asia/Kolkata',
         day: 'numeric',
@@ -744,16 +735,7 @@ export default function Post() {
         hour12: true
       });
     } catch (error) {
-      console.error("Error formatting date, using current time:", error);
-      return new Date().toLocaleString('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-      });
+      return "Just now";
     }
   };
 
@@ -1056,8 +1038,8 @@ export default function Post() {
     formDataToSend.append("createdAt", new Date().toISOString());
 
     // Add all media files
-    mediaFiles.forEach((file, index) => {
-      formDataToSend.append(`files`, file, file.name);
+    mediaFiles.forEach((file) => {
+      formDataToSend.append("files", file); // Changed to match backend
     });
 
     try {
@@ -1071,15 +1053,16 @@ export default function Post() {
         const newPost = response.data;
         const createdAt = newPost.createdAt || new Date().toISOString();
 
-        // Add the new post to the beginning of the tweets array
-        setTweets((prevTweets) => [
+        setTweets(prevTweets => [
           {
             ...newPost,
             img: newPost.img ? `${API_BASE_URL}${newPost.img}` : null,
             video: newPost.video ? `${API_BASE_URL}${newPost.video}` : null,
-            displayTime: formatIndianTime(newPost.createdAt),
+            displayTime: "Just now",
             isLiked: false,
-            likeCount: 0
+            likeCount: 0,
+            postedBY: formData.fullName, // Added missing field
+            profilePicture: formData.profilePicture // Added missing field
           },
           ...prevTweets,
         ]);
@@ -1088,6 +1071,7 @@ export default function Post() {
         setTweetData({ content: "" });
         setMediaFiles([]);
         setOpen(false);
+        fetchPosts(); // Refresh the posts
       }
     } catch (error) {
       console.error("Error creating post:", error);
@@ -1165,8 +1149,8 @@ export default function Post() {
               value={tweetData.content}
             />
             
-            {/* Media preview section */}
-            {mediaFiles.length > 0 && (
+           {/* Media preview section */}
+           {mediaFiles.length > 0 && (
               <div className="mt-4 grid grid-cols-2 gap-2">
                 {mediaFiles.map((file, index) => (
                   <div key={index} className="relative">

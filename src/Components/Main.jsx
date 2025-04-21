@@ -109,9 +109,12 @@ function Main() {
         </div>
 
         {/* Call to Action */}
+        <Link to="/artificial_intelligence">
         <button className="bg-[#ff9b26] hover:bg-orange-600 transition duration-300 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md">
           Enroll Now
         </button>
+        </Link>
+        
       </div>
     </section>
     </>

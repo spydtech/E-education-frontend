@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import hero from "../../../../../../assetss/student/dataScience/visualization/DataVisualization.png";
 import { useNavigate } from "react-router-dom";
 const DatavisualisationHero = () => {
-  const [courseName] = useState("Data Visualization"); // Placeholder for course name
-  const [coursePrice] = useState(14999);
+  const [courseName] = useState("Data Science"); // Placeholder for course name
+  const [coursePrice] = useState(24999);
+  const [courseDuration] = useState("6 months"); // Placeholder for course duration
   const navigate = useNavigate();
 
   const handleEnroll = () => {
     // Navigate to the card details page with course details as parameters
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AdvanceEthicalHackingFoot = () => {
-  const [courseName] = useState("Ethical Hacking Basics"); // Placeholder for course name
+  const [courseName] = useState("Advanced Ethical Hacking"); // Placeholder for course name
   const [coursePrice] = useState(34999);
+  const [courseDuration] = useState("6 Months"); // Placeholder for course duration
   const navigate = useNavigate();
 
   const handleEnroll = () => {

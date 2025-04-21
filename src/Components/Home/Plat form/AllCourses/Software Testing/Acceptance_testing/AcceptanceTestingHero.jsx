@@ -1,11 +1,11 @@
 // import React from "react";
 import React, { useState } from "react";
 // import axios from "axios";
-import hero from "../../../../../../assetss/student/testing/acceptance/hero.png";
+import hero from "../../../../../../assetss/student/testing/acceptance/AcceptanceTesting.webp";
 import { useNavigate } from "react-router-dom";
 // import student from "../../../../../../assetss/Home/intro_DataScience/student.jpg";
 const AcceptanceTestingHero = () => {
-  const [courseName] = useState("Acceptance Testing"); // Placeholder for course name
+  const [courseName] = useState("Advanced Testing"); // Placeholder for course name
   const [coursePrice] = useState(14999);
 
   const navigate = useNavigate();
@@ -22,7 +22,9 @@ const AcceptanceTestingHero = () => {
           style={{
             backgroundImage: `url(${hero})`,
           }}
-        ></div>
+        >
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+        </div>
         <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
           <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
             Acceptance testing verifies that a system meets business

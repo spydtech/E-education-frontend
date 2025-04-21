@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import student from "../../../../assetss/professionalimages/image7.png";
+import Img from "../../../../assetss/professionalimages/FulstackWordPressimage.png";
 
 const AdvanceWordpressHero = () => {
-  const [courseName] = useState("Integration Testing");
+  const [courseName] = useState("Advanced WordPress Development");
+  const [courseDuration] = useState("4 months");
   const [coursePrice] = useState(14999);
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (
@@ -17,15 +18,17 @@ const AdvanceWordpressHero = () => {
         className="relative w-full h-[370px] bg-cover bg-center"
         style={{
           backgroundImage:
-            'url("https://res.cloudinary.com/ds5ooz2ve/image/upload/v1726473509/WhatsApp_Image_2024-09-15_at_11.16.11_PM_1_uilojh.jpg")',
+            `url(${Img})`,
         }}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-center text-white text-[20px] font-medium px-4 max-w-[800px]">
-            Discover how Advanced WordPress can transform using data and
-            algorithms to enable AI to imitate the way that humans learn,
-            gradually improving its accuracy.
-          </p>
+        <div className="absolute inset-0 bg-black opacity-60 w-full h-[370px]"></div>
+        <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
+          <div className="text-white text-lg md:text-xl lg:text-2xl font-medium text-center">
+            Advanced WordPress is a powerful tool that enables developers to
+            create dynamic and interactive websites. This course will teach you
+            how to leverage the full potential of WordPress, from custom themes
+            to plugin development.
+          </div>
         </div>
         <div className="absolute inset-0 flex items-end justify-center pb-10">
           <button

@@ -15,10 +15,16 @@ import { motion } from "framer-motion";
 const CourseCard = () => {
   const courses = [
     {
-      title: " MERN Stack",
+      title: " MEAN Stack",
       description:" Develop dynamic web applications using MongoDB, Express.js, Angular, and Node.js.",
       image:ethical,
       link: "/fullStack_WebDevelopment/mean-Stack-Developer",
+    },
+    {
+      title: " MERN Stack",
+      description:" Develop dynamic web applications using MongoDB, Express.js, Angular, and Node.js.",
+      image:ethical,
+      link: "/fullStack_WebDevelopment/mern-Stack-Developer",
     },
     {
    

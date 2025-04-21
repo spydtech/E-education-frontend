@@ -3,13 +3,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CyberSecurityEssentialsFoot() {
-  const [courseName] = useState("Introduction to Cyber Security"); // Placeholder for course name
-  const [coursePrice] = useState(14999);
+  const [courseName] = useState("Cyber Security"); // Placeholder for course name
+  const [coursePrice] = useState(24999);
+  const [courseDuration] = useState("6 months"); // Placeholder for course duration
   const navigate = useNavigate();
 
   const handleEnroll = () => {
     // Navigate to the card details page with course details as parameters
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

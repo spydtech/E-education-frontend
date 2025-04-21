@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import hero from "../../../../../../assetss/student/dataScience/bigdata/hero.jpg";
+import hero from "../../../../../../assetss/student/dataScience/bigdata/Big-data2.webp";
 
 const BigDataHero = () => {
-  const [courseName] = useState("Big Data Analytics");
-  const [coursePrice] = useState(14999);
+  const [courseName] = useState("Data Science");
+  const [coursePrice] = useState(24999);
+  const [courseDuration] = useState("6 Months");
 
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

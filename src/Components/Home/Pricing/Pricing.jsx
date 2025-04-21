@@ -167,7 +167,7 @@ function Pricing() {
               </p>
               <p className="mt-6 flex items-baseline gap-x-1">
                 <span className="text-4xl font-bold tracking-tight text-white">
-                  34999<span className="align-top text-base">&#8377;</span>
+                  24999<span className="align-top text-base">&#8377;</span>
                   <span className="text-lg italic">/ course</span>
                 </span>
               </p>

@@ -74,13 +74,13 @@ const CourseCard = () => {
       image: "https://cdn-icons-png.flaticon.com/128/1691/1691940.png",
       link: "/cyber_security",
     },
-    {
-      title: "Artificial Intelligence",
-      description:
-        "Dive deep into neural networks, NLP, computer vision, and more to master the world of AI.",
-      image: "https://cdn-icons-png.flaticon.com/128/3105/3105798.png",
-      link: "/artificial_intelligence",
-    },
+    // {
+    //   title: "Artificial Intelligence",
+    //   description:
+    //     "Dive deep into neural networks, NLP, computer vision, and more to master the world of AI.",
+    //   image: "https://cdn-icons-png.flaticon.com/128/3105/3105798.png",
+    //   link: "/artificial_intelligence",
+    // },
   ];
 
 

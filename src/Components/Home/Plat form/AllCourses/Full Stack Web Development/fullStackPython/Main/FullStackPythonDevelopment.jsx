@@ -11,8 +11,8 @@ import FullStackPythonDeveloper from "../Developer/FullStackPythonDeveloper";
 
 const FullStackPythonDevelopment = () => {
   const [courseName] = useState("Full Stack Python Development"); // Corrected course name
-  const [coursePrice] = useState(34999);
-  const [courseDuration] = useState("6 months");
+  const [coursePrice] = useState(14999);
+  const [courseDuration] = useState("4 months");
   const navigate = useNavigate(); // useNavigate hook for navigation
 
   const handleEnroll = () => {

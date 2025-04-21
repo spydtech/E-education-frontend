@@ -4,12 +4,13 @@ import student from "../../../../../../assetss/Home/intro_DataScience/student.jp
 import hero from "../../../../../../assetss/professionalimages/DataAnalytics.jpg";
 
 const DataHero = () => {
-  const [courseName] = useState("Data Analytics");
-  const [coursePrice] = useState(14999);
+  const [courseName] = useState("Data Science");
+  const [coursePrice] = useState(24999);
+  const [courseDuration] = useState("6 Months");
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

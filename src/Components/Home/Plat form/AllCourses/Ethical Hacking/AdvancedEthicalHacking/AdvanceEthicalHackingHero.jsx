@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import hero from "../../../../../../assetss/professional/ethicalHacking/advanced/hero.png";
+import hero from "../../../../../../assetss/professional/ethicalHacking/advanced/EthicalHacking.jpg";
 
 const AdvanceEthicalHackingHero = () => {
   const [courseName] = useState("Advanced Ethical Hacking");
   const [coursePrice] = useState(34999);
+  const [courseDuration] = useState("6 Months");
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (
@@ -19,7 +20,9 @@ const AdvanceEthicalHackingHero = () => {
           style={{
             backgroundImage: `url(${hero})`,
           }}
-        ></div>
+        >
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+        </div>
         <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
           <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
             {" "}

@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import hero from "../../../../../../assetss/premium/cybersecurity1.png";
 const CybersecurityEssentialsHero = () => {
   const [courseName] = useState("Cyber Security"); // Placeholder for course name
-  const [coursePrice] = useState(34999);
+  const [coursePrice] = useState(24999);
+  const [courseDuration] = useState("6 months"); // Placeholder for course duration
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   useEffect(() => {

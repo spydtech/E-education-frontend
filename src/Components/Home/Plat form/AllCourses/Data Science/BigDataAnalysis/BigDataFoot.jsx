@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function BigDataFoot() {
-  const [courseName] = useState("Big Data"); // Placeholder for course name
+  const [courseName] = useState("Data Science"); // Placeholder for course name
   const [coursePrice] = useState(14999);
+  const [courseDuration] = useState("4 months"); // Placeholder for course duration
 
   const handleEnroll = () => {
     // Navigate to the card details page with course details as parameters
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
   const navigate = useNavigate();
 

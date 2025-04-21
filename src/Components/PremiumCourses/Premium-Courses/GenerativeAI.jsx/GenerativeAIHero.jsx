@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 const GenerativeAIHero = () => {
   const [courseName] = useState("Generative AI Mastery");
-  const [coursePrice] = useState(14999);
+  const [coursePrice] = useState(74999);
+  const [courseDuration] = useState("6 months"); // Placeholder for course duration
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import student from "../../../../../../assetss/Home/intro_DataScience/student.jpg";
-import hero from "../../../../../../assetss/professionalimages/image6.png"; // Replace with the appropriate image for System Testing
+import hero from "../../../../../../assetss/student/testing/SystemTesting.jpg"; // Replace with the appropriate image for System Testing
 
 const SystemTestingHero = () => {
   const [courseName] = useState("System Testing");
   const [coursePrice] = useState(14999);
+  const [courseDuration] = useState("4 months"); // Placeholder for course duration
   const navigate = useNavigate();
 
   const handleEnroll = () => {
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (
@@ -19,7 +20,9 @@ const SystemTestingHero = () => {
         style={{
           backgroundImage: `url(${hero})`,
         }}
-      ></div>
+      >
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+      </div>
       <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
         <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
           System testing evaluates the complete and integrated software to

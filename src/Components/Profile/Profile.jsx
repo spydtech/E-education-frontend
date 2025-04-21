@@ -14,37 +14,71 @@ const UserProfile = () => {
   const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        });
-        const user = response.data;
-        const fullName = `${user.firstName} ${user.lastName}`;
-
-        setFormData({
-          fullName,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          bio: user.bio || "",
-          gender: user.gender || "",
-          email: user.email,
-          phoneNumber: user.phoneNumber || "",
+      const fetchUserProfile = async () => {
+        try {
+          const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+            headers: { Authorization: `Bearer ${jwt}` },
+          });
+    
+          const user = response.data;
+          const fullName = `${user.firstName} ${user.lastName}`;
+    
+          // Fetch profile photo
+          try {
+            const profilePhotoResponse = await axios.get(
+              `${API_BASE_URL}/api/users/${user.email}/profile-photo`,
+              { responseType: "arraybuffer", headers: { Authorization: `Bearer ${jwt}` } }
+            );
+    
+            const profilePhotoBlob = new Blob([profilePhotoResponse.data], { type: "image/jpeg" });
+            const profilePhotoUrl = URL.createObjectURL(profilePhotoBlob);
+    
+            setFormData({
+              fullName,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              phoneNumber: user.phoneNumber || "",
           location: user.location || "",
           dateOfBirth: user.dateOfBirth || "",
           website: user.website || "",
-          profilePhoto: user.profileImage || dp,
-          coverImage: user.coverImage || "",
-        });
-      } catch (error) {
-        console.error("Error fetching user profile data:", error);
-      }
-    };
+              
+              profilePhoto: profilePhotoUrl,
 
-    fetchUserProfile();
-  }, [jwt]);
+
+            });
+          } catch (photoError) {
+            console.error("Error fetching profile photo:", photoError);
+            // Set a default profile photo if the photo fetch fails
+            setFormData({
+              fullName,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              phoneNumber: user.phoneNumber || "",
+          location: user.location || "",
+          dateOfBirth: user.dateOfBirth || "",
+          website: user.website || "",
+
+              profilePhoto: defaultProfilePic, // Use a default profile picture
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user profile data:", error);
+          if (error.response) {
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+            console.error("Response headers:", error.response.headers);
+          } else if (error.request) {
+            console.error("Request data:", error.request);
+          } else {
+            console.error("Error message:", error.message);
+          }
+        }
+      };
+    
+      fetchUserProfile();
+    }, [jwt]);
 
   const handleSave = async () => {
     try {
@@ -109,10 +143,13 @@ const UserProfile = () => {
       <div className="container mx-auto mt-8 p-6 bg-white ">
         <div className="flex flex-col md:flex-row items-center mb-6">
           <label htmlFor="profilePhoto" className="cursor-pointer rounded-3xl">
-            <img
-              src={formData.profilePhoto}
+          <img
+              src={formData.profilePhoto || dp}
               alt="User profile"
-              className="w-24 h-24 rounded-3xl mr-4"
+              className="w-24 h-24 rounded-3xl mr-4 object-cover"
+              onError={(e) => {
+                e.target.src = dp; // Fallback to default image if URL fails
+              }}
             />
             <input
               type="file"

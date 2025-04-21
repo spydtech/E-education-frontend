@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function DataScienceWithPythonFoot() {
-  const [courseName] = useState("Data Science With Python"); // Placeholder for course name
-  const [coursePrice] = useState(14999);
+  const [courseName] = useState("Data Science"); // Placeholder for course name
+  const [coursePrice] = useState(24999);
+  const [courseDuration] = useState("6 months");
 
   const handleEnroll = () => {
     // Navigate to the card details page with course details as parameters
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
   const navigate = useNavigate();
   return (

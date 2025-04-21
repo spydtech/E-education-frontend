@@ -2,15 +2,16 @@
 import React, { useState } from "react";
 // import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import hero from "../../../../../../assetss/student/testing/automation/hero.png";
+import hero from "../../../../../../assetss/student/testing/automation/AutomatationTesting.jpg";
 const AutomationTestingHero = () => {
-  const [courseName] = useState("Automation Testing"); // Placeholder for course name
+  const [courseName] = useState("Advanced Testing"); // Placeholder for course name
   const [coursePrice] = useState(14999);
+  const [courseDuration] = useState("4 months"); // Placeholder for course duration
 
   const navigate = useNavigate();
   const handleEnroll = () => {
     // Navigate to the card details page with course details as parameters
-    navigate("/course-details", { state: { courseName, coursePrice } });
+    navigate("/course-details", { state: { courseName, coursePrice, courseDuration } });
   };
 
   return (
@@ -21,7 +22,9 @@ const AutomationTestingHero = () => {
           style={{
             backgroundImage: `url(${hero})`,
           }}
-        ></div>
+        >
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-60"></div>
+        </div>
         <div className="absolute inset-0 flex items-center justify-center px-[40px] md:px-[120px] lg:px-[200px]">
           <div className="text-white text-lg md:text-xl lg:text-2xl font-medium  text-center">
             Automation testing is key to ensuring software reliability and
