@@ -80,7 +80,7 @@ const handleGoogleLoginSuccess = async (credentialResponse) => {
 
   return (
 
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "138273431686-luibtdjcpi8d156gfjapuhqt8kpigmdj.apps.googleusercontent.com"}>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "909179091397-lvtic2d6fpiau4djhvepun9m7k5kq8js.apps.googleusercontent.com"}>
     <div className="relative flex justify-center items-center min-h-screen bg-gray-100 font-poppins">
       <div className="w-full max-w-6xl bg-white shadow-md rounded-lg flex flex-col lg:flex-row">
         {/* Login Section */}
