@@ -85,7 +85,7 @@ const Navbar = () => {
         },
         { name: "Blockchain Development", link: "/blockchain" },
         {
-          name: "Machine Learning with AI",
+          name: "AI & ML",
           link: "/data_Science/machine-Learning",
         },
       ],
