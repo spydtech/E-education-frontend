@@ -19,7 +19,7 @@ const ArtificialIntelligenceArray = () => {
       title: "Generative AI Foundations",
       description:
         "Learn how generative models like GANs and transformers power modern AI creativity and content generation.",
-      link: "/generativeAis",
+      link: "/generativeAi",
       image:
         "https://img.freepik.com/premium-vector/artificial-intelligence-chipset-circuit-board-futuristic-concept_32996-2164.jpg?ga=GA1.1.1972706767.1731660040&semt=ais_hybrid&w=740", // Replace with actual image path
       rating: 4.8,
