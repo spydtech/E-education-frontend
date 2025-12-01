@@ -756,7 +756,7 @@ function Explore() {
                                         >
                                           <span className="flex pb-[2px]    text-white hover:text-black   ">
                                             <MdKeyboardArrowRight className="text-[#ff9b26]  mt-1 w-5 h-5 text-center" />{" "}
-                                            Machine Learning with AI
+                                            AI & ML
                                           </span>
                                         </Link>
                                       </li>
