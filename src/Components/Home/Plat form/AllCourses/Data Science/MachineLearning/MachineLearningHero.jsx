@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import hero from "../../../../../../assetss/student/dataScience/machinelearning/MachineLearning.jpg";
 const MachineLearningHero = () => {
   const [courseName] = useState("Machine Learning With AI"); // Placeholder for course name
-  const [coursePrice] = useState(24999);
+  const [coursePrice] = useState(34999);
   const [courseDuration] = useState("6 months"); // Placeholder for course duration
   const navigate = useNavigate();
 
