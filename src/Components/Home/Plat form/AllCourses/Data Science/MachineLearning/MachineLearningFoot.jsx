@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 function MachineLearningFoot() {
   const [courseName] = useState("Machine Learning with AI"); // Placeholder for course name
-  const [coursePrice] = useState(24999);
+  const [coursePrice] = useState(34999);
 
   const [courseDuration] = useState("6 months"); // Placeholder for course duration
 
