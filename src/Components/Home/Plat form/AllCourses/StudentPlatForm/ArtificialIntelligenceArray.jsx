@@ -33,7 +33,7 @@ const ArtificialIntelligenceArray = () => {
       title: "Agentic AI Concepts",
       description:
         "Explore how autonomous agents interact with environments, make decisions, and exhibit goal-oriented behavior.",
-      link: "/agenticAii",
+      link: "/agenticAi",
       image:
         "https://img.freepik.com/free-vector/blue-technology-background-with-many-faces_1017-18299.jpg?ga=GA1.1.1972706767.1731660040&semt=ais_hybrid&w=740", // Replace with actual image path
       rating: 4.6,
