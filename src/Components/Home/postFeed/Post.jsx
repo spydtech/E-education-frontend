@@ -1,634 +1,9 @@
-
-
-// import React, { useState, useEffect } from "react";
-// import Avatar from "@mui/material/Avatar";
-// import { CiCamera } from "react-icons/ci";
-// import { FaRegPenToSquare, FaTrash } from "react-icons/fa6";
-// import { FaRegComment } from "react-icons/fa";
-// import { FcLikePlaceholder, FcLike } from "react-icons/fc";
-// import { FaEdit } from "react-icons/fa";
-// import { IoShareSocialOutline } from "react-icons/io5";
-// import { AiOutlineVideoCamera, AiOutlineCalendar } from "react-icons/ai";
-// import Modal from "@mui/material/Modal";
-// import EmojiPicker from "emoji-picker-react";
-// import axios from "axios";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import { API_BASE_URL } from "../../../Config/api";
-// import { likePost } from "../../../State/Post/Postmethod";
-// import { createComment, fetchComments  } from "../../../State/Post/Postmethod";
-
-// export default function Post() {
-//   const [tweetData, setTweetData] = useState({
-//     content: "",
-//     image: "",
-//     video: "",
-//   });
-
-//   const [formData, setFormData] = useState({
-//     fullName: "",
-//     email: "",
-//     profilePicture: "",
-//   });
-
-//   const [tweets, setTweets] = useState([]);
-//   const [open, setOpen] = useState(false);
-//   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-//   const [commentData, setCommentData] = useState("");
-//   const [visibleComments, setVisibleComments] = useState({});
-//   const [file, setFile] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-//   const [likes, setLikes] = useState({});
-//   const [comments, setComments] = useState({});
-//   const [replyData, setReplyData] = useState(null); // { commentId, tweetId }
-//   const [replyText, setReplyText] = useState("");
-
-//   const jwt = localStorage.getItem("jwt");
-
-//   const handleAddComment = async (postId) => {
-//     if (!commentData.trim()) return;
-
-//     try {
-//       const newComment = await createComment(jwt, postId, commentData);
-//       setComments((prev) => ({
-//         ...prev,
-//         [postId]: [...(prev[postId] || []), newComment],
-//       }));
-//       setCommentData("");
-//     } catch (error) {
-//       console.error("Failed to create comment", error);
-//     }
-//   };
-
-
-//   const toggleCommentInput = async (postId) => {
-//     if (!visibleComments[postId]) {
-//       setVisibleComments((prev) => ({ ...prev, [postId]: true }));
-//       if (!comments[postId]) {
-//         try {
-//           const fetchedComments = await fetchComments(postId);
-//           setComments((prev) => ({ ...prev, [postId]: fetchedComments }));
-//         } catch (error) {
-//           console.error("Failed to fetch comments", error);
-//         }
-//       }
-//     } else {
-//       setVisibleComments((prev) => ({ ...prev, [postId]: false }));
-//     }
-//   };
-  
-
-  
-
-  
-
-//   const handleLike = async (postId) => {
-//     const token = localStorage.getItem("jwt");
-
-//     if (!token) {
-//       console.error("User is not authenticated.");
-//       return;
-//     }
-
-//     try {
-//       const updatedLikeCount = await likePost(postId, token);
-
-//       setTweets((prevTweets) =>
-//         prevTweets.map((tweet) =>
-//           tweet.id === postId
-//             ? { ...tweet, isLiked: !tweet.isLiked, likeCount: updatedLikeCount }
-//             : tweet
-//         )
-//       );
-//     } catch (error) {
-//       console.error("Failed to like the post:", error);
-//     }
-//   };
-  
-
-
-//   const handleAddReply = async (postId, commentId) => {
-//     if (!replyText.trim()) return;
-  
-//     const token = localStorage.getItem("jwt"); // Ensure the correct token key
-  
-//     if (!token) {
-//       console.error("User is not authenticated.");
-//       alert("Session expired. Please log in again.");
-//       return;
-//     }
-  
-//     try {
-//       const response = await fetch(`${API_BASE_URL}/comments/create`, {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/x-www-form-urlencoded",
-//           Authorization: `Bearer ${token}`, // Corrected token key
-//         },
-//         body: new URLSearchParams({
-//           postId: postId,
-//           content: replyText,
-//           parentCommentId: commentId, //  Send parentCommentId to link replies
-//         }),
-//       });
-  
-//       if (!response.ok) {
-//         throw new Error(`Failed to add reply: ${response.statusText}`);
-//       }
-  
-//       const newReply = await response.json(); // Get the saved reply from backend
-  
-//       //  Update state with the new reply from backend
-//       setComments((prev) => ({
-//         ...prev,
-//         [postId]: prev[postId].map((comment) =>
-//           comment.id === commentId
-//             ? { ...comment, replies: [...(comment.replies || []), newReply] }
-//             : comment
-//         ),
-//       }));
-  
-//       setReplyText(""); 
-//       setReplyData(null);
-//     } catch (error) {
-//       console.error("Failed to add reply:", error);
-//       alert("An error occurred while adding the reply. Please try again.");
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchUserProfile();
-//     fetchPosts();
-//     fetchComments();
-//   }, []);
-
-//   const fetchUserProfile = async () => {
-//     try {
-//       const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
-//         headers: { Authorization: `Bearer ${jwt}` },
-//       });
-
-//       const user = response.data;
-//       const fullName = `${user.firstName} ${user.lastName}`;
-
-//       setFormData({
-//         fullName,
-//         email: user.email,
-//         profilePicture: user.profilePicture || "/default-profile.png",
-//       });
-//     } catch (error) {
-//       console.error("Error fetching user profile:", error);
-//     }
-//   };
-
-//   const fetchPosts = async () => {
-//     setLoading(true);
-//     setError("");
-
-//     try {
-//       const response = await axios.get(`${API_BASE_URL}/api/posts/getPosts`, {
-//         headers: { Authorization: `Bearer ${jwt}` },
-//       });
-
-//       const postsWithDetails = await Promise.all(
-//         response.data.map(async (post) => {
-//           let imgBlobUrl = null;
-//           let videoBlobUrl = null;
-
-//           if (post.img) {
-//             try {
-//               const imgResponse = await axios.get(
-//                 `${API_BASE_URL}/api/posts/${post.id}/image`,
-//                 {
-//                   responseType: "blob",
-//                   headers: { Authorization: `Bearer ${jwt}` },
-//                 }
-//               );
-//               imgBlobUrl = URL.createObjectURL(imgResponse.data);
-//             } catch (error) {
-//               console.error(`Error fetching image for post ${post.id}:`, error);
-//             }
-//           }
-
-//           if (post.video) {
-//             try {
-//               const videoResponse = await axios.get(
-//                 `${API_BASE_URL}/api/posts/${post.id}/video`,
-//                 {
-//                   responseType: "blob",
-//                   headers: { Authorization: `Bearer ${jwt}` },
-//                 }
-//               );
-//               videoBlobUrl = URL.createObjectURL(videoResponse.data);
-//             } catch (error) {
-//               console.error(`Error fetching video for post ${post.id}:`, error);
-//             }
-//           }
-
-//           //  Fetch like details from backend
-//           let isLiked = false;
-//           let likeCount = 0;
-//           try {
-//             const likeResponse = await axios.get(
-//               `${API_BASE_URL}/api/likes/${post.id}/details`,
-//               { headers: { Authorization: `Bearer ${jwt}` } }
-//             );
-//             isLiked = likeResponse.data.isLiked;
-//             likeCount = likeResponse.data.likeCount;
-//           } catch (error) {
-//             console.error(`Error fetching like details for post ${post.id}:`, error);
-//           }
-
-//           return {
-//             ...post,
-//             img: imgBlobUrl,
-//             video: videoBlobUrl,
-//             isLiked, // Store isLiked
-//             likeCount, //  Store likeCount
-//           };
-//         })
-//       );
-
-//       setTweets(postsWithDetails);
-//       setLoading(false);
-//     } catch (error) {
-//       console.error("Error fetching posts:", error);
-//       setError("Failed to load posts. Please try again later.");
-//       setLoading(false);
-//     }
-//   };
-//   const handleChange = (e) => {
-//     setTweetData({ ...tweetData, content: e.target.value.trimStart() });
-//   };
-  
-
-//   const handleAddMedia = (e) => {
-//     const selectedFile = e.target.files[0];
-//     if (selectedFile) {
-//       const reader = new FileReader();
-//       reader.readAsDataURL(selectedFile);
-//       reader.onloadend = () => {
-//         setFile(selectedFile);
-//         if (selectedFile.type.startsWith("image/")) {
-//           setTweetData({ ...tweetData, image: reader.result });
-//         } else if (selectedFile.type.startsWith("video/")) {
-//           setTweetData({ ...tweetData, video: reader.result });
-//         }
-//       };
-//     }
-//   };
-
-//   const handlePost = async () => {
-//     if (!tweetData.content.trim() && !file) {
-//       toast.error("Please add content or media.");
-//       return;
-//     }
-
-//     const formDataToSend = new FormData();
-//     formDataToSend.append("name", formData.fullName);
-//     formDataToSend.append("content", tweetData.content);
-//     formDataToSend.append("postedBY", formData.fullName);
-//     formDataToSend.append("createdAt", new Date().toISOString());
-
-//     if (file) {
-//       formDataToSend.append("file", file, file.name);
-//     }
-
-//     try {
-//       const response = await axios.post(
-//         `${API_BASE_URL}/api/posts/createPost/media`,
-//         formDataToSend,
-//         { headers: { Authorization: `Bearer ${jwt}`, "Content-Type": "multipart/form-data" } }
-//       );
-
-//       if (response.status === 201 || response.status === 200) {
-//         const newPost = response.data;
-
-//         // Fetch media URLs for the new post
-//         let imgBlobUrl = null;
-//         let videoBlobUrl = null;
-
-//         if (newPost.img) {
-//           const imgResponse = await axios.get(
-//             `${API_BASE_URL}/api/posts/${newPost.id}/image`,
-//             { responseType: "blob", headers: { Authorization: `Bearer ${jwt}` } }
-//           );
-//           imgBlobUrl = URL.createObjectURL(imgResponse.data);
-//         }
-
-//         if (newPost.video) {
-//           const videoResponse = await axios.get(
-//             `${API_BASE_URL}/api/posts/${newPost.id}/video`,
-//             { responseType: "blob", headers: { Authorization: `Bearer ${jwt}` } }
-//           );
-//           videoBlobUrl = URL.createObjectURL(videoResponse.data);
-//         }
-
-//          // Add the new post to the BEGINNING of the tweets array
-//          setTweets((prevTweets) => [
-//           {
-//             ...newPost,
-//             img: imgBlobUrl,
-//             video: videoBlobUrl,
-//           },
-//           ...prevTweets, // Spread the existing tweets after the new post
-//         ]);
-
-//           // Call notification API
-     
-
-//         toast.success("Post created successfully!");
-//         setTweetData({ content: "", image: "", video: "" });
-//         setFile(null);
-//         setOpen(false);
-//       }
-//     } catch (error) {
-//       console.error("Error creating post:", error);
-//       toast.error("Failed to create the post. Please try again.");
-//     }
-//   };
-
- 
-
-  
-
- 
-
-//   const onEmojiClick = (emojiData) => {
-//     if (emojiData && emojiData.emoji) {
-//       setTweetData((prevData) => ({
-//         ...prevData,
-//         content: prevData.content + emojiData.emoji,
-//       }));
-//     }
-//   };
-
-//   return (
-//     <div className="lg:w-[500px] xl:w-[620px] 2xl:w-[800px] w-auto rounded-lg bg-[#0098f1]">
-      
-//       <div className="p-4">
-//         <div className="flex">
-//           <textarea
-//             placeholder="Create Post..."
-//             rows={2}
-//             className="rounded-lg w-full border outline-none resize-none text-lg placeholder-custom"
-//             onClick={() => setOpen(true)}
-//             readOnly
-//           />
-//         </div>
-//         <div className="flex justify-between items-center mt-4">
-//           <label>
-//             <CiCamera className="w-[25px] h-[25px] cursor-pointer" />
-//             <input
-//               type="file"
-//               accept="image/*,video/*"
-//               className="hidden"
-//               onChange={handleAddMedia}
-//             />
-//           </label>
-//           <AiOutlineVideoCamera className="w-5 h-5 cursor-pointer" />
-//           <AiOutlineCalendar className="w-5 h-5 cursor-pointer" />
-//           <FaRegPenToSquare className="w-5 h-5 cursor-pointer" />
-//         </div>
-//       </div>
-
-//       <Modal open={open} onClose={() => setOpen(false)}>
-//         <div
-//           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10"
-//           onClick={() => setOpen(false)}
-//         >
-//           <div
-//             className="bg-white rounded-lg p-6 w-[400px] lg:w-[600px] border-2 shadow-lg"
-//             onClick={(e) => e.stopPropagation()}
-//           >
-//             <textarea
-//               placeholder="What is happening?!"
-//               rows={12}
-//               cols={28}
-//               className="w-full border border-[#0098f1] text-black rounded-lg outline-none resize-none text-lg"
-//               onChange={handleChange}
-//               value={tweetData.content}
-//             />
-//             <div className="mt-2 flex justify-between items-center">
-//               <label className="cursor-pointer">
-//                 <CiCamera className="w-[25px] h-[25px] text-black" />
-//                 <input
-//                   type="file"
-//                   accept="image/*,video/*"
-//                   className="hidden"
-//                   onChange={handleAddMedia}
-//                 />
-//               </label>
-//               <button
-//                 className="bg-[#0098f1] text-white py-2 px-4 rounded"
-//                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-//               >
-//                 Emoji
-//               </button>
-//               {showEmojiPicker && (
-//                 <div className="absolute bottom-16 right-8 z-10 bg-white border rounded-lg shadow-lg p-4">
-//                   <div className="flex justify-between items-center mb-2">
-//                     <h3 className="text-lg font-semibold">Choose an emoji</h3>
-//                     <button
-//                       className="text-red-500 font-bold text-lg cursor-pointer"
-//                       onClick={() => setShowEmojiPicker(false)}
-//                     >
-//                       ✖
-//                     </button>
-//                   </div>
-//                   <EmojiPicker onEmojiClick={onEmojiClick} />
-//                 </div>
-//               )}
-
-//               <button
-//                 className="bg-[#0098f1] text-white py-2 px-4 rounded"
-//                 onClick={handlePost}
-//               >
-//                 Post
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </Modal>
-
-//       <div className="bg-white mt-3 pl-3 overflow-y-auto max-h-[500px]">
-//         {loading && <p className="text-white">Loading posts...</p>}
-//         {error && <p className="text-red-500">{error}</p>}
-//         {tweets.map((tweet) => (
-//           <div className="p-4 border border-gray-300 rounded-lg mt-4" key={tweet.id}>
-//             <div className="flex text-start space-x-5">
-//               <Avatar
-//                 alt={tweet.postedBY || "Unknown User"}
-//                 src={tweet.profilePicture || ""}
-//               />
-//               <div className="text-start">
-//                 <div className="font-semibold">{tweet.name || "Unknown User"}</div>
-//                 <div className="text-sm text-gray-500">
-//                   {new Date(tweet.dateTime).toLocaleString()}
-//                 </div>
-//               </div>
-//             </div>
-//             <div className="mt-2">{tweet.content}</div>
-
-//             {tweet.img && (
-//               <img
-//                 src={tweet.img}
-//                 className="mt-2 max-w-full h-auto rounded-lg"
-//                 alt="Post media"
-//               />
-//             )}
-
-//             {tweet.video && (
-//               <video controls className="mt-2 max-w-full h-auto rounded-lg">
-//                 <source src={tweet.video} type="video/mp4" />
-//                 Your browser does not support the video tag.
-//               </video>
-//             )}
-
-//             <div className="mt-2 flex justify-between items-center border-t gap-8 py-4">
-//               <div
-//                 className="flex justify-center items-center flex-row gap-2 text-[#0098F1] mr-4 cursor-pointer"
-//                 onClick={() => handleLike(tweet.id)}
-//               >
-//                 {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
-//                 <span>{tweet.likeCount}</span>
-//               </div>
-//               <div
-//                 className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]"
-//                 onClick={() => toggleCommentInput(tweet.id)}
-//               >
-//                 <FaRegComment />
-//                 <span>Comment</span>
-//               </div>
-//               <div className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]">
-//                 <IoShareSocialOutline />
-//                 <span>Share</span>
-//               </div>
-//             </div>
-
-//             {visibleComments[tweet.id] && (
-//   <div className="mt-2">
-//     <input
-//       type="text"
-//       className="w-full border border-gray-300 rounded px-3 py-2"
-//       placeholder="Write a comment..."
-//       value={commentData}
-//       onChange={(e) => setCommentData(e.target.value)}
-//     />
-//     <button
-//       className="mt-2 bg-[#0098f1] text-white py-2 px-4 rounded"
-//       onClick={() => handleAddComment(tweet.id)}
-//     >
-//       Comment
-//     </button>
-//     <div className="mt-4">
-//     {comments[tweet.id] &&
-//   comments[tweet.id].map((comment) => (
-//     <div
-//       key={comment.id}
-//       className="p-4 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm mt-3 flex items-start gap-4 transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-//     >
-//      {/* Profile Picture */}
-// <img
-//   src={comment.profilePicture || "/default-profile.png"}
-//   alt={comment.name}
-//   className="w-10 h-10 rounded-full border-2 border-gray-300 dark:border-gray-600"
-// />
-
-// <div className="flex-1">
-//   {/* User Name */}
-//   <strong className="text-gray-800 dark:text-gray-200 font-semibold">
-//     {comment.firstName
-//       ? `${comment.firstName.split("@")[0]}` 
-//       : "Unknown User"}
-//   </strong>
-//   <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">{comment.content}</p>
-
-//         {/* Reply Button */}
-//   <button
-//           className="mt-2 text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
-//         onClick={() => setReplyData({ commentId: comment.id, tweetId: tweet.id })}
-// >
-//   Reply
-// </button>
-
-//   {/* Reply Input Field */}
-//   {replyData?.commentId === comment.id && (
-//     <div className="mt-3">
-//       <input
-//         type="text"
-//         className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition-all"
-//         placeholder="Write a reply..."
-//         value={replyText}
-//         onChange={(e) => setReplyText(e.target.value)}
-//       />
-//       <button
-//         className="mt-2 bg-green-500 hover:bg-green-600 text-white py-1.5 px-4 rounded-lg text-sm transition-all"
-//         onClick={() => handleAddReply(tweet.id, comment.id)}
-//       >
-//         Reply
-//       </button>
-//     </div>
-//   )}
-
-//   {/* Display Replies */}
-//   {comment.replies && comment.replies.length > 0 && (
-//     <div className="ml-10 mt-3 space-y-2">
-//       {comment.replies.map((reply) => (
-//         <div
-//           key={reply.id}
-//           className="p-3 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 shadow-sm flex items-start gap-3"
-//         >
-//           {/* Profile Picture for Replies */}
-//           <img
-//             src={reply.profilePicture || "/default-profile.png"} 
-//             alt={reply.firstName}
-//             className="w-8 h-8 rounded-full border-2 border-gray-300 dark:border-gray-600"
-//           />
-//           <div>
-//             {/* User Name for Replies */}
-//             <strong className="text-gray-800 dark:text-gray-200 font-semibold">
-//               {reply.firstName
-//                 ? `${reply.firstName.split("@")[0]}` 
-//                 : "Unknown User"}
-//             </strong>
-//             <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
-//               {reply.content}
-//             </p>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   )}
-// </div>
-
-      
-//     </div>
-//   ))}
-
-//     </div>
-//   </div>
-// )}
-
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import { CiCamera } from "react-icons/ci";
-import { FaRegPenToSquare, FaTrash } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa6";
 import { FaRegComment } from "react-icons/fa";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
-import { FaEdit } from "react-icons/fa";
 import { IoShareSocialOutline } from "react-icons/io5";
 import { AiOutlineVideoCamera, AiOutlineCalendar } from "react-icons/ai";
 import Modal from "@mui/material/Modal";
@@ -637,16 +12,11 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_BASE_URL } from "../../../Config/api";
-import { likePost } from "../../../State/Post/Postmethod";
-import { createComment, fetchComments } from "../../../State/Post/Postmethod";
 
+// Maximum file sizes
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+const MAX_VIDEO_SIZE = 20 * 1024 * 1024;
 
-
-// Maximum file sizes (in bytes)
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
-const MAX_VIDEO_SIZE = 20 * 1024 * 1024; // 20MB
-
-// Helper function to compress image
 const compressImage = async (file, maxWidth = 800, quality = 0.7) => {
   return new Promise((resolve) => {
     const reader = new FileReader();
@@ -665,7 +35,7 @@ const compressImage = async (file, maxWidth = 800, quality = 0.7) => {
         canvas.toBlob(
           (blob) => {
             if (!blob) {
-              resolve(file); // fallback to original if compression fails
+              resolve(file);
               return;
             }
             resolve(new File([blob], file.name, {
@@ -683,35 +53,30 @@ const compressImage = async (file, maxWidth = 800, quality = 0.7) => {
 };
 
 export default function Post() {
-  const [tweetData, setTweetData] = useState({
+  const [postData, setPostData] = useState({
     content: "",
-    image: "",
-    video: "",
+    name: ""
   });
 
-  const [formData, setFormData] = useState({
+  const [userData, setUserData] = useState({
     fullName: "",
     email: "",
-    profilePicture: "",
+    profilePicture: "/default-profile.png",
   });
 
-  const [tweets, setTweets] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [open, setOpen] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [commentData, setCommentData] = useState("");
   const [visibleComments, setVisibleComments] = useState({});
-  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [likes, setLikes] = useState({});
-  const [comments, setComments] = useState({});
-  const [replyData, setReplyData] = useState(null);
-  const [replyText, setReplyText] = useState("");
   const [mediaFiles, setMediaFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   const jwt = localStorage.getItem("jwt");
 
-  const formatIndianTime = (dateString) => {
+  const formatTime = (dateString) => {
     if (!dateString) return "Just now";
     
     try {
@@ -721,126 +86,18 @@ export default function Post() {
       const now = new Date();
       const diffInSeconds = Math.floor((now - date) / 1000);
       
-      if (diffInSeconds < 60) return `${diffInSeconds} seconds ago`;
-      if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+      if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+      if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+      if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
       
-      return date.toLocaleString('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        day: 'numeric',
+      return date.toLocaleDateString('en-US', {
         month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
+        day: 'numeric',
+        year: 'numeric'
       });
     } catch (error) {
       return "Just now";
-    }
-  };
-
-  const handleAddComment = async (postId) => {
-    if (!commentData.trim()) return;
-
-    try {
-      const newComment = await createComment(jwt, postId, commentData);
-      setComments((prev) => ({
-        ...prev,
-        [postId]: [...(prev[postId] || []), newComment],
-      }));
-      setCommentData("");
-    } catch (error) {
-      console.error("Failed to create comment", error);
-      toast.error("Failed to add comment. Please try again.");
-    }
-  };
-
-  const toggleCommentInput = async (postId) => {
-    if (!visibleComments[postId]) {
-      setVisibleComments((prev) => ({ ...prev, [postId]: true }));
-      if (!comments[postId]) {
-        try {
-          const fetchedComments = await fetchComments(postId);
-          setComments((prev) => ({ ...prev, [postId]: fetchedComments }));
-        } catch (error) {
-          console.error("Failed to fetch comments", error);
-        }
-      }
-    } else {
-      setVisibleComments((prev) => ({ ...prev, [postId]: false }));
-    }
-  };
-
-  const handleLike = async (postId) => {
-    const token = localStorage.getItem("jwt");
-
-    if (!token) {
-      console.error("User is not authenticated.");
-      return;
-    }
-
-    try {
-      const updatedLikeCount = await likePost(postId, token);
-
-      setTweets((prevTweets) =>
-        prevTweets.map((tweet) =>
-          tweet.id === postId
-            ? { ...tweet, isLiked: !tweet.isLiked, likeCount: updatedLikeCount }
-            : tweet
-        )
-      );
-    } catch (error) {
-      console.error("Failed to like the post:", error);
-      toast.error("Failed to like the post. Please try again.");
-    }
-  };
-
-  const handleAddReply = async (postId, commentId) => {
-    if (!replyText.trim()) return;
-  
-    const token = localStorage.getItem("jwt");
-  
-    if (!token) {
-      console.error("User is not authenticated.");
-      toast.error("Session expired. Please log in again.");
-      return;
-    }
-  
-    try {
-      const response = await fetch(`${API_BASE_URL}/comments/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Bearer ${token}`,
-        },
-        body: new URLSearchParams({
-          postId: postId,
-          content: replyText,
-          parentCommentId: commentId,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Failed to add reply: ${response.statusText}`);
-      }
-  
-      const newReply = await response.json();
-  
-      setComments((prev) => ({
-        ...prev,
-        [postId]: prev[postId].map((comment) =>
-          comment.id === commentId
-            ? { ...comment, replies: [...(comment.replies || []), newReply] }
-            : comment
-        ),
-      }));
-  
-      setReplyText(""); 
-      setReplyData(null);
-      toast.success("Reply added successfully!");
-    } catch (error) {
-      console.error("Failed to add reply:", error);
-      toast.error("Failed to add reply. Please try again.");
     }
   };
 
@@ -858,11 +115,13 @@ export default function Post() {
       const user = response.data;
       const fullName = `${user.firstName} ${user.lastName}`;
 
-      setFormData({
+      setUserData({
         fullName,
         email: user.email,
         profilePicture: user.profilePicture || "/default-profile.png",
       });
+      
+      setPostData(prev => ({ ...prev, name: fullName }));
     } catch (error) {
       console.error("Error fetching user profile:", error);
     }
@@ -873,83 +132,92 @@ export default function Post() {
     setError("");
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/posts/getPosts`, {
+      const response = await axios.get(`${API_BASE_URL}/api/posts/all`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
 
-      const postsWithDetails = await Promise.all(
-        
-        response.data.map(async (post) => {
-          // Add null check for createdAt
-    const createdAt = post.createdAt || new Date().toISOString();
-          let imgBlobUrl = null;
-          let videoBlobUrl = null;
+      if (response.data.success) {
+        const postsWithMedia = await Promise.all(
+          response.data.posts.map(async (post) => {
+            let imgUrl = null;
+            let videoUrl = null;
+            let profilePicUrl = null;
+            let isLikedByCurrentUser = false;
 
-          if (post.img) {
-            try {
-              const imgResponse = await axios.get(
-                `${API_BASE_URL}/api/posts/${post.id}/image`,
-                {
-                  responseType: "blob",
-                  headers: { Authorization: `Bearer ${jwt}` },
-                }
-              );
-              imgBlobUrl = URL.createObjectURL(imgResponse.data);
-            } catch (error) {
-              console.error(`Error fetching image for post ${post.id}:`, error);
+            if (post.img || post.mediaType?.startsWith("image/")) {
+              try {
+                const imgResponse = await axios.get(
+                  `${API_BASE_URL}/api/posts/${post.id}/image`,
+                  {
+                    responseType: "blob",
+                    headers: { Authorization: `Bearer ${jwt}` },
+                  }
+                );
+                imgUrl = URL.createObjectURL(imgResponse.data);
+              } catch (error) {
+                console.log(`No image for post ${post.id}`);
+              }
             }
-          }
 
-         if (post.video) {
-  try {
-    const videoResponse = await axios.get(
-      `${API_BASE_URL}/api/posts/${post.id}/video`,
-      {
-        responseType: 'blob',
-        headers: { Authorization: `Bearer ${jwt}` },
-        timeout: 30000, // Increase timeout to 30 seconds
-        onDownloadProgress: (progressEvent) => {
-          // Optional: Add progress tracking
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          console.log(`Download progress: ${percentCompleted}%`);
-        },
+            if (post.video || post.mediaType?.startsWith("video/")) {
+              try {
+                const videoResponse = await axios.get(
+                  `${API_BASE_URL}/api/posts/${post.id}/video`,
+                  {
+                    responseType: "blob",
+                    headers: { Authorization: `Bearer ${jwt}` },
+                    timeout: 30000,
+                  }
+                );
+                videoUrl = URL.createObjectURL(videoResponse.data);
+              } catch (error) {
+                console.log(`No video for post ${post.id}`);
+              }
+            }
+
+            if (post.profilePicture) {
+              try {
+                const profileResponse = await axios.get(
+                  `${API_BASE_URL}/api/posts/${post.id}/profile-picture`,
+                  {
+                    responseType: "blob",
+                    headers: { Authorization: `Bearer ${jwt}` },
+                  }
+                );
+                profilePicUrl = URL.createObjectURL(profileResponse.data);
+              } catch (error) {
+                console.log(`No profile picture for post ${post.id}`);
+              }
+            }
+
+            try {
+              const likeDetailsResponse = await axios.get(
+                `${API_BASE_URL}/api/likes/${post.id}/details`,
+                { headers: { Authorization: `Bearer ${jwt}` } }
+              );
+              isLikedByCurrentUser = likeDetailsResponse.data.isLiked;
+            } catch (error) {
+              console.log(`Error fetching like details for post ${post.id}:`, error);
+            }
+
+            return {
+              ...post,
+              img: imgUrl,
+              video: videoUrl,
+              profilePicture: profilePicUrl || "/default-profile.png",
+              displayTime: formatTime(post.createdAt),
+              isLiked: isLikedByCurrentUser,
+              likeCount: post.likeCount || 0,
+              userFullName: post.userFullName || post.postedBY?.split('@')[0] || "User"
+            };
+          })
+        );
+
+        setPosts(postsWithMedia);
+      } else {
+        setError("Failed to load posts");
       }
-    );
-    videoBlobUrl = URL.createObjectURL(videoResponse.data);
-  } catch (error) {
-    console.error(`Error fetching video for post ${post.id}:`, error);
-    // Fallback to a direct URL if available
-    videoBlobUrl = post.videoUrl || '/video-placeholder.mp4';
-  }
-}
-
-          let isLiked = false;
-          let likeCount = 0;
-          try {
-            const likeResponse = await axios.get(
-              `${API_BASE_URL}/api/likes/${post.id}/details`,
-              { headers: { Authorization: `Bearer ${jwt}` } }
-            );
-            isLiked = likeResponse.data.isLiked;
-            likeCount = likeResponse.data.likeCount;
-          } catch (error) {
-            console.error(`Error fetching like details for post ${post.id}:`, error);
-          }
-
-          return {
-            ...post,
-            img: imgBlobUrl,
-            video: videoBlobUrl,
-            isLiked,
-            likeCount,
-            displayTime: formatIndianTime(post.createdAt)
-          };
-        })
-      );
-
-      setTweets(postsWithDetails);
+      
       setLoading(false);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -959,7 +227,7 @@ export default function Post() {
   };
 
   const handleChange = (e) => {
-    setTweetData({ ...tweetData, content: e.target.value.trimStart() });
+    setPostData({ ...postData, content: e.target.value });
   };
 
   const handleAddMedia = async (e) => {
@@ -967,7 +235,6 @@ export default function Post() {
     
     if (files.length === 0) return;
     
-    // Check total media count
     if (mediaFiles.length + files.length > 10) {
       toast.error("You can upload a maximum of 10 files");
       return;
@@ -976,13 +243,11 @@ export default function Post() {
     try {
       const processedFiles = await Promise.all(
         files.map(async (file) => {
-          // Validate file type
           if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
             toast.error(`Unsupported file type: ${file.name}`);
             return null;
           }
           
-          // Validate file size
           if (file.type.startsWith("image/") && file.size > MAX_IMAGE_SIZE) {
             toast.error(`Image ${file.name} is too large (max 5MB)`);
             return null;
@@ -993,13 +258,12 @@ export default function Post() {
             return null;
           }
           
-          // Compress images
           if (file.type.startsWith("image/")) {
             try {
               return await compressImage(file);
             } catch (error) {
               console.error("Error compressing image:", error);
-              return file; // fallback to original
+              return file;
             }
           }
           
@@ -1007,7 +271,6 @@ export default function Post() {
         })
       );
       
-      // Filter out null values (invalid files)
       const validFiles = processedFiles.filter(file => file !== null);
       
       if (validFiles.length > 0) {
@@ -1023,375 +286,456 @@ export default function Post() {
     setMediaFiles(prev => prev.filter((_, i) => i !== index));
   };
 
- 
-
-  const handlePost = async () => {
-    if (!tweetData.content.trim() && mediaFiles.length === 0) {
+  const handleCreatePost = async () => {
+    if (!postData.content.trim() && mediaFiles.length === 0) {
       toast.error("Please add content or media.");
       return;
     }
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.fullName);
-    formDataToSend.append("content", tweetData.content);
-    formDataToSend.append("postedBY", formData.fullName);
-    formDataToSend.append("createdAt", new Date().toISOString());
+    setIsUploading(true);
 
-    // Add all media files
+    const formData = new FormData();
+    formData.append("name", postData.name);
+    formData.append("content", postData.content);
+    
     mediaFiles.forEach((file) => {
-      formDataToSend.append("files", file); // Changed to match backend
+      formData.append("files", file);
     });
 
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/api/posts/createPost/media`,
-        formDataToSend,
-        { headers: { Authorization: `Bearer ${jwt}`, "Content-Type": "multipart/form-data" } }
+        `${API_BASE_URL}/api/posts/create`,
+        formData,
+        { 
+          headers: { 
+            Authorization: `Bearer ${jwt}`,
+            "Content-Type": "multipart/form-data" 
+          } 
+        }
       );
 
-      if (response.status === 201 || response.status === 200) {
-        const newPost = response.data;
-        const createdAt = newPost.createdAt || new Date().toISOString();
-
-        setTweets(prevTweets => [
-          {
-            ...newPost,
-            img: newPost.img ? `${API_BASE_URL}${newPost.img}` : null,
-            video: newPost.video ? `${API_BASE_URL}${newPost.video}` : null,
-            displayTime: "Just now",
-            isLiked: false,
-            likeCount: 0,
-            postedBY: formData.fullName, // Added missing field
-            profilePicture: formData.profilePicture // Added missing field
-          },
-          ...prevTweets,
-        ]);
-
+      if (response.data.success) {
         toast.success("Post created successfully!");
-        setTweetData({ content: "" });
+        
+        const newPost = response.data.post;
+        const newPostWithMedia = {
+          ...newPost,
+          displayTime: "Just now",
+          isLiked: false,
+          likeCount: 0,
+          userFullName: postData.name,
+          profilePicture: userData.profilePicture
+        };
+        
+        setPosts(prev => [newPostWithMedia, ...prev]);
+        
+        setPostData({ content: "", name: postData.name });
         setMediaFiles([]);
         setOpen(false);
-        fetchPosts(); // Refresh the posts
+        
+        setTimeout(() => {
+          fetchPosts();
+        }, 1000);
+      } else {
+        toast.error(response.data.error || "Failed to create post");
       }
     } catch (error) {
       console.error("Error creating post:", error);
-      toast.error(error.response?.data?.message || "Failed to create the post. Please try again.");
+      toast.error(error.response?.data?.error || "Failed to create post. Please try again.");
+    } finally {
+      setIsUploading(false);
     }
   };
+
+  const handleLike = async (postId) => {
+    if (!jwt) {
+      toast.error("Please login to like posts");
+      return;
+    }
+
+    try {
+      const likeDetailsResponse = await axios.get(
+        `${API_BASE_URL}/api/likes/${postId}/details`,
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
+
+      const currentIsLiked = likeDetailsResponse.data.isLiked;
+      
+      const response = await axios.put(
+        `${API_BASE_URL}/api/likes/${postId}`,
+        {},
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
+
+      if (response.status === 200) {
+        const newLikeCount = response.data;
+        const newIsLiked = !currentIsLiked;
+
+        setPosts(prevPosts =>
+          prevPosts.map(post =>
+            post.id === postId
+              ? { 
+                  ...post, 
+                  isLiked: newIsLiked,
+                  likeCount: newLikeCount 
+                }
+              : post
+          )
+        );
+        
+        toast.success(newIsLiked ? "Post liked!" : "Post unliked!");
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+      toast.error(error.response?.data?.message || "Failed to toggle like");
+    }
+  };
+
   const onEmojiClick = (emojiData) => {
     if (emojiData && emojiData.emoji) {
-      setTweetData((prevData) => ({
-        ...prevData,
-        content: prevData.content + emojiData.emoji,
+      setPostData(prev => ({
+        ...prev,
+        content: prev.content + emojiData.emoji
       }));
     }
   };
 
-  // Clean up blob URLs when component unmounts
+  const handleDeletePost = async (postId) => {
+    if (!window.confirm("Are you sure you want to delete this post?")) {
+      return;
+    }
+
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}/api/posts/${postId}`,
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
+
+      if (response.data.success) {
+        toast.success("Post deleted successfully");
+        setPosts(prev => prev.filter(post => post.id !== postId));
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast.error("Failed to delete post");
+    }
+  };
+
   useEffect(() => {
     return () => {
-      tweets.forEach(tweet => {
-        if (tweet.img && tweet.img.startsWith('blob:')) {
-          URL.revokeObjectURL(tweet.img);
+      posts.forEach(post => {
+        if (post.img && post.img.startsWith('blob:')) {
+          URL.revokeObjectURL(post.img);
         }
-        if (tweet.video && tweet.video.startsWith('blob:')) {
-          URL.revokeObjectURL(tweet.video);
+        if (post.video && post.video.startsWith('blob:')) {
+          URL.revokeObjectURL(post.video);
+        }
+        if (post.profilePicture && post.profilePicture.startsWith('blob:')) {
+          URL.revokeObjectURL(post.profilePicture);
         }
       });
     };
-  }, [tweets]);
+  }, [posts]);
 
   return (
-    <div className="lg:w-[500px] xl:w-[620px] 2xl:w-[800px] w-auto rounded-lg bg-[#0098f1]">
+    <div className="w-full bg-white rounded-lg shadow-lg">
       <ToastContainer position="top-right" autoClose={3000} />
       
-      <div className="p-4">
-        <div className="flex">
-          <textarea
-            placeholder="Create Post..."
-            rows={2}
-            className="rounded-lg w-full border outline-none resize-none text-lg placeholder-custom"
-            onClick={() => setOpen(true)}
-            readOnly
+      {/* Create Post Input */}
+      <div className="p-4 border-b">
+        <div className="flex items-start space-x-3">
+          <Avatar
+            alt={userData.fullName}
+            src={userData.profilePicture}
+            sx={{ width: 48, height: 48 }}
           />
+          <div className="flex-1">
+            <textarea
+              placeholder="What's on your mind?"
+              rows={3}
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              onClick={() => setOpen(true)}
+              readOnly
+              value={postData.content}
+            />
+          </div>
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <label>
-            <CiCamera className="w-[25px] h-[25px] cursor-pointer" />
-            {/* <input
-              type="file"
-              accept="image/*,video/*"
-              className="hidden"
-              onChange={handleAddMedia}
-            /> */}
-          </label>
-          <AiOutlineVideoCamera className="w-5 h-5 cursor-pointer" />
-          <AiOutlineCalendar className="w-5 h-5 cursor-pointer" />
-          <FaRegPenToSquare className="w-5 h-5 cursor-pointer" />
+        
+        <div className="flex flex-wrap justify-between items-center mt-4 gap-2">
+          <div className="flex flex-wrap gap-3">
+            <label className="flex items-center space-x-2 cursor-pointer text-gray-600 hover:text-blue-500 text-sm">
+              <CiCamera className="w-5 h-5" />
+              <span className="hidden sm:inline">Photo/Video</span>
+            </label>
+            <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500 text-sm">
+              <AiOutlineVideoCamera className="w-5 h-5" />
+              <span className="hidden sm:inline">Live Video</span>
+            </button>
+            <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500 text-sm">
+              <AiOutlineCalendar className="w-5 h-5" />
+              <span className="hidden sm:inline">Event</span>
+            </button>
+          </div>
+          
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+            onClick={() => setOpen(true)}
+          >
+            Post
+          </button>
         </div>
       </div>
 
+      {/* Create Post Modal */}
       <Modal open={open} onClose={() => setOpen(false)}>
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-10"
-          onClick={() => setOpen(false)}
-        >
-          <div
-            className="bg-white rounded-lg p-6 w-[400px] lg:w-[600px] border-2 shadow-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <textarea
-              placeholder="What is happening?!"
-              rows={12}
-              cols={28}
-              className="w-full border border-[#0098f1] text-black rounded-lg outline-none resize-none text-lg"
-              onChange={handleChange}
-              value={tweetData.content}
-            />
-            
-           {/* Media preview section */}
-           {mediaFiles.length > 0 && (
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                {mediaFiles.map((file, index) => (
-                  <div key={index} className="relative">
-                    {file.type.startsWith("image/") ? (
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`Preview ${index}`}
-                        className="w-full h-32 object-cover rounded-lg"
-                      />
-                    ) : (
-                      <video
-                        src={URL.createObjectURL(file)}
-                        className="w-full h-32 object-cover rounded-lg"
-                        controls
-                      />
-                    )}
-                    <button
-                      onClick={() => removeMedia(index)}
-                      className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
-                    >
-                      <FaTrash className="w-3 h-3" />
-                    </button>
-                    <div className="text-xs text-gray-500 mt-1 truncate">
-                      {file.name} ({(file.size / 1024 / 1024).toFixed(2)}MB)
-                    </div>
-                  </div>
-                ))}
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold">Create Post</h2>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
               </div>
-            )}
-            
-            <div className="mt-2 flex justify-between items-center">
-              <label className="cursor-pointer">
-                <CiCamera className="w-[25px] h-[25px] text-black" />
-                <input
-                  type="file"
-                  accept="image/*,video/*"
-                  className="hidden"
-                  onChange={handleAddMedia}
-                  multiple
+              
+              <div className="flex items-center space-x-3 mb-4">
+                <Avatar
+                  alt={userData.fullName}
+                  src={userData.profilePicture}
+                  sx={{ width: 40, height: 40 }}
                 />
-              </label>
-              <button
-                className="bg-[#0098f1] text-white py-2 px-4 rounded"
-                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              >
-                Emoji
-              </button>
-              {showEmojiPicker && (
-                <div className="absolute bottom-16 right-8 z-10 bg-white border rounded-lg shadow-lg p-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-lg font-semibold">Choose an emoji</h3>
-                    <button
-                      className="text-red-500 font-bold text-lg cursor-pointer"
-                      onClick={() => setShowEmojiPicker(false)}
-                    >
-                      ✖
-                    </button>
-                  </div>
-                  <EmojiPicker onEmojiClick={onEmojiClick} />
+                <div>
+                  <div className="font-semibold text-sm">{userData.fullName}</div>
+                  <div className="text-xs text-gray-500">Now</div>
+                </div>
+              </div>
+              
+              <textarea
+                placeholder="What's on your mind?"
+                rows={4}
+                className="w-full border-0 text-base placeholder-gray-400 focus:outline-none resize-none"
+                onChange={handleChange}
+                value={postData.content}
+              />
+              
+              {/* Media Preview */}
+              {mediaFiles.length > 0 && (
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  {mediaFiles.map((file, index) => (
+                    <div key={index} className="relative">
+                      {file.type.startsWith("image/") ? (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`Preview ${index}`}
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                      ) : (
+                        <video
+                          src={URL.createObjectURL(file)}
+                          className="w-full h-32 object-cover rounded-lg"
+                          controls
+                        />
+                      )}
+                      <button
+                        onClick={() => removeMedia(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1"
+                      >
+                        <FaTrash className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               )}
-
-              <button
-                className="bg-[#0098f1] text-white py-2 px-4 rounded"
-                onClick={handlePost}
-              >
-                Post
-              </button>
+              
+              <div className="mt-4 p-3 border border-gray-300 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-sm">Add to your post</span>
+                  <div className="flex space-x-3">
+                    <label className="cursor-pointer">
+                      <CiCamera className="w-5 h-5 text-green-500" />
+                      <input
+                        type="file"
+                        accept="image/*,video/*"
+                        className="hidden"
+                        onChange={handleAddMedia}
+                        multiple
+                      />
+                    </label>
+                    <button
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                      className="text-yellow-500"
+                    >
+                      😀
+                    </button>
+                  </div>
+                </div>
+                
+                {showEmojiPicker && (
+                  <div className="mt-3">
+                    <EmojiPicker onEmojiClick={onEmojiClick} width="100%" />
+                  </div>
+                )}
+              </div>
+              
+              <div className="mt-4">
+                <button
+                  onClick={handleCreatePost}
+                  disabled={isUploading || (!postData.content.trim() && mediaFiles.length === 0)}
+                  className={`w-full py-3 rounded-lg font-medium text-sm ${
+                    isUploading || (!postData.content.trim() && mediaFiles.length === 0)
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700 text-white"
+                  }`}
+                >
+                  {isUploading ? "Posting..." : "Post"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </Modal>
 
-      <div className="bg-white mt-3 pl-3 overflow-y-auto max-h-[500px]">
-        {loading && <p className="text-center py-4">Loading posts...</p>}
-        {error && <p className="text-red-500 text-center py-4">{error}</p>}
-        {tweets.map((tweet) => (
-          <div className="p-4 border border-gray-300 rounded-lg mt-4" key={tweet.id}>
-            <div className="flex text-start space-x-5">
-              <Avatar
-                alt={tweet.postedBY || "Unknown User"}
-                src={tweet.profilePicture || ""}
-              />
-              <div className="text-start">
-                <div className="font-semibold">{tweet.name || "Unknown User"}</div>
-                <div className="text-sm text-gray-500">
-  {tweet.displayTime}
-</div>
-              </div>
-            </div>
-            <div className="mt-2">{tweet.content}</div>
-
-            {tweet.img && (
-              <img
-                src={tweet.img}
-                className="mt-2 max-w-full h-auto rounded-lg"
-                alt="Post media"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/image-placeholder.png";
-                }}
-              />
-            )}
-
-{tweet.video && (
-  <div className="video-container">
-    <video
-      controls
-      className="mt-2 max-w-full h-auto rounded-lg"
-      onError={(e) => {
-        console.error('Video playback error:', e);
-        e.target.onerror = null;
-        e.target.poster = '/video-placeholder.png';
-        e.target.innerHTML = `
-          <source src="${tweet.video}" type="video/mp4">
-          Your browser does not support the video tag.
-          <p>Failed to load video. <a href="${tweet.video}" target="_blank">Try downloading instead</a></p>
-        `;
-      }}
-    >
-      <source src={tweet.video} type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
-)}
-
-            <div className="mt-2 flex justify-between items-center border-t gap-8 py-4">
-              <div
-                className="flex justify-center items-center flex-row gap-2 text-[#0098F1] mr-4 cursor-pointer"
-                onClick={() => handleLike(tweet.id)}
-              >
-                {tweet.isLiked ? <FcLike className="w-5 h-5" /> : <FcLikePlaceholder className="w-5 h-5" />}
-                <span>{tweet.likeCount}</span>
-              </div>
-              <div
-                className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]"
-                onClick={() => toggleCommentInput(tweet.id)}
-              >
-                <FaRegComment />
-                <span>Comment</span>
-              </div>
-              <div className="flex cursor-pointer justify-center items-center flex-row gap-2 text-[#0098F1]">
-                <IoShareSocialOutline />
-                <span>Share</span>
-              </div>
-            </div>
-
-            {visibleComments[tweet.id] && (
-              <div className="mt-2">
-                <input
-                  type="text"
-                  className="w-full border border-gray-300 rounded px-3 py-2"
-                  placeholder="Write a comment..."
-                  value={commentData}
-                  onChange={(e) => setCommentData(e.target.value)}
-                />
-                <button
-                  className="mt-2 bg-[#0098f1] text-white py-2 px-4 rounded"
-                  onClick={() => handleAddComment(tweet.id)}
-                >
-                  Comment
-                </button>
-                <div className="mt-4">
-                  {comments[tweet.id] &&
-                    comments[tweet.id].map((comment) => (
-                      <div
-                        key={comment.id}
-                        className="p-4 bg-gray-100 rounded-xl shadow-sm mt-3 flex items-start gap-4"
-                      >
-                        <img
-                          src={comment.profilePicture || "/default-profile.png"}
-                          alt={comment.name}
-                          className="w-10 h-10 rounded-full border-2 border-gray-300"
-                        />
-                        <div className="flex-1">
-                          <strong className="text-gray-800 font-semibold">
-                            {comment.firstName
-                              ? `${comment.firstName.split("@")[0]}`
-                              : "Unknown User"}
-                          </strong>
-                          <p className="text-gray-600 text-sm mt-1">{comment.content}</p>
-
-                          <button
-                            className="mt-2 text-blue-600 text-sm font-medium hover:underline"
-                            onClick={() => setReplyData({ commentId: comment.id, tweetId: tweet.id })}
-                          >
-                            Reply
-                          </button>
-
-                          {replyData?.commentId === comment.id && (
-                            <div className="mt-3">
-                              <input
-                                type="text"
-                                className="w-full border border-gray-300 bg-white rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-400 transition-all"
-                                placeholder="Write a reply..."
-                                value={replyText}
-                                onChange={(e) => setReplyText(e.target.value)}
-                              />
-                              <button
-                                className="mt-2 bg-green-500 hover:bg-green-600 text-white py-1.5 px-4 rounded-lg text-sm transition-all"
-                                onClick={() => handleAddReply(tweet.id, comment.id)}
-                              >
-                                Reply
-                              </button>
-                            </div>
-                          )}
-
-                          {comment.replies && comment.replies.length > 0 && (
-                            <div className="ml-10 mt-3 space-y-2">
-                              {comment.replies.map((reply) => (
-                                <div
-                                  key={reply.id}
-                                  className="p-3 bg-gray-200 rounded-lg text-sm text-gray-700 shadow-sm flex items-start gap-3"
-                                >
-                                  <img
-                                    src={reply.profilePicture || "/default-profile.png"}
-                                    alt={reply.firstName}
-                                    className="w-8 h-8 rounded-full border-2 border-gray-300"
-                                  />
-                                  <div>
-                                    <strong className="text-gray-800 font-semibold">
-                                      {reply.firstName
-                                        ? `${reply.firstName.split("@")[0]}`
-                                        : "Unknown User"}
-                                    </strong>
-                                    <p className="text-gray-600 text-sm mt-1">
-                                      {reply.content}
-                                    </p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
+      {/* Posts Feed */}
+      <div className="overflow-y-auto">
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-3 text-gray-600 text-sm">Loading posts...</p>
           </div>
-        ))}
+        ) : error ? (
+          <div className="text-center py-8 text-red-600 text-sm">{error}</div>
+        ) : posts.length === 0 ? (
+          <div className="text-center py-8 text-gray-600 text-sm">
+            No posts yet. Be the first to post!
+          </div>
+        ) : (
+          posts.map((post) => (
+            <div key={post.id} className="p-4 border-b">
+              {/* Post Header */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center space-x-3">
+                  <Avatar
+                    alt={post.userFullName}
+                    src={post.profilePicture}
+                    sx={{ width: 40, height: 40 }}
+                  />
+                  <div>
+                    <div className="font-semibold text-sm">{post.userFullName}</div>
+                    <div className="text-xs text-gray-500">
+                      {post.displayTime} • 🌍
+                    </div>
+                  </div>
+                </div>
+                
+                {post.postedBY === userData.email && (
+                  <button
+                    onClick={() => handleDeletePost(post.id)}
+                    className="text-gray-500 hover:text-red-500"
+                  >
+                    <FaTrash className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              
+              {/* Post Content */}
+              <div className="mt-3">
+                <p className="text-gray-800 text-sm">{post.content}</p>
+              </div>
+              
+              {/* Media */}
+              {post.img && (
+                <div className="mt-3">
+                  <img
+                    src={post.img}
+                    alt="Post"
+                    className="w-full rounded-lg max-h-64 object-contain"
+                  />
+                </div>
+              )}
+              
+              {post.video && (
+                <div className="mt-3">
+                  <video
+                    controls
+                    className="w-full rounded-lg max-h-64"
+                  >
+                    <source src={post.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              )}
+              
+              {/* Post Stats */}
+              <div className="mt-3 flex justify-between text-gray-500 text-xs">
+                <div className="flex items-center space-x-1">
+                  <FcLike className="w-3 h-3" />
+                  <span>{post.likeCount} likes</span>
+                </div>
+                <div>{post.viewCount || 0} views</div>
+              </div>
+              
+              {/* Post Actions */}
+              <div className="mt-3 flex border-t border-b py-2">
+                <button
+                  onClick={() => handleLike(post.id)}
+                  className={`flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg transition-colors text-sm ${
+                    post.isLiked ? "text-blue-600" : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  {post.isLiked ? (
+                    <FcLike className="w-4 h-4" />
+                  ) : (
+                    <FcLikePlaceholder className="w-4 h-4" />
+                  )}
+                  <span>Like</span>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setVisibleComments(prev => ({
+                      ...prev,
+                      [post.id]: !prev[post.id]
+                    }));
+                  }}
+                  className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 text-sm"
+                >
+                  <FaRegComment className="w-4 h-4" />
+                  <span>Comment</span>
+                </button>
+                
+                <button className="flex-1 flex items-center justify-center space-x-2 py-2 rounded-lg text-gray-600 hover:bg-gray-100 text-sm">
+                  <IoShareSocialOutline className="w-4 h-4" />
+                  <span>Share</span>
+                </button>
+              </div>
+              
+              {/* Comments Section */}
+              {visibleComments[post.id] && (
+                <div className="mt-3">
+                  <div className="flex space-x-2">
+                    <Avatar
+                      alt={userData.fullName}
+                      src={userData.profilePicture}
+                      sx={{ width: 32, height: 32 }}
+                    />
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        placeholder="Write a comment..."
+                        className="w-full border border-gray-300 rounded-full px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={commentData}
+                        onChange={(e) => setCommentData(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
