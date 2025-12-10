@@ -24,7 +24,7 @@ const ProfileSettings = ({ jwt }) => {
     setShowSuccessPopup(true); // Show success popup
     setTimeout(() => {
       setShowSuccessPopup(false);
-      navigate("/admin_login"); // Redirect after animation
+      navigate("/admin/*"); // Redirect after animation
     }, 1500);
 
     setShowPopup(false);
