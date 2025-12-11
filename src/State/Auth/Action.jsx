@@ -155,31 +155,87 @@ const getUserSuccess = (user) => ({ type: GET_USER_SUCCESS, payload: user });
 const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error });
 
 // In your Action.js
+// export const getUser = () => async (dispatch) => {
+//   try {
+//     const jwt = localStorage.getItem('jwt');
+    
+//     if (!jwt) {
+//       throw new Error('No JWT token found');
+//     }
+
+//     const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+//       headers: {
+//         Authorization: `Bearer ${jwt}`
+//       },
+//       withCredentials: true
+//     });
+
+//     dispatch(getUserSuccess(response.data));
+//   } catch (error) {
+//     console.error('Profile fetch error:', error);
+//     if (error.response?.status === 403) {
+//       localStorage.removeItem('jwt');
+//     }
+//     dispatch(getUserFailure(error.message));
+//   }
+// };
+
+// In your Action.js
+// In your Action.js - Update the getUser function
 export const getUser = () => async (dispatch) => {
+  dispatch(getUserRequest());
+  
   try {
     const jwt = localStorage.getItem('jwt');
     
     if (!jwt) {
-      throw new Error('No JWT token found');
+      console.log('No JWT token found in localStorage');
+      dispatch(getUserFailure('No authentication token found. Please login.'));
+      return;
     }
 
+    console.log('Fetching user profile with token (first 20 chars):', jwt.substring(0, 20) + '...');
+    
     const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
       headers: {
-        Authorization: `Bearer ${jwt}`
-      },
-      withCredentials: true
+        'Authorization': `Bearer ${jwt}`,
+        'Content-Type': 'application/json'
+      }
     });
 
-    dispatch(getUserSuccess(response.data));
-  } catch (error) {
-    console.error('Profile fetch error:', error);
-    if (error.response?.status === 403) {
-      localStorage.removeItem('jwt');
+    console.log('User profile response:', response.data);
+    
+    if (response.data && response.data.email) {
+      // Store user data in localStorage if needed
+      localStorage.setItem('user', JSON.stringify(response.data));
+      dispatch(getUserSuccess(response.data));
+    } else {
+      console.error('Invalid response format:', response.data);
+      dispatch(getUserFailure('Invalid user profile response'));
     }
-    dispatch(getUserFailure(error.message));
+    
+  } catch (error) {
+    console.error('Profile fetch error details:');
+    console.error('Error:', error.message);
+    console.error('Response status:', error.response?.status);
+    console.error('Response data:', error.response?.data);
+    
+    // Handle specific error cases
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      console.log('Token is invalid or expired, clearing localStorage');
+      localStorage.removeItem('jwt');
+      localStorage.removeItem('user');
+      localStorage.removeItem('UserRole');
+      dispatch(getUserFailure('Session expired. Please login again.'));
+    } else if (error.response?.status === 404) {
+      dispatch(getUserFailure('User profile not found'));
+    } else if (error.response?.status === 500) {
+      dispatch(getUserFailure('Server error: ' + (error.response.data?.error || 'Internal server error')));
+    } else {
+      dispatch(getUserFailure(error.message || 'Failed to fetch user profile'));
+    }
   }
 };
-
 const getTraineeRequest = () => ({ type: GET_TRAINEE_REQUEST });
 const getTraineeSuccess = (trainee) => ({ type: GET_TRAINEE_SUCCESS, payload: trainee });
 const getTraineeFailure = (error) => ({ type: GET_TRAINEE_FAILURE, payload: error });

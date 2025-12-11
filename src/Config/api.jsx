@@ -4,9 +4,17 @@ import axios from 'axios';
 
 
 
-export const API_BASE_URL = "https://api.e-education.in"; // Use HTTP instead of HTTPS
+//export const API_BASE_URL = "https://api.e-education.in"; // Use HTTP instead of HTTPS
 
-//export const API_BASE_URL = "http://localhost:8082";
+// Check if running locally or in production
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// Use localhost:8082 for local development, otherwise use the production URL
+export const API_BASE_URL = isLocalhost 
+  ? "http://localhost:8082" 
+  : "https://api.e-education.in";
+
+console.log("API Base URL:", API_BASE_URL);
 
 
 

@@ -20,6 +20,8 @@ const UserProfile = () => {
     gender: "",
     profilePhoto: dp,
   });
+  const [loading, setLoading] = useState(false);
+  const [photoLoading, setPhotoLoading] = useState(false);
   const { auth } = useSelector((state) => state);
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
@@ -28,6 +30,7 @@ const UserProfile = () => {
     const fetchUserProfile = async () => {
       try {
         console.log("Fetching user profile...");
+        setLoading(true);
         const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
@@ -52,16 +55,16 @@ const UserProfile = () => {
           dateOfBirth: user.dateOfBirth || "",
           website: user.website || "",
           gender: user.gender || "",
-          profilePhoto: dp, // Default image
+          profilePhoto: dp, // Default image initially
         };
 
         console.log("Form data to set:", updatedFormData);
         setFormData(updatedFormData);
 
-        // Try to fetch profile photo if profilePhoto field exists
-        if (user.profilePhoto !== null && user.profilePhoto !== undefined) {
+        // Try to fetch profile photo if email exists
+        if (user.email) {
           try {
-            console.log("Fetching profile photo...");
+            console.log("Fetching profile photo for email:", user.email);
             const profilePhotoResponse = await axios.get(
               `${API_BASE_URL}/api/users/${user.email}/profile-photo`,
               { 
@@ -70,8 +73,10 @@ const UserProfile = () => {
               }
             );
 
-            if (profilePhotoResponse.data) {
-              const profilePhotoBlob = new Blob([profilePhotoResponse.data], { type: "image/jpeg" });
+            if (profilePhotoResponse.data && profilePhotoResponse.data.byteLength > 0) {
+              const profilePhotoBlob = new Blob([profilePhotoResponse.data], { 
+                type: profilePhotoResponse.headers['content-type'] || "image/jpeg" 
+              });
               const profilePhotoUrl = URL.createObjectURL(profilePhotoBlob);
               
               setFormData(prev => ({
@@ -79,13 +84,13 @@ const UserProfile = () => {
                 profilePhoto: profilePhotoUrl
               }));
               console.log("Profile photo loaded successfully");
+            } else {
+              console.log("Profile photo response empty, using default image");
             }
           } catch (photoError) {
             console.warn("Profile photo not available or error fetching:", photoError.message);
             // Keep using default image
           }
-        } else {
-          console.log("No profile photo in user data");
         }
 
       } catch (error) {
@@ -98,6 +103,8 @@ const UserProfile = () => {
         } else {
           console.error("Error setting up request:", error.message);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -110,7 +117,9 @@ const UserProfile = () => {
 
   const handleSave = async () => {
     try {
-      // Prepare data for backend - only send fields that exist
+      setLoading(true);
+      
+      // Prepare data for backend
       const updateData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -121,7 +130,8 @@ const UserProfile = () => {
         gender: formData.gender || null,
       };
 
-      console.log("Sending update data:", updateData);
+      console.log("Sending update data to backend:", updateData);
+      console.log("Using endpoint:", `${API_BASE_URL}/api/users/profile/update`);
 
       const response = await axios.put(
         `${API_BASE_URL}/api/users/profile/update`,
@@ -153,27 +163,45 @@ const UserProfile = () => {
           gender: updatedUser.gender || "",
         }));
         
-        dispatch({ 
-          type: "UPDATE_USER", 
-          payload: {
-            ...auth.user,
-            ...updatedUser
-          } 
-        });
+        // Update Redux store if needed
+        if (auth.user) {
+          dispatch({ 
+            type: "UPDATE_USER", 
+            payload: {
+              ...auth.user,
+              ...updatedUser
+            } 
+          });
+        }
         
         alert("Profile updated successfully!");
+        setIsEditing(false);
       }
     } catch (error) {
       console.error("Error updating user data:", error);
       if (error.response) {
         console.error("Response status:", error.response.status);
         console.error("Response data:", error.response.data);
-        alert(`Error updating profile: ${error.response.data.message || "Unknown error"}`);
+        
+        let errorMessage = "Error updating profile";
+        if (error.response.data.message) {
+          errorMessage += `: ${error.response.data.message}`;
+        } else if (error.response.data.error) {
+          errorMessage += `: ${error.response.data.error}`;
+        } else if (error.response.data) {
+          errorMessage += `: ${JSON.stringify(error.response.data)}`;
+        }
+        alert(errorMessage);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        alert("No response from server. Please check your network connection.");
       } else {
+        console.error("Error setting up request:", error.message);
         alert("Error updating profile. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
-    setIsEditing(false);
   };
 
   const handleChange = (e) => {
@@ -191,6 +219,11 @@ const UserProfile = () => {
         firstName,
         lastName,
       }));
+    } else if (id === "dateOfBirth") {
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [id]: value,
+      }));
     } else {
       setFormData(prevFormData => ({
         ...prevFormData,
@@ -205,22 +238,40 @@ const UserProfile = () => {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      alert("Please select an image file");
+      alert("Please select an image file (JPEG, PNG, etc.)");
       return;
     }
 
-    // Validate file size (e.g., 5MB limit)
+    // Validate file size (5MB limit)
     if (file.size > 5 * 1024 * 1024) {
       alert("File size should be less than 5MB");
       return;
     }
 
+    // Show preview immediately for better UX
+    const previewUrl = URL.createObjectURL(file);
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      profilePhoto: previewUrl,
+    }));
+
     const formDataObj = new FormData();
     formDataObj.append('file', file);
 
     try {
+      setPhotoLoading(true);
+      
+      // Check if email exists
+      if (!formData.email) {
+        alert("Email not found. Please save your profile first.");
+        return;
+      }
+
+      console.log("Uploading profile photo for email:", formData.email);
+      
+      // FIXED: Use the correct endpoint with email parameter
       const response = await axios.post(
-        `${API_BASE_URL}/api/users/profile-photo`,
+        `${API_BASE_URL}/api/users/${formData.email}/profile-photo`,
         formDataObj,
         {
           headers: {
@@ -230,42 +281,160 @@ const UserProfile = () => {
         }
       );
       
+      console.log("Profile photo upload response:", response.data);
+      
       if (response.status === 200 || response.status === 201) {
-        // Update the profile photo preview
-        const profilePhotoUrl = URL.createObjectURL(file);
-        setFormData(prevFormData => ({
-          ...prevFormData,
-          profilePhoto: profilePhotoUrl,
-        }));
         alert("Profile photo updated successfully!");
+        
+        // Refresh the profile data to get the latest photo URL
+        const profileResponse = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${jwt}` },
+        });
+        
+        const user = profileResponse.data;
+        const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+        
+        setFormData(prev => ({
+          ...prev,
+          fullName,
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          email: user.email || "",
+          phoneNumber: user.phoneNumber || "",
+          location: user.location || "",
+          dateOfBirth: user.dateOfBirth || "",
+          website: user.website || "",
+          gender: user.gender || "",
+        }));
       }
     } catch (error) {
       console.error('Error uploading profile photo:', error);
+      
+      // Revert to previous image on error
+      try {
+        if (formData.email) {
+          const previousResponse = await axios.get(
+            `${API_BASE_URL}/api/users/${formData.email}/profile-photo`,
+            { 
+              responseType: "arraybuffer", 
+              headers: { Authorization: `Bearer ${jwt}` } 
+            }
+          );
+          
+          if (previousResponse && previousResponse.data) {
+            const profilePhotoBlob = new Blob([previousResponse.data], { type: "image/jpeg" });
+            const profilePhotoUrl = URL.createObjectURL(profilePhotoBlob);
+            setFormData(prev => ({
+              ...prev,
+              profilePhoto: profilePhotoUrl
+            }));
+          } else {
+            setFormData(prev => ({
+              ...prev,
+              profilePhoto: dp
+            }));
+          }
+        }
+      } catch (revertError) {
+        setFormData(prev => ({
+          ...prev,
+          profilePhoto: dp
+        }));
+      }
+      
       if (error.response) {
-        alert(`Error uploading photo: ${error.response.data.message || "Unknown error"}`);
+        alert(`Error uploading photo: ${error.response.data.message || "Upload failed"}`);
+      } else if (error.request) {
+        alert("No response from server. Please check your network connection.");
       } else {
         alert("Error uploading profile photo. Please try again.");
       }
+    } finally {
+      setPhotoLoading(false);
     }
   };
+
+  const handleCancel = () => {
+    // Reload original data when canceling
+    const fetchOriginalData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${jwt}` },
+        });
+        
+        const user = response.data;
+        const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
+        
+        // Try to get the current profile photo
+        let currentPhoto = dp;
+        if (user.email) {
+          try {
+            const photoResponse = await axios.get(
+              `${API_BASE_URL}/api/users/${user.email}/profile-photo`,
+              { 
+                responseType: "arraybuffer", 
+                headers: { Authorization: `Bearer ${jwt}` } 
+              }
+            );
+            if (photoResponse.data) {
+              const profilePhotoBlob = new Blob([photoResponse.data], { type: "image/jpeg" });
+              currentPhoto = URL.createObjectURL(profilePhotoBlob);
+            }
+          } catch (photoError) {
+            console.warn("Could not load profile photo:", photoError.message);
+          }
+        }
+        
+        setFormData({
+          fullName,
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          email: user.email || "",
+          phoneNumber: user.phoneNumber || "",
+          location: user.location || "",
+          dateOfBirth: user.dateOfBirth || "",
+          website: user.website || "",
+          gender: user.gender || "",
+          profilePhoto: currentPhoto,
+        });
+      } catch (error) {
+        console.error("Error reloading original data:", error);
+      }
+    };
+    
+    fetchOriginalData();
+    setIsEditing(false);
+  };
+
+  if (loading && !formData.email) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
       {/* <Navbar /> */}
-      <div className="container mx-auto mt-8 p-6 bg-white">
+      <div className="container mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
         <div className="flex flex-col md:flex-row items-center mb-6">
-          <label htmlFor="profilePhoto" className="cursor-pointer rounded-3xl relative">
+          <label htmlFor="profilePhoto" className="cursor-pointer rounded-3xl relative group">
             <img
               src={formData.profilePhoto}
               alt="User profile"
-              className="w-24 h-24 rounded-3xl mr-4 object-cover border-2 border-gray-300"
+              className="w-24 h-24 rounded-3xl mr-4 object-cover border-2 border-gray-300 group-hover:opacity-80 transition-opacity"
               onError={(e) => {
                 console.error("Error loading profile image, using fallback");
                 e.target.src = dp;
               }}
             />
-            <div className="absolute bottom-0 right-4 bg-blue-500 text-white rounded-full p-1">
-              <FaRegEdit size={16} />
+            <div className="absolute bottom-0 right-4 bg-blue-500 text-white rounded-full p-2 group-hover:bg-blue-600 transition-colors">
+              {photoLoading ? (
+                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+              ) : (
+                <FaRegEdit size={14} />
+              )}
             </div>
             <input
               type="file"
@@ -273,6 +442,7 @@ const UserProfile = () => {
               accept="image/*"
               className="hidden"
               onChange={handleImageChange}
+              disabled={photoLoading}
             />
           </label>
           <div>
@@ -280,6 +450,9 @@ const UserProfile = () => {
               {formData.fullName || "User Name"}
             </h2>
             <p className="text-gray-600">{formData.email || "user@example.com"}</p>
+            <p className="text-gray-500 text-sm mt-1">
+              {formData.phoneNumber || "No phone number provided"}
+            </p>
           </div>
         </div>
         
@@ -288,16 +461,17 @@ const UserProfile = () => {
             {/* Full Name */}
             <div className="relative">
               <label className="block text-sm text-[#f6ac14] mb-3 font-medium">
-                Full Name
+                Full Name *
               </label>
               <input
                 type="text"
                 id="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full border ${isEditing ? 'border-gray-300' : 'border-gray-200'} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isEditing ? 'bg-gray-50' : ''}`}
                 disabled={!isEditing}
                 placeholder="Enter your full name"
+                required
               />
               {isEditing && (
                 <FaRegEdit className="absolute top-10 right-3 text-gray-400" />
@@ -310,13 +484,13 @@ const UserProfile = () => {
                 Phone Number
               </label>
               <input
-                type="text"
+                type="tel"
                 id="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full border ${isEditing ? 'border-gray-300' : 'border-gray-200'} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isEditing ? 'bg-gray-50' : ''}`}
                 disabled={!isEditing}
-                placeholder="Enter phone number"
+                placeholder="+1 (555) 123-4567"
               />
               {isEditing && (
                 <FaRegEdit className="absolute top-10 right-3 text-gray-400" />
@@ -331,10 +505,11 @@ const UserProfile = () => {
               <input
                 type="date"
                 id="dateOfBirth"
-                value={formData.dateOfBirth}
+                value={formData.dateOfBirth || ''}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full border ${isEditing ? 'border-gray-300' : 'border-gray-200'} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isEditing ? 'bg-gray-50' : ''}`}
                 disabled={!isEditing}
+                max={new Date().toISOString().split('T')[0]}
               />
               {isEditing && (
                 <FaRegEdit className="absolute top-10 right-3 text-gray-400" />
@@ -351,8 +526,9 @@ const UserProfile = () => {
                 id="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
-                disabled={true} // Email should not be editable usually
+                className="w-full border border-gray-200 rounded-md p-2 focus:outline-none bg-gray-50"
+                disabled={true}
+                readOnly
               />
               <FaRegEdit className="absolute top-10 right-3 text-gray-400" />
             </div>
@@ -366,7 +542,7 @@ const UserProfile = () => {
                 id="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full border ${isEditing ? 'border-gray-300' : 'border-gray-200'} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isEditing ? 'bg-gray-50' : ''}`}
                 disabled={!isEditing}
               >
                 <option value="">Select Gender</option>
@@ -390,9 +566,9 @@ const UserProfile = () => {
                 id="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full border ${isEditing ? 'border-gray-300' : 'border-gray-200'} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isEditing ? 'bg-gray-50' : ''}`}
                 disabled={!isEditing}
-                placeholder="Enter your location"
+                placeholder="City, Country"
               />
               {isEditing && (
                 <FaRegEdit className="absolute top-10 right-3 text-gray-400" />
@@ -409,7 +585,7 @@ const UserProfile = () => {
                 id="website"
                 value={formData.website}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full border ${isEditing ? 'border-gray-300' : 'border-gray-200'} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isEditing ? 'bg-gray-50' : ''}`}
                 disabled={!isEditing}
                 placeholder="https://example.com"
               />
@@ -424,16 +600,25 @@ const UserProfile = () => {
           {isEditing ? (
             <>
               <button
-                onClick={() => setIsEditing(false)}
-                className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition duration-300"
+                onClick={handleCancel}
+                className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition duration-300 disabled:opacity-50"
+                disabled={loading}
               >
                 Cancel
               </button>
               <button
                 onClick={handleSave}
-                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center"
+                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading || !formData.firstName || !formData.lastName}
               >
-                Save Changes
+                {loading ? (
+                  <>
+                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                    Saving...
+                  </>
+                ) : (
+                  'Save Changes'
+                )}
               </button>
             </>
           ) : (
@@ -445,6 +630,11 @@ const UserProfile = () => {
               Edit Profile
             </button>
           )}
+        </div>
+        
+        <div className="mt-6 text-sm text-gray-500">
+          <p>* Required fields</p>
+          <p className="mt-1">Note: Email cannot be changed</p>
         </div>
       </div>
     </div>
