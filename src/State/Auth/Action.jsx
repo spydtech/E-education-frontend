@@ -75,42 +75,74 @@ const loginRequest = () => ({ type: LOGIN_REQUEST });
 const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
 const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
 
+// export const login = (userData) => async (dispatch) => {
+//   dispatch(loginRequest());
+
+//   try {
+//     // API call
+//     const response = await axios.post(
+//       `${API_BASE_URL}/auth/signin`,
+//       userData,
+//       {
+//         headers: { "Content-Type": "application/json" }, // Ensure JSON request
+//         withCredentials: true,
+//       }
+//     );
+
+//     const { jwt, role, status } = response.data;
+
+//     // Validate the response
+//     if (jwt && status && (role === "CUSTOMER" || role === "ADMIN")) {
+//       // Store JWT and role in localStorage
+//       localStorage.setItem("jwt", jwt);
+//       localStorage.setItem("UserRole", role);
+
+//       // Dispatch success action
+//       dispatch(loginSuccess(userData));
+//     } else {
+//       // Unauthorized access
+//       throw new Error("Unauthorized access. This login is for valid roles only.");
+//     }
+//   } catch (error) {
+//     // Handle errors
+//     const errorMessage =
+//       error.response?.data?.message || "An error occurred while logging in.";
+//     dispatch(loginFailure(errorMessage));
+//   }
+// };
+
+// In Action.js, check your API endpoints:
 export const login = (userData) => async (dispatch) => {
   dispatch(loginRequest());
 
   try {
-    // API call
+    // Try using the same endpoint as trainee login
     const response = await axios.post(
-      `${API_BASE_URL}/auth/signin`,
+      `${API_BASE_URL}/api/auth/signin`,  // Changed endpoint
+      // OR `${API_BASE_URL}/api/auth/signin`
       userData,
       {
-        headers: { "Content-Type": "application/json" }, // Ensure JSON request
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       }
     );
 
     const { jwt, role, status } = response.data;
 
-    // Validate the response
     if (jwt && status && (role === "CUSTOMER" || role === "ADMIN")) {
-      // Store JWT and role in localStorage
       localStorage.setItem("jwt", jwt);
       localStorage.setItem("UserRole", role);
-
-      // Dispatch success action
-      dispatch(loginSuccess(userData));
+      dispatch(loginSuccess({ jwt, role }));  // Pass useful data
     } else {
-      // Unauthorized access
-      throw new Error("Unauthorized access. This login is for valid roles only.");
+      throw new Error("Unauthorized access.");
     }
   } catch (error) {
-    // Handle errors
     const errorMessage =
       error.response?.data?.message || "An error occurred while logging in.";
     dispatch(loginFailure(errorMessage));
+    throw error;  // Re-throw so component can catch it
   }
 };
-
 const traineeLoginRequest = () => ({ type: TRAINEE_LOGIN_REQUEST });
 const traineeLoginSuccess = (trainee) => ({ type: TRAINEE_LOGIN_SUCCESS, payload: trainee });
 const traineeLoginFailure = (error) => ({ type: TRAINEE_LOGIN_FAILURE, payload: error });
