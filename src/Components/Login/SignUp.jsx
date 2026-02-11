@@ -434,6 +434,442 @@
 
 
 
+// import React, { useState, useRef, useEffect } from "react";
+// import { useNavigate, Link } from "react-router-dom";
+// import { useDispatch, useSelector } from "react-redux";
+// import IMG from "../../assets/E- education logo .png";
+// import { register, verifyOtp } from "../../State/Auth/Action";
+// import Navbar from "../Navbar";
+// import BackgroundIMG from "../../../src/assetss/login/signupimg.jpg";
+
+// function SignUp() {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+  
+//   // FIXED: Specific selectors only
+//   const auth = useSelector((store) => store.auth);
+//   const registration = useSelector((store) => store.registration);
+  
+//   const [userData, setUserData] = useState({
+//     firstName: "",
+//     lastName: "",
+//     email: "",
+//     password: "",
+//   });
+  
+//   const inputRefs = useRef([]);
+//   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+//   const [error, setError] = useState("");
+//   const [otpSent, setOtpSent] = useState(false);
+//   const [loading, setLoading] = useState(false);
+//   const [successMessage, setSuccessMessage] = useState("");
+
+//   useEffect(() => {
+//     const jwt = localStorage.getItem("jwt");
+//     if (jwt) {
+//       navigate('/');
+//     }
+//   }, [navigate]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setUserData((prevState) => ({
+//       ...prevState,
+//       [name]: value,
+//     }));
+//   };
+
+//   const validateForm = () => {
+//     if (!userData.firstName.trim()) {
+//       setError("First name is required");
+//       return false;
+//     }
+//     if (!userData.lastName.trim()) {
+//       setError("Last name is required");
+//       return false;
+//     }
+//     if (!userData.email.trim()) {
+//       setError("Email is required");
+//       return false;
+//     }
+//     if (!userData.email.includes('@')) {
+//       setError("Please enter a valid email address");
+//       return false;
+//     }
+//     if (!userData.password) {
+//       setError("Password is required");
+//       return false;
+//     }
+//     if (userData.password.length < 6) {
+//       setError("Password must be at least 6 characters");
+//       return false;
+//     }
+//     return true;
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError("");
+//     setSuccessMessage("");
+    
+//     if (!validateForm()) {
+//       return;
+//     }
+    
+//     setLoading(true);
+
+//     try {
+//       const result = await dispatch(register(userData));
+      
+//       if (result?.success) {
+//         setSuccessMessage(result.message || "OTP sent successfully! Check your email.");
+//         setOtpSent(true);
+//       } else {
+//         setError(result?.message || "Registration failed. Please try again.");
+//       }
+//     } catch (err) {
+//       setError("Registration failed. Please try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleOTPEnter = (e, index) => {
+//     const value = e.target.value.replace(/[^0-9]/g, '');
+//     const newOtp = [...otp];
+    
+//     if (value.length > 1) {
+//       // Handle paste
+//       const pastedValues = value.split('');
+//       pastedValues.forEach((char, i) => {
+//         if (index + i < 6) {
+//           newOtp[index + i] = char;
+//         }
+//       });
+//       setOtp(newOtp);
+      
+//       // Focus on next empty field
+//       const nextEmptyIndex = newOtp.findIndex((val, i) => i >= index && !val);
+//       if (nextEmptyIndex > -1 && nextEmptyIndex < 6) {
+//         setTimeout(() => {
+//           inputRefs.current[nextEmptyIndex]?.focus();
+//         }, 10);
+//       }
+//     } else {
+//       newOtp[index] = value;
+//       setOtp(newOtp);
+      
+//       // Auto-focus next input
+//       if (value && index < 5) {
+//         setTimeout(() => {
+//           inputRefs.current[index + 1]?.focus();
+//         }, 10);
+//       }
+//     }
+//   };
+
+//   const handleKeyDown = (e, index) => {
+//     if (e.key === 'Backspace' && !otp[index] && index > 0) {
+//       setTimeout(() => {
+//         inputRefs.current[index - 1]?.focus();
+//       }, 10);
+//     }
+//   };
+
+//   const handlePaste = (e) => {
+//     e.preventDefault();
+//     const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+//     if (pastedData.length === 6) {
+//       const newOtp = pastedData.split('');
+//       setOtp(newOtp);
+//     }
+//   };
+
+//   const handleOtpVerification = async () => {
+//     setError("");
+//     setLoading(true);
+    
+//     const otpString = otp.join('');
+    
+//     if (otpString.length !== 6) {
+//       setError("Please enter a valid 6-digit OTP");
+//       setLoading(false);
+//       return;
+//     }
+    
+//     try {
+//       await dispatch(verifyOtp({
+//         email: userData.email,
+//         otp: otpString
+//       }));
+//       navigate("/");
+//     } catch (err) {
+//       console.error("OTP Verification Error:", err);
+//       setError(err.response?.data?.message || err.message || "OTP verification failed. Please try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleResendOtp = () => {
+//     setError("");
+//     setOtp(["", "", "", "", "", ""]);
+//     // Reset input refs focus
+//     if (inputRefs.current[0]) {
+//       inputRefs.current[0].focus();
+//     }
+//     handleSubmit(new Event('submit'));
+//   };
+
+//   return (
+//     <>
+//       <Navbar />
+//       <div className="min-h-screen flex justify-center items-center bg-gray-100 p-4">
+//         <div className="bg-white w-full max-w-[1150px] shadow-lg rounded-lg overflow-hidden flex flex-col lg:flex-row">
+//           {/* Form Section */}
+//           <div className="p-6 md:p-8 lg:p-12 w-full lg:w-1/2">
+//             <img
+//               src={IMG}
+//               alt="Logo"
+//               className="w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] mb-4"
+//             />
+            
+//             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+//               <span className="bg-gradient-to-r from-[#0098f1] to-[#f6ac14] bg-clip-text text-transparent">
+//                 Sign Up now
+//               </span>
+//             </h2>
+            
+//             <p className="text-sm mb-6 text-gray-600">Hi, Welcome 👋</p>
+
+//             {!otpSent ? (
+//               <form onSubmit={handleSubmit} className="space-y-4">
+//                 <div>
+//                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
+//                     First Name *
+//                   </label>
+//                   <input
+//                     type="text"
+//                     name="firstName"
+//                     placeholder="Enter your first name"
+//                     className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:border-[#0098F1] focus:ring-1 focus:ring-[#0098F1] transition-all"
+//                     value={userData.firstName}
+//                     onChange={handleChange}
+//                     disabled={loading}
+//                   />
+//                 </div>
+                
+//                 <div>
+//                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
+//                     Last Name *
+//                   </label>
+//                   <input
+//                     type="text"
+//                     name="lastName"
+//                     placeholder="Enter your last name"
+//                     className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:border-[#0098F1] focus:ring-1 focus:ring-[#0098F1] transition-all"
+//                     value={userData.lastName}
+//                     onChange={handleChange}
+//                     disabled={loading}
+//                   />
+//                 </div>
+                
+//                 <div>
+//                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
+//                     Email *
+//                   </label>
+//                   <input
+//                     type="email"
+//                     name="email"
+//                     placeholder="Enter your email address"
+//                     className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:border-[#0098F1] focus:ring-1 focus:ring-[#0098F1] transition-all"
+//                     value={userData.email}
+//                     onChange={handleChange}
+//                     disabled={loading}
+//                   />
+//                 </div>
+                
+//                 <div>
+//                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
+//                     Password *
+//                   </label>
+//                   <input
+//                     type="password"
+//                     name="password"
+//                     placeholder="Enter your password (min 6 characters)"
+//                     className="w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:border-[#0098F1] focus:ring-1 focus:ring-[#0098F1] transition-all"
+//                     value={userData.password}
+//                     onChange={handleChange}
+//                     disabled={loading}
+//                   />
+//                   <p className="text-xs text-gray-500 mt-1">Minimum 6 characters required</p>
+//                 </div>
+                
+//                 <button
+//                   type="submit"
+//                   disabled={loading}
+//                   className="w-full py-3 bg-[#0098F1] text-white font-semibold rounded-md hover:bg-[#007acc] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+//                 >
+//                   {loading ? (
+//                     <>
+//                       <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+//                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+//                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+//                       </svg>
+//                       Sending OTP...
+//                     </>
+//                   ) : "Send OTP"}
+//                 </button>
+                
+//                 {registration?.status === "failure" && registration?.error && (
+//                   <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+//                     <p className="text-red-600 text-sm text-center">
+//                       {registration.error}
+//                     </p>
+//                   </div>
+//                 )}
+                
+//                 {error && (
+//                   <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
+//                     <p className="text-red-600 text-sm text-center">
+//                       {error}
+//                     </p>
+//                   </div>
+//                 )}
+                
+//                 {successMessage && (
+//                   <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
+//                     <p className="text-green-600 text-sm text-center">
+//                       {successMessage}
+//                     </p>
+//                   </div>
+//                 )}
+//               </form>
+//             ) : (
+//               /* OTP Verification Section */
+//               <div className="mt-6">
+//                 <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+//                   <p className="text-gray-700">
+//                     We've sent a 6-digit OTP to: <br />
+//                     <strong className="text-[#0098F1]">{userData.email}</strong>
+//                   </p>
+//                   <p className="text-sm text-gray-600 mt-2">
+//                     Please check your inbox and spam folder. The OTP is valid for 10 minutes.
+//                   </p>
+//                 </div>
+                
+//                 <div className="mb-6">
+//                   <label className="text-sm font-bold text-[#F6AC14] block mb-3 text-center">
+//                     Enter 6-digit OTP:
+//                   </label>
+//                   <div 
+//                     className="flex justify-center space-x-2 mb-2"
+//                     onPaste={handlePaste}
+//                   >
+//                     {Array.from({ length: 6 }).map((_, index) => (
+//                       <input
+//                         key={index}
+//                         type="text"
+//                         inputMode="numeric"
+//                         pattern="[0-9]*"
+//                         maxLength="1"
+//                         className="w-12 h-12 text-xl text-center border border-gray-300 rounded-md focus:outline-none focus:border-[#0098F1] focus:ring-2 focus:ring-[#0098F1] transition-all"
+//                         value={otp[index] || ""}
+//                         onChange={(e) => handleOTPEnter(e, index)}
+//                         onKeyDown={(e) => handleKeyDown(e, index)}
+//                         ref={(el) => (inputRefs.current[index] = el)}
+//                         disabled={loading}
+//                       />
+//                     ))}
+//                   </div>
+//                   <p className="text-xs text-gray-500 text-center mt-2">
+//                     Tip: You can paste the entire OTP
+//                   </p>
+//                 </div>
+                
+//                 <div className="space-y-3">
+//                   <button
+//                     onClick={handleOtpVerification}
+//                     disabled={loading || otp.join('').length !== 6}
+//                     className="w-full py-3 bg-[#0098F1] text-white font-semibold rounded-md hover:bg-[#007acc] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+//                   >
+//                     {loading ? (
+//                       <>
+//                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+//                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+//                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+//                         </svg>
+//                         Verifying...
+//                       </>
+//                     ) : "Verify OTP & Create Account"}
+//                   </button>
+                  
+//                   <button
+//                     type="button"
+//                     onClick={handleResendOtp}
+//                     disabled={loading}
+//                     className="w-full py-2 text-[#0098F1] border border-[#0098F1] rounded-md hover:bg-blue-50 transition-all disabled:opacity-50 flex items-center justify-center"
+//                   >
+//                     {loading ? (
+//                       <>
+//                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#0098F1]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+//                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+//                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+//                         </svg>
+//                         Resending...
+//                       </>
+//                     ) : "Resend OTP"}
+//                   </button>
+                  
+//                   <button
+//                     type="button"
+//                     onClick={() => {
+//                       setOtpSent(false);
+//                       setOtp(["", "", "", "", "", ""]);
+//                       setError("");
+//                       setSuccessMessage("");
+//                     }}
+//                     className="w-full py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-all"
+//                   >
+//                     Back to Registration
+//                   </button>
+//                 </div>
+                
+//                 {error && (
+//                   <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-md">
+//                     <p className="text-red-600 text-sm text-center">
+//                       {error}
+//                     </p>
+//                   </div>
+//                 )}
+//               </div>
+//             )}
+            
+//             <div className="mt-6 pt-4 border-t border-gray-200">
+//               <p className="text-sm text-gray-600 text-center">
+//                 Already have an account?{" "}
+//                 <Link to="/login" className="text-[#0098F1] hover:underline font-semibold">
+//                   Login here
+//                 </Link>
+//               </p>
+//             </div>
+//           </div>
+
+//           {/* Image Section */}
+//           <div
+//             className="hidden lg:block w-1/2 bg-cover bg-center"
+//             style={{ backgroundImage: `url(${BackgroundIMG})` }}
+//           ></div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+// export default SignUp;
+
+
+
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -445,18 +881,18 @@ import BackgroundIMG from "../../../src/assetss/login/signupimg.jpg";
 function SignUp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   // FIXED: Specific selectors only
   const auth = useSelector((store) => store.auth);
   const registration = useSelector((store) => store.registration);
-  
+
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
   });
-  
+
   const inputRefs = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
@@ -467,7 +903,7 @@ function SignUp() {
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
-      navigate('/');
+      navigate("/");
     }
   }, [navigate]);
 
@@ -492,7 +928,7 @@ function SignUp() {
       setError("Email is required");
       return false;
     }
-    if (!userData.email.includes('@')) {
+    if (!userData.email.includes("@")) {
       setError("Please enter a valid email address");
       return false;
     }
@@ -511,18 +947,20 @@ function SignUp() {
     e.preventDefault();
     setError("");
     setSuccessMessage("");
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setLoading(true);
 
     try {
       const result = await dispatch(register(userData));
-      
+
       if (result?.success) {
-        setSuccessMessage(result.message || "OTP sent successfully! Check your email.");
+        setSuccessMessage(
+          result.message || "OTP sent successfully! Check your email.",
+        );
         setOtpSent(true);
       } else {
         setError(result?.message || "Registration failed. Please try again.");
@@ -535,19 +973,19 @@ function SignUp() {
   };
 
   const handleOTPEnter = (e, index) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
+    const value = e.target.value.replace(/[^0-9]/g, "");
     const newOtp = [...otp];
-    
+
     if (value.length > 1) {
       // Handle paste
-      const pastedValues = value.split('');
+      const pastedValues = value.split("");
       pastedValues.forEach((char, i) => {
         if (index + i < 6) {
           newOtp[index + i] = char;
         }
       });
       setOtp(newOtp);
-      
+
       // Focus on next empty field
       const nextEmptyIndex = newOtp.findIndex((val, i) => i >= index && !val);
       if (nextEmptyIndex > -1 && nextEmptyIndex < 6) {
@@ -558,7 +996,7 @@ function SignUp() {
     } else {
       newOtp[index] = value;
       setOtp(newOtp);
-      
+
       // Auto-focus next input
       if (value && index < 5) {
         setTimeout(() => {
@@ -569,7 +1007,7 @@ function SignUp() {
   };
 
   const handleKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
       setTimeout(() => {
         inputRefs.current[index - 1]?.focus();
       }, 10);
@@ -578,9 +1016,9 @@ function SignUp() {
 
   const handlePaste = (e) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+    const pastedData = e.clipboardData.getData("text").replace(/[^0-9]/g, "");
     if (pastedData.length === 6) {
-      const newOtp = pastedData.split('');
+      const newOtp = pastedData.split("");
       setOtp(newOtp);
     }
   };
@@ -588,24 +1026,30 @@ function SignUp() {
   const handleOtpVerification = async () => {
     setError("");
     setLoading(true);
-    
-    const otpString = otp.join('');
-    
+
+    const otpString = otp.join("");
+
     if (otpString.length !== 6) {
       setError("Please enter a valid 6-digit OTP");
       setLoading(false);
       return;
     }
-    
+
     try {
-      await dispatch(verifyOtp({
-        email: userData.email,
-        otp: otpString
-      }));
+      await dispatch(
+        verifyOtp({
+          email: userData.email,
+          otp: otpString,
+        }),
+      );
       navigate("/");
     } catch (err) {
       console.error("OTP Verification Error:", err);
-      setError(err.response?.data?.message || err.message || "OTP verification failed. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          err.message ||
+          "OTP verification failed. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -618,7 +1062,7 @@ function SignUp() {
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
-    handleSubmit(new Event('submit'));
+    handleSubmit(new Event("submit"));
   };
 
   return (
@@ -633,13 +1077,13 @@ function SignUp() {
               alt="Logo"
               className="w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] mb-4"
             />
-            
+
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
               <span className="bg-gradient-to-r from-[#0098f1] to-[#f6ac14] bg-clip-text text-transparent">
                 Sign Up now
               </span>
             </h2>
-            
+
             <p className="text-sm mb-6 text-gray-600">Hi, Welcome 👋</p>
 
             {!otpSent ? (
@@ -658,7 +1102,7 @@ function SignUp() {
                     disabled={loading}
                   />
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
                     Last Name *
@@ -673,7 +1117,7 @@ function SignUp() {
                     disabled={loading}
                   />
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
                     Email *
@@ -688,7 +1132,7 @@ function SignUp() {
                     disabled={loading}
                   />
                 </div>
-                
+
                 <div>
                   <label className="text-sm font-bold text-[#F6AC14] block mb-2">
                     Password *
@@ -702,9 +1146,11 @@ function SignUp() {
                     onChange={handleChange}
                     disabled={loading}
                   />
-                  <p className="text-xs text-gray-500 mt-1">Minimum 6 characters required</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Minimum 6 characters required
+                  </p>
                 </div>
-                
+
                 <button
                   type="submit"
                   disabled={loading}
@@ -712,15 +1158,33 @@ function SignUp() {
                 >
                   {loading ? (
                     <>
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Sending OTP...
                     </>
-                  ) : "Send OTP"}
+                  ) : (
+                    "Send OTP"
+                  )}
                 </button>
-                
+
                 {registration?.status === "failure" && registration?.error && (
                   <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
                     <p className="text-red-600 text-sm text-center">
@@ -728,15 +1192,13 @@ function SignUp() {
                     </p>
                   </div>
                 )}
-                
+
                 {error && (
                   <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded-md">
-                    <p className="text-red-600 text-sm text-center">
-                      {error}
-                    </p>
+                    <p className="text-red-600 text-sm text-center">{error}</p>
                   </div>
                 )}
-                
+
                 {successMessage && (
                   <div className="mt-2 p-2 bg-green-50 border border-green-200 rounded-md">
                     <p className="text-green-600 text-sm text-center">
@@ -754,15 +1216,16 @@ function SignUp() {
                     <strong className="text-[#0098F1]">{userData.email}</strong>
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
-                    Please check your inbox and spam folder. The OTP is valid for 10 minutes.
+                    Please check your inbox and spam folder. The OTP is valid
+                    for 10 minutes.
                   </p>
                 </div>
-                
+
                 <div className="mb-6">
                   <label className="text-sm font-bold text-[#F6AC14] block mb-3 text-center">
                     Enter 6-digit OTP:
                   </label>
-                  <div 
+                  <div
                     className="flex justify-center space-x-2 mb-2"
                     onPaste={handlePaste}
                   >
@@ -786,24 +1249,42 @@ function SignUp() {
                     Tip: You can paste the entire OTP
                   </p>
                 </div>
-                
+
                 <div className="space-y-3">
                   <button
                     onClick={handleOtpVerification}
-                    disabled={loading || otp.join('').length !== 6}
+                    disabled={loading || otp.join("").length !== 6}
                     className="w-full py-3 bg-[#0098F1] text-white font-semibold rounded-md hover:bg-[#007acc] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
                     {loading ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Verifying...
                       </>
-                    ) : "Verify OTP & Create Account"}
+                    ) : (
+                      "Verify OTP & Create Account"
+                    )}
                   </button>
-                  
+
                   <button
                     type="button"
                     onClick={handleResendOtp}
@@ -812,15 +1293,33 @@ function SignUp() {
                   >
                     {loading ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#0098F1]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-[#0098F1]"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Resending...
                       </>
-                    ) : "Resend OTP"}
+                    ) : (
+                      "Resend OTP"
+                    )}
                   </button>
-                  
+
                   <button
                     type="button"
                     onClick={() => {
@@ -834,21 +1333,22 @@ function SignUp() {
                     Back to Registration
                   </button>
                 </div>
-                
+
                 {error && (
                   <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded-md">
-                    <p className="text-red-600 text-sm text-center">
-                      {error}
-                    </p>
+                    <p className="text-red-600 text-sm text-center">{error}</p>
                   </div>
                 )}
               </div>
             )}
-            
+
             <div className="mt-6 pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-600 text-center">
                 Already have an account?{" "}
-                <Link to="/login" className="text-[#0098F1] hover:underline font-semibold">
+                <Link
+                  to="/login"
+                  className="text-[#0098F1] hover:underline font-semibold"
+                >
                   Login here
                 </Link>
               </p>

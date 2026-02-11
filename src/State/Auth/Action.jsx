@@ -1,5 +1,324 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../Config/api';
+// import axios from 'axios';
+// import { API_BASE_URL } from '../../Config/api';
+// import {
+//   REGISTER_SUCCESS,
+//   REGISTER_REQUEST,
+//   REGISTER_FAILURE,
+//   LOGIN_FAILURE,
+//   LOGIN_REQUEST,
+//   LOGIN_SUCCESS,
+//   GET_USER_FAILURE,
+//   GET_USER_REQUEST,
+//   GET_USER_SUCCESS,
+//   GET_TRAINEE_FAILURE,
+//   GET_TRAINEE_REQUEST,
+//   GET_TRAINEE_SUCCESS,
+//   LOGOUT,
+//   VERIFY_OTP_FAILURE,
+//   VERIFY_OTP_REQUEST,
+//   VERIFY_OTP_SUCCESS,
+//   EMAIL_EXISTS,
+//   GET_ALL_CUSTOMERS_REQUEST,
+//   GET_ALL_CUSTOMERS_SUCCESS,
+//   GET_ALL_CUSTOMERS_FAILURE,
+//   TRAINEE_LOGIN_REQUEST,
+//   TRAINEE_LOGIN_SUCCESS,
+//   TRAINEE_LOGIN_FAILURE
+// } from './ActionType';
+
+// const jwt = localStorage.getItem('jwt');
+
+
+// // Action creators for registering a user
+// export const registerRequest = () => ({ type: REGISTER_REQUEST });
+// export const registerSuccess = () => ({ type: REGISTER_SUCCESS });
+// export const registerFailure = (error) => ({ type: REGISTER_FAILURE, payload: error });
+// export const emailExists = () => ({ type: EMAIL_EXISTS });
+
+// export const register = (userData) => async (dispatch) => {
+//   dispatch(registerRequest());
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+//     dispatch(registerSuccess());
+//     alert('OTP sent successfully. Please check your email to verify.');
+//   } catch (error) {
+//     // Handle other errors
+//     console.error('Error during registration:', error);
+//     dispatch(registerFailure('An error occurred during registration.'));
+//     alert('Email is already registered. Please use a different email.')
+//   }
+// };
+
+// // Action creators for verifying OTP
+// export const verifyOtpRequest = () => ({ type: VERIFY_OTP_REQUEST });
+// export const verifyOtpSuccess = (user) => ({ type: VERIFY_OTP_SUCCESS, payload: user });
+// export const verifyOtpFailure = (error) => ({ type: VERIFY_OTP_FAILURE, payload: error });
+
+// export const verifyOtp = (otpData) => async (dispatch) => {
+//   dispatch(verifyOtpRequest());
+
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}/auth/verify-otp`, otpData);
+//     const user = response.data;
+//     if (user.jwt) {
+//       localStorage.setItem('jwt', user.jwt);
+//     }
+//     dispatch(verifyOtpSuccess(user.jwt));
+//   } catch (error) {
+//     dispatch(verifyOtpFailure(error.message));
+//   }
+// };
+
+
+
+// const loginRequest = () => ({ type: LOGIN_REQUEST });
+// const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
+// const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
+
+// // export const login = (userData) => async (dispatch) => {
+// //   dispatch(loginRequest());
+
+// //   try {
+// //     // API call
+// //     const response = await axios.post(
+// //       `${API_BASE_URL}/auth/signin`,
+// //       userData,
+// //       {
+// //         headers: { "Content-Type": "application/json" }, // Ensure JSON request
+// //         withCredentials: true,
+// //       }
+// //     );
+
+// //     const { jwt, role, status } = response.data;
+
+// //     // Validate the response
+// //     if (jwt && status && (role === "CUSTOMER" || role === "ADMIN")) {
+// //       // Store JWT and role in localStorage
+// //       localStorage.setItem("jwt", jwt);
+// //       localStorage.setItem("UserRole", role);
+
+// //       // Dispatch success action
+// //       dispatch(loginSuccess(userData));
+// //     } else {
+// //       // Unauthorized access
+// //       throw new Error("Unauthorized access. This login is for valid roles only.");
+// //     }
+// //   } catch (error) {
+// //     // Handle errors
+// //     const errorMessage =
+// //       error.response?.data?.message || "An error occurred while logging in.";
+// //     dispatch(loginFailure(errorMessage));
+// //   }
+// // };
+
+// // In Action.js, check your API endpoints:
+// export const login = (userData) => async (dispatch) => {
+//   dispatch(loginRequest());
+
+//   try {
+//     // Try using the same endpoint as trainee login
+//     const response = await axios.post(
+//       `${API_BASE_URL}/api/auth/signin`,  // Changed endpoint
+//       // OR `${API_BASE_URL}/api/auth/signin`
+//       userData,
+//       {
+//         headers: { "Content-Type": "application/json" },
+//         withCredentials: true,
+//       }
+//     );
+
+//     const { jwt, role, status } = response.data;
+
+//     if (jwt && status && (role === "CUSTOMER" || role === "ADMIN")) {
+//       localStorage.setItem("jwt", jwt);
+//       localStorage.setItem("UserRole", role);
+//       dispatch(loginSuccess({ jwt, role }));  // Pass useful data
+//     } else {
+//       throw new Error("Unauthorized access.");
+//     }
+//   } catch (error) {
+//     const errorMessage =
+//       error.response?.data?.message || "An error occurred while logging in.";
+//     dispatch(loginFailure(errorMessage));
+//     throw error;  // Re-throw so component can catch it
+//   }
+// };
+// const traineeLoginRequest = () => ({ type: TRAINEE_LOGIN_REQUEST });
+// const traineeLoginSuccess = (trainee) => ({ type: TRAINEE_LOGIN_SUCCESS, payload: trainee });
+// const traineeLoginFailure = (error) => ({ type: TRAINEE_LOGIN_FAILURE, payload: error });
+
+// export const trainee = (traineeData) => async (dispatch) => {
+//   dispatch(traineeLoginRequest);
+
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}/trainee/signin`, traineeData);
+//     const trainee = response.data;
+//     if (trainee.jwt) {
+//       localStorage.setItem('jwt', trainee.jwt);
+//     }
+//     dispatch(traineeLoginSuccess(trainee.jwt));
+//   } catch (error) {
+//     dispatch(traineeLoginFailure(error.message));
+//   }
+// };
+
+// export const getAllCustomers = (jwt) => {
+//   return async (dispatch) => {
+//     dispatch({ type: GET_ALL_CUSTOMERS_REQUEST });
+//     try {
+//       const response = await axios.get(`${API_BASE_URL}/admin/users`, {
+//         headers: {
+//           "Authorization": `Bearer ${jwt}`
+//         }
+//       });
+//       const users = response.data;
+//       dispatch({ type: GET_ALL_CUSTOMERS_SUCCESS, payload: users });
+//       console.log("All Customers", users)
+//     } catch (error) {
+//       const errorMessage = error.message;
+//       console.log(error)
+//       dispatch({ type: GET_ALL_CUSTOMERS_FAILURE, payload: errorMessage });
+//     }
+//   };
+// };
+
+// const getUserRequest = () => ({ type: GET_USER_REQUEST });
+// const getUserSuccess = (user) => ({ type: GET_USER_SUCCESS, payload: user });
+// const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error });
+
+// // In your Action.js
+// // export const getUser = () => async (dispatch) => {
+// //   try {
+// //     const jwt = localStorage.getItem('jwt');
+    
+// //     if (!jwt) {
+// //       throw new Error('No JWT token found');
+// //     }
+
+// //     const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+// //       headers: {
+// //         Authorization: `Bearer ${jwt}`
+// //       },
+// //       withCredentials: true
+// //     });
+
+// //     dispatch(getUserSuccess(response.data));
+// //   } catch (error) {
+// //     console.error('Profile fetch error:', error);
+// //     if (error.response?.status === 403) {
+// //       localStorage.removeItem('jwt');
+// //     }
+// //     dispatch(getUserFailure(error.message));
+// //   }
+// // };
+
+// // In your Action.js
+// // In your Action.js - Update the getUser function
+// export const getUser = () => async (dispatch) => {
+//   dispatch(getUserRequest());
+  
+//   try {
+//     const jwt = localStorage.getItem('jwt');
+    
+//     if (!jwt) {
+//       console.log('No JWT token found in localStorage');
+//       dispatch(getUserFailure('No authentication token found. Please login.'));
+//       return;
+//     }
+
+//     console.log('Fetching user profile with token (first 20 chars):', jwt.substring(0, 20) + '...');
+    
+//     const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
+//       headers: {
+//         'Authorization': `Bearer ${jwt}`,
+//         'Content-Type': 'application/json'
+//       }
+//     });
+
+//     console.log('User profile response:', response.data);
+    
+//     if (response.data && response.data.email) {
+//       // Store user data in localStorage if needed
+//       localStorage.setItem('user', JSON.stringify(response.data));
+//       dispatch(getUserSuccess(response.data));
+//     } else {
+//       console.error('Invalid response format:', response.data);
+//       dispatch(getUserFailure('Invalid user profile response'));
+//     }
+    
+//   } catch (error) {
+//     console.error('Profile fetch error details:');
+//     console.error('Error:', error.message);
+//     console.error('Response status:', error.response?.status);
+//     console.error('Response data:', error.response?.data);
+    
+//     // Handle specific error cases
+//     if (error.response?.status === 401 || error.response?.status === 403) {
+//       console.log('Token is invalid or expired, clearing localStorage');
+//       localStorage.removeItem('jwt');
+//       localStorage.removeItem('user');
+//       localStorage.removeItem('UserRole');
+//       dispatch(getUserFailure('Session expired. Please login again.'));
+//     } else if (error.response?.status === 404) {
+//       dispatch(getUserFailure('User profile not found'));
+//     } else if (error.response?.status === 500) {
+//       dispatch(getUserFailure('Server error: ' + (error.response.data?.error || 'Internal server error')));
+//     } else {
+//       dispatch(getUserFailure(error.message || 'Failed to fetch user profile'));
+//     }
+//   }
+// };
+// const getTraineeRequest = () => ({ type: GET_TRAINEE_REQUEST });
+// const getTraineeSuccess = (trainee) => ({ type: GET_TRAINEE_SUCCESS, payload: trainee });
+// const getTraineeFailure = (error) => ({ type: GET_TRAINEE_FAILURE, payload: error });
+
+// export const getTrainee = (jwt) => async (dispatch) => {
+//   dispatch(getTraineeRequest());
+
+//   try {
+//     const response = await axios.get(`${API_BASE_URL}/trainee/profile`, {
+//       headers: {
+//         Authorization: `Bearer ${jwt}`,
+//       },
+//     });
+
+//     const trainee = response.data;
+//     localStorage.setItem("trainee", JSON.stringify(trainee));  // Save trainee data to localStorage
+//     dispatch(getTraineeSuccess(trainee));  // Dispatch success action with the trainee data
+//   } catch (error) {
+//     dispatch(getTraineeFailure(error.message));  // Dispatch failure action with error message
+//   }
+// };
+
+// export const logout = () => {
+//   return async (dispatch) => {
+//     try {
+//       // Optional: Make API call to invalidate token on server
+//       await axios.post(`${API_BASE_URL}/auth/logout/email`, {}, {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem('jwt')}`
+//         }
+//       });
+//     } catch (error) {
+//       console.error('Logout error:', error);
+//     } finally {
+//       // Clear only auth-related items
+//       localStorage.removeItem('jwt');
+//       localStorage.removeItem('user');
+//       localStorage.removeItem('UserRole');
+//       dispatch({ type: LOGOUT });
+//     }
+//   };
+// };
+
+
+
+
+
+
+
+import axios from "axios";
+import { API_BASE_URL } from "../../Config/api";
 import {
   REGISTER_SUCCESS,
   REGISTER_REQUEST,
@@ -23,53 +342,146 @@ import {
   GET_ALL_CUSTOMERS_FAILURE,
   TRAINEE_LOGIN_REQUEST,
   TRAINEE_LOGIN_SUCCESS,
-  TRAINEE_LOGIN_FAILURE
-} from './ActionType';
+  TRAINEE_LOGIN_FAILURE,
+} from "./ActionType";
 
-const jwt = localStorage.getItem('jwt');
-
+const jwt = localStorage.getItem("jwt");
 
 // Action creators for registering a user
-export const registerRequest = () => ({ type: REGISTER_REQUEST });
-export const registerSuccess = () => ({ type: REGISTER_SUCCESS });
-export const registerFailure = (error) => ({ type: REGISTER_FAILURE, payload: error });
+// export const registerRequest = () => ({ type: REGISTER_REQUEST });
+// export const registerSuccess = () => ({ type: REGISTER_SUCCESS });
+// export const registerFailure = (error) => ({ type: REGISTER_FAILURE, payload: error });
+export const registerRequest = () => ({
+  type: REGISTER_REQUEST,
+});
+
+export const registerSuccess = (data) => ({
+  type: REGISTER_SUCCESS,
+  payload: data,
+});
+
+export const registerFailure = (error) => ({
+  type: REGISTER_FAILURE,
+  payload: error,
+});
 export const emailExists = () => ({ type: EMAIL_EXISTS });
 
+// export const register = (userData) => async (dispatch) => {
+//   dispatch(registerRequest());
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+//     dispatch(registerSuccess());
+//     alert('OTP sent successfully. Please check your email to verify.');
+//   } catch (error) {
+//     // Handle other errors
+//     console.error('Error during registration:', error);
+//     dispatch(registerFailure('An error occurred during registration.'));
+//     alert('Email is already registered. Please use a different email.')
+//   }
+// };
+
+// export const register = (userData) => async (dispatch) => {
+//   dispatch(registerRequest());
+
+//   try {
+//     const response = await axios.post(
+//       `${API_BASE_URL}/auth/register`,
+//       userData,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       },
+//     );
+
+//     // ✅ backend response stored in Redux
+//     dispatch(registerSuccess(response.data));
+
+//     // ✅ optional return (ONLY if you want to await in component)
+//     return {
+//       success: true,
+//       data: response.data,
+//     };
+//   } catch (error) {
+//     const message =
+//       error.response?.data?.message || "Registration failed. Please try again.";
+
+//     dispatch(registerFailure(message));
+
+//     return {
+//       success: false,
+//       message,
+//     };
+//   }
+// };
 export const register = (userData) => async (dispatch) => {
   dispatch(registerRequest());
+
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
-    dispatch(registerSuccess());
-    alert('OTP sent successfully. Please check your email to verify.');
+    const response = await axios.post(
+      `${API_BASE_URL}/auth/register`,
+      userData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    dispatch(registerSuccess(response.data));
+
+    return {
+      success: true,
+      message: "OTP sent successfully! Check your email.",
+      data: response.data,
+    };
   } catch (error) {
-    // Handle other errors
-    console.error('Error during registration:', error);
-    dispatch(registerFailure('An error occurred during registration.'));
-    alert('Email is already registered. Please use a different email.')
+    console.error("REGISTER ERROR:", error.response || error);
+
+    let message = "Registration failed. Please try again.";
+
+    if (error.response?.data?.message) {
+      message = error.response.data.message;
+    }
+
+    dispatch(registerFailure(message));
+
+    return {
+      success: false,
+      message,
+    };
   }
 };
 
 // Action creators for verifying OTP
 export const verifyOtpRequest = () => ({ type: VERIFY_OTP_REQUEST });
-export const verifyOtpSuccess = (user) => ({ type: VERIFY_OTP_SUCCESS, payload: user });
-export const verifyOtpFailure = (error) => ({ type: VERIFY_OTP_FAILURE, payload: error });
+export const verifyOtpSuccess = (user) => ({
+  type: VERIFY_OTP_SUCCESS,
+  payload: user,
+});
+export const verifyOtpFailure = (error) => ({
+  type: VERIFY_OTP_FAILURE,
+  payload: error,
+});
 
 export const verifyOtp = (otpData) => async (dispatch) => {
   dispatch(verifyOtpRequest());
+  console.log("OTP payload:", otpData);
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/verify-otp`, otpData);
+    const response = await axios.post(
+      `${API_BASE_URL}/auth/verify-otp`,
+      otpData,
+    );
     const user = response.data;
     if (user.jwt) {
-      localStorage.setItem('jwt', user.jwt);
+      localStorage.setItem("jwt", user.jwt);
     }
     dispatch(verifyOtpSuccess(user.jwt));
   } catch (error) {
     dispatch(verifyOtpFailure(error.message));
   }
 };
-
-
 
 const loginRequest = () => ({ type: LOGIN_REQUEST });
 const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
@@ -118,13 +530,13 @@ export const login = (userData) => async (dispatch) => {
   try {
     // Try using the same endpoint as trainee login
     const response = await axios.post(
-      `${API_BASE_URL}/api/auth/signin`,  // Changed endpoint
+      `${API_BASE_URL}/api/auth/signin`, // Changed endpoint
       // OR `${API_BASE_URL}/api/auth/signin`
       userData,
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
-      }
+      },
     );
 
     const { jwt, role, status } = response.data;
@@ -132,7 +544,7 @@ export const login = (userData) => async (dispatch) => {
     if (jwt && status && (role === "CUSTOMER" || role === "ADMIN")) {
       localStorage.setItem("jwt", jwt);
       localStorage.setItem("UserRole", role);
-      dispatch(loginSuccess({ jwt, role }));  // Pass useful data
+      dispatch(loginSuccess({ jwt, role })); // Pass useful data
     } else {
       throw new Error("Unauthorized access.");
     }
@@ -140,21 +552,30 @@ export const login = (userData) => async (dispatch) => {
     const errorMessage =
       error.response?.data?.message || "An error occurred while logging in.";
     dispatch(loginFailure(errorMessage));
-    throw error;  // Re-throw so component can catch it
+    throw error; // Re-throw so component can catch it
   }
 };
 const traineeLoginRequest = () => ({ type: TRAINEE_LOGIN_REQUEST });
-const traineeLoginSuccess = (trainee) => ({ type: TRAINEE_LOGIN_SUCCESS, payload: trainee });
-const traineeLoginFailure = (error) => ({ type: TRAINEE_LOGIN_FAILURE, payload: error });
+const traineeLoginSuccess = (trainee) => ({
+  type: TRAINEE_LOGIN_SUCCESS,
+  payload: trainee,
+});
+const traineeLoginFailure = (error) => ({
+  type: TRAINEE_LOGIN_FAILURE,
+  payload: error,
+});
 
 export const trainee = (traineeData) => async (dispatch) => {
   dispatch(traineeLoginRequest);
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/trainee/signin`, traineeData);
+    const response = await axios.post(
+      `${API_BASE_URL}/trainee/signin`,
+      traineeData,
+    );
     const trainee = response.data;
     if (trainee.jwt) {
-      localStorage.setItem('jwt', trainee.jwt);
+      localStorage.setItem("jwt", trainee.jwt);
     }
     dispatch(traineeLoginSuccess(trainee.jwt));
   } catch (error) {
@@ -168,15 +589,15 @@ export const getAllCustomers = (jwt) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/admin/users`, {
         headers: {
-          "Authorization": `Bearer ${jwt}`
-        }
+          Authorization: `Bearer ${jwt}`,
+        },
       });
       const users = response.data;
       dispatch({ type: GET_ALL_CUSTOMERS_SUCCESS, payload: users });
-      console.log("All Customers", users)
+      console.log("All Customers", users);
     } catch (error) {
       const errorMessage = error.message;
-      console.log(error)
+      console.log(error);
       dispatch({ type: GET_ALL_CUSTOMERS_FAILURE, payload: errorMessage });
     }
   };
@@ -190,7 +611,7 @@ const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error });
 // export const getUser = () => async (dispatch) => {
 //   try {
 //     const jwt = localStorage.getItem('jwt');
-    
+
 //     if (!jwt) {
 //       throw new Error('No JWT token found');
 //     }
@@ -216,61 +637,74 @@ const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error });
 // In your Action.js - Update the getUser function
 export const getUser = () => async (dispatch) => {
   dispatch(getUserRequest());
-  
+
   try {
-    const jwt = localStorage.getItem('jwt');
-    
+    const jwt = localStorage.getItem("jwt");
+
     if (!jwt) {
-      console.log('No JWT token found in localStorage');
-      dispatch(getUserFailure('No authentication token found. Please login.'));
+      console.log("No JWT token found in localStorage");
+      dispatch(getUserFailure("No authentication token found. Please login."));
       return;
     }
 
-    console.log('Fetching user profile with token (first 20 chars):', jwt.substring(0, 20) + '...');
-    
+    console.log(
+      "Fetching user profile with token (first 20 chars):",
+      jwt.substring(0, 20) + "...",
+    );
+
     const response = await axios.get(`${API_BASE_URL}/api/users/profile`, {
       headers: {
-        'Authorization': `Bearer ${jwt}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+      },
     });
 
-    console.log('User profile response:', response.data);
-    
+    console.log("User profile response:", response.data);
+
     if (response.data && response.data.email) {
       // Store user data in localStorage if needed
-      localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data));
       dispatch(getUserSuccess(response.data));
     } else {
-      console.error('Invalid response format:', response.data);
-      dispatch(getUserFailure('Invalid user profile response'));
+      console.error("Invalid response format:", response.data);
+      dispatch(getUserFailure("Invalid user profile response"));
     }
-    
   } catch (error) {
-    console.error('Profile fetch error details:');
-    console.error('Error:', error.message);
-    console.error('Response status:', error.response?.status);
-    console.error('Response data:', error.response?.data);
-    
+    console.error("Profile fetch error details:");
+    console.error("Error:", error.message);
+    console.error("Response status:", error.response?.status);
+    console.error("Response data:", error.response?.data);
+
     // Handle specific error cases
     if (error.response?.status === 401 || error.response?.status === 403) {
-      console.log('Token is invalid or expired, clearing localStorage');
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('user');
-      localStorage.removeItem('UserRole');
-      dispatch(getUserFailure('Session expired. Please login again.'));
+      console.log("Token is invalid or expired, clearing localStorage");
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("user");
+      localStorage.removeItem("UserRole");
+      dispatch(getUserFailure("Session expired. Please login again."));
     } else if (error.response?.status === 404) {
-      dispatch(getUserFailure('User profile not found'));
+      dispatch(getUserFailure("User profile not found"));
     } else if (error.response?.status === 500) {
-      dispatch(getUserFailure('Server error: ' + (error.response.data?.error || 'Internal server error')));
+      dispatch(
+        getUserFailure(
+          "Server error: " +
+            (error.response.data?.error || "Internal server error"),
+        ),
+      );
     } else {
-      dispatch(getUserFailure(error.message || 'Failed to fetch user profile'));
+      dispatch(getUserFailure(error.message || "Failed to fetch user profile"));
     }
   }
 };
 const getTraineeRequest = () => ({ type: GET_TRAINEE_REQUEST });
-const getTraineeSuccess = (trainee) => ({ type: GET_TRAINEE_SUCCESS, payload: trainee });
-const getTraineeFailure = (error) => ({ type: GET_TRAINEE_FAILURE, payload: error });
+const getTraineeSuccess = (trainee) => ({
+  type: GET_TRAINEE_SUCCESS,
+  payload: trainee,
+});
+const getTraineeFailure = (error) => ({
+  type: GET_TRAINEE_FAILURE,
+  payload: error,
+});
 
 export const getTrainee = (jwt) => async (dispatch) => {
   dispatch(getTraineeRequest());
@@ -283,10 +717,10 @@ export const getTrainee = (jwt) => async (dispatch) => {
     });
 
     const trainee = response.data;
-    localStorage.setItem("trainee", JSON.stringify(trainee));  // Save trainee data to localStorage
-    dispatch(getTraineeSuccess(trainee));  // Dispatch success action with the trainee data
+    localStorage.setItem("trainee", JSON.stringify(trainee)); // Save trainee data to localStorage
+    dispatch(getTraineeSuccess(trainee)); // Dispatch success action with the trainee data
   } catch (error) {
-    dispatch(getTraineeFailure(error.message));  // Dispatch failure action with error message
+    dispatch(getTraineeFailure(error.message)); // Dispatch failure action with error message
   }
 };
 
@@ -294,20 +728,23 @@ export const logout = () => {
   return async (dispatch) => {
     try {
       // Optional: Make API call to invalidate token on server
-      await axios.post(`${API_BASE_URL}/auth/logout/email`, {}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt')}`
-        }
-      });
+      await axios.post(
+        `${API_BASE_URL}/auth/logout/email`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+          },
+        },
+      );
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     } finally {
       // Clear only auth-related items
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('user');
-      localStorage.removeItem('UserRole');
+      localStorage.removeItem("jwt");
+      localStorage.removeItem("user");
+      localStorage.removeItem("UserRole");
       dispatch({ type: LOGOUT });
     }
   };
 };
-
