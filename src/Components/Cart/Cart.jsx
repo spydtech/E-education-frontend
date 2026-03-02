@@ -23,7 +23,7 @@ const Cart = () => {
 
   const initializeRazorpay = async (orderId) => {
     const rzp = new window.Razorpay({
-      key: "rzp_live_O2RbutXpyAfDAP",
+      key: "rzp_live_RWWvXeMcmTohhi",
       amount: totalAmount * 100,
       order_id: orderId,
       currency: "INR",
